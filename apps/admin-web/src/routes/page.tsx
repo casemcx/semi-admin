@@ -1,8 +1,8 @@
-import { Galaxy } from '@packages/ui';
+import { SplashCursor } from '@packages/ui';
 
 const Index = () => (
-  <div className="container-box w-full h-full bg-black">
-    <Galaxy className="w-full h-full" />
+  <div className="container-box relative w-screen h-screen bg-black">
+    <SplashCursor />
   </div>
 );
 

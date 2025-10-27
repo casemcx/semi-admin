@@ -25,6 +25,14 @@
       "suspicious": {
         "noDuplicateFontNames": "off",
         "noExplicitAny": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noParameterAssign": "off"
+      },
+      "complexity": {
+        "useOptionalChain": "off",
+        "noForEach": "off"
       }
     }
   },
