@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@modern-js/runtime": "catalog:modern",
-    "@modern-js/plugin-tailwindcss": "2.68.18"
+    "@modern-js/plugin-tailwindcss": "2.68.18",
+    "@packages/share": "workspace:^"
   },
   "devDependencies": {
     "@douyinfe/semi-rspack-plugin": "^2.87.1",

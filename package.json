@@ -14,14 +14,18 @@
   "license": "ISC",
   "packageManager": "pnpm@10.12.4",
   "dependencies": {
+    "@ahooksjs/use-url-state": "catalog:app",
     "@douyinfe/semi-ui": "catalog:semi-ui",
     "@modern-js/runtime": "catalog:modern",
     "ahooks": "catalog:app",
     "axios": "catalog:app",
+    "i18next": "catalog:modern",
+    "i18next-browser-languagedetector": "catalog:modern",
     "lodash-es": "catalog:app",
     "qs": "catalog:app",
     "react": "catalog:modern",
-    "react-dom": "catalog:modern"
+    "react-dom": "catalog:modern",
+    "react-i18next": "catalog:modern"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:lint",
