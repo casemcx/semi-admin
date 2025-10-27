@@ -1,0 +1,58 @@
+{
+  "name": "semi-admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "biome check --write",
+    "prepare": "simple-git-hooks",
+    "reset": "npx rimraf node_modules ./**/node_modules",
+    "dev:admin": "pnpm -C apps/admin-web dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4",
+  "dependencies": {
+    "@douyinfe/semi-ui": "catalog:semi-ui",
+    "@modern-js/runtime": "catalog:modern",
+    "ahooks": "catalog:app",
+    "axios": "catalog:app",
+    "lodash-es": "catalog:app",
+    "qs": "catalog:app",
+    "react": "catalog:modern",
+    "react-dom": "catalog:modern"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:lint",
+    "@modern-js/app-tools": "catalog:modern",
+    "@modern-js/tsconfig": "catalog:modern",
+    "@tailwindcss/postcss": "catalog:tailwindcss",
+    "@types/jest": "catalog:modern",
+    "@types/lodash-es": "catalog:app",
+    "@types/node": "catalog:node",
+    "@types/qs": "catalog:app",
+    "@types/react": "catalog:modern",
+    "@types/react-dom": "catalog:modern",
+    "clsx": "catalog:tailwindcss",
+    "lint-staged": "catalog:lint",
+    "postcss": "catalog:tailwindcss",
+    "postcss-loader": "catalog:tailwindcss",
+    "rimraf": "^6.0.1",
+    "simple-git-hooks": "catalog:lint",
+    "tailwind-merge": "catalog:tailwindcss",
+    "tailwindcss": "catalog:tailwindcss",
+    "typescript": "catalog:node"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "engines": {
+    "node": ">=16.18.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --files-ignore-unknown=true"
+    ]
+  }
+}
