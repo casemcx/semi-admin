@@ -1,6 +1,7 @@
 import { SemiRspackPlugin } from '@douyinfe/semi-rspack-plugin';
 import { appTools, defineConfig } from '@modern-js/app-tools';
 import { tailwindcssPlugin } from '@modern-js/plugin-tailwindcss';
+import { pluginGlsl } from 'rsbuild-plugin-glsl';
 import AutoImport from 'unplugin-auto-import/rspack';
 
 // https://modernjs.dev/en/configure/app/usage
@@ -24,6 +25,7 @@ export default defineConfig({
   },
   plugins: [
     tailwindcssPlugin(),
+    pluginGlsl(),
     appTools({
       bundler: 'rspack', // Set to 'webpack' to enable webpack
     }),

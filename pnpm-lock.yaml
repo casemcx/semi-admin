@@ -218,6 +218,9 @@ importers:
       '@packages/share':
         specifier: workspace:^
         version: link:../../packages/share
+      '@packages/ui':
+        specifier: workspace:^
+        version: link:../../packages/ui
       '@packages/utils':
         specifier: workspace:^
         version: link:../../packages/utils
@@ -231,6 +234,9 @@ importers:
       '@modern-js/tsconfig':
         specifier: catalog:modern
         version: 2.68.18
+      rsbuild-plugin-glsl:
+        specifier: ^1.0.1
+        version: 1.0.1(@rsbuild/core@1.5.17)
       tailwindcss:
         specifier: ~3.4.14
         version: 3.4.18(yaml@2.8.1)
@@ -266,6 +272,15 @@ importers:
         version: link:../share
 
   packages/share: {}
+
+  packages/ui:
+    dependencies:
+      '@packages/utils':
+        specifier: workspace:^
+        version: link:../utils
+      ogl:
+        specifier: ^1.0.11
+        version: 1.0.11
 
   packages/utils:
     dependencies:
@@ -4295,6 +4310,9 @@ packages:
     resolution: {integrity: sha512-nK28WOo+QIjBkDduTINE4JkF/UJJKyf2EJxvJKfblDpyg0Q+pkOHNTL0Qwy6NP6FhE/EnzV73BxxqcJaXY9anw==}
     engines: {node: '>= 0.4'}
 
+  ogl@1.0.11:
+    resolution: {integrity: sha512-kUpC154AFfxi16pmZUK4jk3J+8zxwTWGPo03EoYA8QPbzikHoaC82n6pNTbd+oEaJonaE8aPWBlX7ad9zrqLsA==}
+
   once@1.4.0:
     resolution: {integrity: sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==}
 
@@ -5057,6 +5075,15 @@ packages:
   ripemd160@2.0.3:
     resolution: {integrity: sha512-5Di9UC0+8h1L6ZD2d7awM7E/T4uA1fJRlx6zk/NvdCCVEoAnFqvHmCuNeIKoCeIixBX/q8uM+6ycDvF8woqosA==}
     engines: {node: '>= 0.8'}
+
+  rsbuild-plugin-glsl@1.0.1:
+    resolution: {integrity: sha512-MBIusEc7IN9I8U4UBHqlGa48ZnutBQ2+aIpbDrzCO+YJve1aBc+tI3OGlhRUjMi/P0kesda4UZxyraXsDtEw5w==}
+    engines: {node: '>= 20.15.0'}
+    peerDependencies:
+      '@rsbuild/core': 1.x
+    peerDependenciesMeta:
+      '@rsbuild/core':
+        optional: true
 
   rslog@1.3.0:
     resolution: {integrity: sha512-93DpwwaiRrLz7fJ5z6Uwb171hHBws1VVsWjU6IruLFX63BicLA44QNu0sfn3guKHnBHZMFSKO8akfx5QhjuegQ==}
@@ -10810,6 +10837,8 @@ snapshots:
       has-symbols: 1.1.0
       object-keys: 1.1.1
 
+  ogl@1.0.11: {}
+
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
@@ -11631,6 +11660,10 @@ snapshots:
     dependencies:
       hash-base: 3.1.2
       inherits: 2.0.4
+
+  rsbuild-plugin-glsl@1.0.1(@rsbuild/core@1.5.17):
+    optionalDependencies:
+      '@rsbuild/core': 1.5.17
 
   rslog@1.3.0: {}
 
