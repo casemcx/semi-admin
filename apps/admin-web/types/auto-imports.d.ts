@@ -6,10 +6,12 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const API_BASE_URL: typeof import('../src/configs/request').API_BASE_URL
   const createRef: typeof import('react').createRef
   const forwardRef: typeof import('react').forwardRef
   const lazy: typeof import('react').lazy
   const memo: typeof import('react').memo
+  const request: typeof import('../src/utils/request').request
   const startTransition: typeof import('react').startTransition
   const useAntdTable: typeof import('ahooks').useAntdTable
   const useAsyncEffect: typeof import('ahooks').useAsyncEffect

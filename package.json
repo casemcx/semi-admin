@@ -25,7 +25,8 @@
     "qs": "catalog:app",
     "react": "catalog:modern",
     "react-dom": "catalog:modern",
-    "react-i18next": "catalog:modern"
+    "react-i18next": "catalog:modern",
+    "zustand": "catalog:modern"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:lint",

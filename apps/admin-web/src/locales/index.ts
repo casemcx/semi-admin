@@ -35,11 +35,13 @@ i18n
     },
   });
 
+export type LocaleKey = keyof typeof zhCN.translation;
+
 export const useLocal = () => {
   const { t } = useTranslation();
 
   return {
-    get(key: keyof typeof zhCN.translation, config?: any) {
+    get(key: LocaleKey, config?: any) {
       return t(key, config) as string;
     },
 

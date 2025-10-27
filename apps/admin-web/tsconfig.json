@@ -14,7 +14,8 @@
     "shared",
     "config",
     "modern.config.ts",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    "types"
   ],
   "exclude": ["**/node_modules"]
 }

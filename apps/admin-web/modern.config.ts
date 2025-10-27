@@ -13,12 +13,7 @@ export default defineConfig({
       plugins: [
         AutoImport({
           imports: ['react', 'ahooks'],
-          dirs: [
-            './src/configs',
-            './src/utils',
-            './src/hooks',
-            './src/components',
-          ],
+          dirs: ['./src/configs', './src/utils', './src/hooks'],
           dts: './types/auto-imports.d.ts',
         }),
         new SemiRspackPlugin({
