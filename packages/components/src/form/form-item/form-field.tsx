@@ -1,5 +1,5 @@
-import { ImageUploadField } from '../field/image';
 import { DateField, DateTimeField, TimeField } from './date-field';
+import { ImageUploadField } from './image';
 import {
   InputField,
   NumberField,

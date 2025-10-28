@@ -1,58 +1,15 @@
 import { withField } from '@douyinfe/semi-ui';
-import {
-  FC,
-  type HTMLAttributes,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-} from 'react';
+import { useEffect, useId, useMemo, useRef } from 'react';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 
 // @ts-ignore
 import styles from './index.module.less';
 
-export const device = {
-  mobile: 'mobile',
-  desktop: 'desktop',
-} as const;
-
-export type MarkdownProps = HTMLAttributes<HTMLDivElement> & {
-  /**
-   * 参数值
-   */
-  value?: string;
-  /**
-   * 参数值变化时回调
-   */
-  onChange?: (value?: string) => void;
-
-  id: string | number;
-
-  /**
-   * 设备
-   */
-  device?: (keyof typeof device)[];
-
-  /**
-   * 默认值
-   */
-  defaultValue?: string;
-
-  /**
-   * 是否禁用
-   */
-  disabled?: boolean;
-
-  /**
-   * 占位符
-   */
-  placeholder?: string;
-};
+import type { MarkdownProps } from './markdown-types';
 
 export const Markdown = (props: MarkdownProps) => {
-  const vditor = useRef<Vditor>();
+  const vditor = useRef<Vditor | undefined>(undefined);
 
   const { value, onChange, id, defaultValue, placeholder, ...rest } = props;
 
@@ -71,10 +28,10 @@ export const Markdown = (props: MarkdownProps) => {
       mode: 'wysiwyg',
       value: defaultValue,
       placeholder,
-      input(value) {
+      input(value: string) {
         onChange?.(value);
       },
-      blur(value) {
+      blur(value: string) {
         onChange?.(value);
       },
     });

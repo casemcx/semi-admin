@@ -16,3 +16,5 @@ export {
 export { DateField, TimeField, DateTimeField } from './date-field';
 export { SwitchField, UploadField } from './special-field';
 export { MarkdownFormField } from './markdown-field';
+export * from './image';
+export * from './markdown';

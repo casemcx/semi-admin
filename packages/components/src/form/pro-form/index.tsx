@@ -1,10 +1,12 @@
 import { Button, Col, Form, Row, Space } from '@douyinfe/semi-ui';
 import { useRequest } from 'ahooks';
-import { useCallback, useState } from 'react';
-import type { ProFormProps } from '../types';
-import { FieldRender } from './field-renderer';
+import { useCallback, useMemo } from 'react';
 
 import { clsx } from '@packages/utils';
+
+import { FieldRender } from '../field-renderer';
+
+import type { ProFormProps } from './types';
 
 const ProForm = <T extends Record<string, any> = any>({
   columns = [],
@@ -22,13 +24,17 @@ const ProForm = <T extends Record<string, any> = any>({
   getFormApi,
   submitButtonProps,
   resetButtonProps,
+  className,
   ...formProps
 }: ProFormProps<T>) => {
   const { loading, run } = useRequest(
     async (values: any) => onSubmit?.(values),
-    {
-      manual: true,
-    },
+    { manual: true },
+  );
+
+  const formClassName = useMemo(
+    () => clsx(className, { 'readonly-form': readonly }),
+    [className, readonly],
   );
 
   const renderFormContent = useCallback(() => {
@@ -58,10 +64,9 @@ const ProForm = <T extends Record<string, any> = any>({
         ))}
       </Row>
     );
-  }, [columns, children, gutter, colProps, readonly]);
+  }, [children, columns, colProps, gutter, readonly]);
 
-  const renderActions = () => {
-    // 只读模式下不显示操作按钮
+  const renderActions = useCallback(() => {
     if (readonly || (!showSubmit && !showReset)) {
       return null;
     }
@@ -94,18 +99,31 @@ const ProForm = <T extends Record<string, any> = any>({
         </Space>
       </div>
     );
-  };
+  }, [
+    actionsAlign,
+    loading,
+    resetButtonProps,
+    resetText,
+    showReset,
+    showSubmit,
+    submitButtonProps,
+    submitText,
+    readonly,
+  ]);
 
-  const handleGetFormApi = (formApi: any) => {
-    getFormApi?.(formApi);
-  };
+  const handleGetFormApi = useCallback(
+    (formApi: any) => {
+      getFormApi?.(formApi);
+    },
+    [getFormApi],
+  );
 
   return (
     <Form
       onSubmit={run}
       getFormApi={handleGetFormApi}
+      className={formClassName}
       {...formProps}
-      className={`${formProps.className || ''} ${readonly ? 'readonly-form' : ''}`}
     >
       {renderFormContent()}
       {renderActions()}
@@ -117,3 +135,4 @@ const ProForm = <T extends Record<string, any> = any>({
 ProForm.displayName = 'ProForm';
 
 export default ProForm;
+export type { ProFormProps } from './types';

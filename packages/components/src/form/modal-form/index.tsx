@@ -1,47 +1,10 @@
 import { Button, Modal, Space } from '@douyinfe/semi-ui';
-import type { ComponentPropsWithoutRef } from 'react';
 import { useState } from 'react';
 
-import type { FormSchema, ProFormProps } from '../types/form';
-import ProForm from './pro-form';
+import ProForm from '../pro-form';
+import type { FormSchema } from '../types';
 
-type ModalProps = ComponentPropsWithoutRef<typeof Modal>;
-
-interface ModalFormProps<T extends Record<string, any>>
-  extends Omit<ModalProps, 'onOk' | 'children' | 'footer'> {
-  /** 表单字段配置 */
-  columns?: FormSchema<T>[] | Array<FormSchema<T> & Record<string, any>>;
-  /** 初始值 */
-  initialValues?: Partial<T>;
-  /** 是否加载中 */
-  loading?: boolean;
-  /** 确认按钮文字 */
-  okText?: string;
-  /** 取消按钮文字 */
-  cancelText?: string;
-  /** 重置按钮文字 */
-  resetText?: string;
-  /** 是否显示重置按钮 */
-  showReset?: boolean;
-  /** 表单项的栅格配置 */
-  colProps?: ProFormProps<T>['colProps'];
-  /** 表单项之间的间距 */
-  gutter?: ProFormProps<T>['gutter'];
-  /** 是否为只读模式（详情展示模式） */
-  readonly?: boolean;
-  /** 表单提交 */
-  onSubmit?: (values: T) => void | Promise<void>;
-  /** 重置表单 */
-  onReset?: () => void;
-  /** 获取表单API */
-  getFormApi?: ProFormProps<T>['getFormApi'];
-
-  /**
-   * @description 表单名称
-   * @default "modal-form"
-   */
-  formName?: string;
-}
+import type { ModalFormProps } from './types';
 
 export function ModalForm<T extends Record<string, any>>({
   columns,
@@ -55,7 +18,6 @@ export function ModalForm<T extends Record<string, any>>({
   onSubmit,
   onCancel,
   onReset,
-  // ProForm props
   colProps,
   gutter,
   getFormApi,
@@ -65,13 +27,14 @@ export function ModalForm<T extends Record<string, any>>({
   const [internalLoading, setInternalLoading] = useState(false);
 
   const handleSubmit = async (values: T) => {
-    if (!onSubmit) return;
+    if (!onSubmit) {
+      return;
+    }
 
     try {
       setInternalLoading(true);
       const result = onSubmit(values);
 
-      // 如果返回的是 Promise，等待其完成
       if (result && typeof result.then === 'function') {
         await result;
       }
@@ -87,7 +50,6 @@ export function ModalForm<T extends Record<string, any>>({
     onReset?.();
   };
 
-  // 提交按钮显示 loading，其他按钮显示 disabled
   const submitLoading = internalLoading || loading;
   const isDisabled = internalLoading || loading;
 
@@ -145,3 +107,5 @@ export function ModalForm<T extends Record<string, any>>({
     </Modal>
   );
 }
+
+export type { ModalFormProps } from './types';

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Vditor from 'vditor';
 
-import type { MarkdownProps } from './types';
+import type { MarkdownProps } from './markdown-types';
 
 export const MarkdownPreview = (props: MarkdownProps) => {
   const { id, value, ...reset } = props;

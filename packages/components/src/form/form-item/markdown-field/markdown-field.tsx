@@ -1,5 +1,5 @@
-import MarkdownField from '../../field/markdown';
-import { useFormPlaceholders } from '../../hooks';
+import { useFormPlaceholders } from '../hooks';
+import MarkdownField from '../markdown';
 
 import type { FormSchema } from '../../../types';
 
