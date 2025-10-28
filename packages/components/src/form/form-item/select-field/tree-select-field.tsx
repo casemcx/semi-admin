@@ -1,25 +1,25 @@
+import { Form } from '@douyinfe/semi-ui';
 import { useFormPlaceholders } from '../../hooks';
-import MarkdownField from '../field/markdown';
 
-import type { FormSchema } from '../../types';
+import type { FormSchema } from '../../../types';
 
 interface FormFieldProps<T extends Record<string, any>> {
   column: FormSchema<T>;
 }
 
-export const MarkdownFormField = <T extends Record<string, any>>({
+export const TreeSelectField = <T extends Record<string, any>>({
   column,
 }: FormFieldProps<T>) => {
   const { name, title, fieldProps = {} as any, rules } = column;
-  const { inputPlaceholder } = useFormPlaceholders(title);
+  const { inputPlaceholder } = useFormPlaceholders(title ?? '');
 
   return (
-    <MarkdownField
+    <Form.TreeSelect
       field={name}
       label={title}
-      rules={rules}
-      style={{ width: '100%' }}
       placeholder={inputPlaceholder}
+      style={{ width: '100%' }}
+      rules={rules}
       {...fieldProps}
     />
   );

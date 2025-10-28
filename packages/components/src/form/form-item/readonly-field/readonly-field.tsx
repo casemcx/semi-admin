@@ -1,9 +1,9 @@
 import { useFormState } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
-import { ImageCarousel } from '../field/image';
-import { MarkdownPreview } from '../field/markdown/preview';
+import { ImageCarousel } from '../../field/image';
+import { MarkdownPreview } from '../../field/markdown/preview';
 
-import type { FormSchema } from '../../types';
+import type { FormSchema } from '../../../types';
 
 interface ReadonlyFieldProps<T extends Record<string, any>> {
   column: FormSchema<T>;

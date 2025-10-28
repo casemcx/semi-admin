@@ -1,20 +1,20 @@
 import { ImageUploadField } from '../field/image';
-import { DateField, DateTimeField, TimeField } from './DateField';
+import { DateField, DateTimeField, TimeField } from './date-field';
 import {
   InputField,
   NumberField,
   PasswordField,
   TextAreaField,
-} from './InputField';
-import { MarkdownFormField } from './MarkdownField';
+} from './input-field';
+import { MarkdownFormField } from './markdown-field';
 import {
   CascaderField,
   CheckboxGroupField,
   RadioGroupField,
   SelectField,
   TreeSelectField,
-} from './SelectField';
-import { SwitchField, UploadField } from './SpecialField';
+} from './select-field';
+import { SwitchField, UploadField } from './special-field';
 
 import type { FormSchema } from '../../types';
 

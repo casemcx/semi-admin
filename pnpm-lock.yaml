@@ -244,6 +244,8 @@ importers:
         specifier: ^20.2.0
         version: 20.2.0
 
+  packages/components: {}
+
   packages/config:
     devDependencies:
       '@tailwindcss/postcss':
