@@ -13,9 +13,9 @@
   "dependencies": {
     "@packages/utils": "workspace:^",
     "ogl": "^1.0.11",
-    "three": "^0.180.0"
+    "three": "catalog:app"
   },
   "devDependencies": {
-    "@types/three": "^0.180.0"
+    "@types/three": "catalog:app"
   }
 }
