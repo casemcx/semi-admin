@@ -1,6 +1,9 @@
+import { useUserStore } from '@/stores/user';
 import { ProForm } from '@packages/components';
 
 const Login = () => {
+  const userStore = useUserStore();
+
   const columns = [
     {
       title: '用户名',
@@ -15,6 +18,7 @@ const Login = () => {
   ];
 
   const onSubmit = async (values: any) => {
+    await userStore.login(values);
     console.log(values);
   };
 

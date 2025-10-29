@@ -27,4 +27,13 @@ export interface UserInfo {
    * 更新时间
    */
   updatedAt: string;
+
+  /**
+   * 角色列表
+   */
+  roles: string[];
+  /**
+   * 权限列表
+   */
+  permissions: string[];
 }

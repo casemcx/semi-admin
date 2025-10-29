@@ -6,7 +6,7 @@ import type {
 } from '@/types/user';
 import { merge } from 'lodash-es';
 
-import { login as loginApi } from '@/api';
+import { getUserInfo, login as loginApi } from '@/api';
 
 import { ResultCode } from '@packages/share';
 import { create } from 'zustand';
@@ -19,23 +19,33 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 const _useUserStore = create<UserStore>()(
   persist(
     (set, get) => ({
-      // 初始状态
+      /**
+       * @description 用户信息
+       */
       userInfo: null,
       token: null,
       isAuthenticated: false,
       loading: false,
+      roles: [],
+      permissions: [],
 
-      // 设置用户信息
+      /**
+       * @description 设置用户信息
+       */
       setUserInfo: (userInfo: UserInfo) => {
         set({ userInfo });
       },
 
-      // 设置token
+      /**
+       * @description 设置token
+       */
       setToken: (token: string) => {
         set({ token });
       },
 
-      // 更新用户信息
+      /**
+       * @description 更新用户信息
+       */
       updateUserInfo: (updates: Partial<UserInfo>) => {
         const currentUserInfo = get().userInfo;
         if (currentUserInfo) {
@@ -45,9 +55,25 @@ const _useUserStore = create<UserStore>()(
         }
       },
 
-      // 设置加载状态
+      /**
+       * @description 设置加载状态
+       */
       setLoading: (loading: boolean) => {
         set({ loading });
+      },
+
+      /**
+       * @description 设置角色
+       */
+      setRoles: (roles: string[]) => {
+        set({ roles });
+      },
+
+      /**
+       * @description 设置权限
+       */
+      setPermissions: (permissions: string[]) => {
+        set({ permissions });
       },
     }),
     {
@@ -75,10 +101,19 @@ export const useUserStore = () => {
     userStore.setLoading(true);
     try {
       if (response.code === ResultCode.SUCCESS) {
-        const { userInfo, token } = response.data;
+        const token = response.data;
 
         userStore.setToken(token);
-        userStore.setUserInfo(userInfo);
+
+        // 获取角色和权限
+        const result = await getUserInfo();
+        if (result.code === ResultCode.SUCCESS) {
+          userStore.setUserInfo(result.data);
+          userStore.setRoles(result.data.roles);
+          userStore.setPermissions(result.data.permissions);
+        } else {
+          return Promise.reject(result.msg);
+        }
       } else {
         return Promise.reject(response.msg);
       }

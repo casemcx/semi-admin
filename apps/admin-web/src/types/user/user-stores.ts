@@ -20,6 +20,15 @@ export type UserState = {
    * @description 是否正在加载
    */
   loading: boolean;
+
+  /**
+   * @description 角色
+   */
+  roles: string[];
+  /**
+   * @description 权限
+   */
+  permissions: string[];
 };
 
 /**
@@ -42,6 +51,14 @@ export type UserActions = {
    * @description 设置加载状态
    */
   setLoading: (loading: boolean) => void;
+  /**
+   * @description 设置角色
+   */
+  setRoles: (roles: string[]) => void;
+  /**
+   * @description 设置权限
+   */
+  setPermissions: (permissions: string[]) => void;
 };
 
 /**
