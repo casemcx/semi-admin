@@ -3,7 +3,7 @@ import { Navigate } from '@modern-js/runtime/router';
 import type { PropsWithChildren } from 'react';
 import type { FC } from 'react';
 
-const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
+const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
   const userStore = useUserStore();
 
   if (!userStore.isAuthenticated) {
@@ -13,4 +13,4 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   return children;
 };
 
-export default AuthProvider;
+export default AuthGuard;

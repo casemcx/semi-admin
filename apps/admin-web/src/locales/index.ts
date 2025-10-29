@@ -10,7 +10,7 @@ export const resources = {
   'en-US': enUS,
 };
 
-export const availableLanguages = [
+export const langs = [
   { key: 'zh-CN', label: '简体中文' },
   { key: 'en-US', label: 'English' },
 ];

@@ -4,9 +4,13 @@ export interface UserInfo {
    */
   id: number;
   /**
-   * 姓名
+   * 用户名
    */
-  name: string;
+  username: string;
+  /**
+   * 昵称
+   */
+  nickName: string;
   /**
    * 邮箱
    */

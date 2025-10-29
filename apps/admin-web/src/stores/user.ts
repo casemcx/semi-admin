@@ -1,9 +1,4 @@
-import type {
-  LoginDto,
-  LoginResponse,
-  UserInfo,
-  UserStore,
-} from '@/types/user';
+import type { LoginDto, UserInfo, UserStore } from '@/types/user';
 import { merge } from 'lodash-es';
 
 import { getUserInfo, login as loginApi } from '@/api';
@@ -22,8 +17,8 @@ const _useUserStore = create<UserStore>()(
       /**
        * @description 用户信息
        */
-      userInfo: null,
-      token: null,
+      userInfo: undefined,
+      token: undefined,
       isAuthenticated: false,
       loading: false,
       roles: [],
@@ -32,14 +27,14 @@ const _useUserStore = create<UserStore>()(
       /**
        * @description 设置用户信息
        */
-      setUserInfo: (userInfo: UserInfo) => {
+      setUserInfo: (userInfo?: UserInfo) => {
         set({ userInfo });
       },
 
       /**
        * @description 设置token
        */
-      setToken: (token: string) => {
+      setToken: (token?: string) => {
         set({ token });
       },
 
@@ -96,6 +91,11 @@ export const getToken = () => {
 export const useUserStore = () => {
   const userStore = _useUserStore();
 
+  /**
+   * @description 登录
+   * @param loginDto LoginDto
+   * @returns Promise<void>
+   */
   const login = async (loginDto: LoginDto) => {
     const response = await loginApi(loginDto);
     userStore.setLoading(true);
@@ -122,8 +122,21 @@ export const useUserStore = () => {
     }
   };
 
+  /**
+   * @description 退出登录
+   * @returns Promise<void>
+   */
+  const logout = () => {
+    userStore.setUserInfo();
+    userStore.setToken();
+    userStore.setRoles([]);
+    userStore.setPermissions([]);
+    userStore.setLoading(false);
+  };
+
   return {
     ...userStore,
     login,
+    logout,
   };
 };

@@ -7,19 +7,19 @@ export type UserState = {
   /**
    * @description 用户信息
    */
-  userInfo: UserInfo | null;
+  userInfo?: UserInfo;
   /**
    * @description 认证token
    */
-  token: string | null;
+  token?: string;
   /**
    * @description 是否已登录
    */
-  isAuthenticated: boolean;
+  isAuthenticated?: boolean;
   /**
    * @description 是否正在加载
    */
-  loading: boolean;
+  loading?: boolean;
 
   /**
    * @description 角色
@@ -38,11 +38,11 @@ export type UserActions = {
   /**
    * @description 设置用户信息
    */
-  setUserInfo: (userInfo: UserInfo) => void;
+  setUserInfo: (userInfo?: UserInfo) => void;
   /**
    * @description 设置token
    */
-  setToken: (token: string) => void;
+  setToken: (token?: string) => void;
   /**
    * @description 更新用户信息
    */

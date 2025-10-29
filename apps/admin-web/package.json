@@ -10,21 +10,22 @@
     "upgrade": "modern upgrade"
   },
   "dependencies": {
+    "@douyinfe/semi-icons": "^2.87.1",
     "@modern-js/plugin-tailwindcss": "catalog:build",
     "@modern-js/runtime": "catalog:build",
+    "@packages/components": "workspace:^",
     "@packages/share": "workspace:^",
     "@packages/ui": "workspace:^",
     "@packages/utils": "workspace:^",
-    "@packages/components": "workspace:^",
     "vditor": "^3.11.2"
   },
   "devDependencies": {
     "@douyinfe/semi-rspack-plugin": "catalog:build",
     "@modern-js/app-tools": "catalog:build",
+    "@modern-js/plugin-polyfill": "catalog:build",
     "@modern-js/tsconfig": "catalog:build",
     "rsbuild-plugin-glsl": "catalog:build",
-    "unplugin-auto-import": "catalog:build",
-    "@modern-js/plugin-polyfill": "catalog:build",
-    "tailwindcss": "catalog:tailwindcss"
+    "tailwindcss": "catalog:tailwindcss",
+    "unplugin-auto-import": "catalog:build"
   }
 }
