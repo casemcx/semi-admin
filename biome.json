@@ -24,7 +24,8 @@
       "recommended": true,
       "suspicious": {
         "noDuplicateFontNames": "off",
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off"
       },
       "style": {
         "noNonNullAssertion": "off",
