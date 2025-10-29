@@ -5,7 +5,8 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@packages/*": ["../*/src"]
+      "@packages/*": ["../*/src"],
+      "@components/*": ["src/*"]
     }
   },
   "include": ["src"],

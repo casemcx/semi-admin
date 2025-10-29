@@ -2,8 +2,8 @@ import type { Form } from '@douyinfe/semi-ui';
 import type { FormApi } from '@douyinfe/semi-ui/lib/es/form/interface';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-import type { SchemaBase } from '../types/schema';
-import type { SemiFormProps, SemiFormType } from '../types/semi';
+import type { SchemaBase } from '@components/types/schema';
+import type { SemiFormProps, SemiFormType } from '@components/types/semi';
 
 export type FormInstance<T extends Record<string, any>> = FormApi<T>;
 

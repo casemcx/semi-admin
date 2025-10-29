@@ -1,9 +1,9 @@
 import { Col, Row } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 
+import type { FormSchema } from '@components/form/types';
 import { FieldRender } from '../field-renderer';
 import ProForm from '../pro-form';
-import type { FormSchema } from '../types';
 
 import type { SchemaFormProps } from './types';
 

@@ -1,8 +1,8 @@
-export type { FormInstance, FormSchema } from '../form/types';
-export type { FieldRenderProps } from '../form/field-renderer/types';
-export type { ProFormProps } from '../form/pro-form/types';
+export type { FormInstance, FormSchema } from '@components/form/types';
+export type { FieldRenderProps } from '@components/form/field-renderer/types';
+export type { ProFormProps } from '@components/form/pro-form/types';
 export type {
   ModalFormProps,
   ModalProps,
-} from '../form/modal-form/types';
-export type { SchemaFormProps } from '../form/schema-form/types';
+} from '@components/form/modal-form/types';
+export type { SchemaFormProps } from '@components/form/schema-form/types';
