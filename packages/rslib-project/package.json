@@ -1,0 +1,39 @@
+{
+  "name": "rslib-project",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "rslib build",
+    "check": "biome check --write",
+    "dev": "rslib build --watch",
+    "format": "biome format --write",
+    "test": "rstest"
+  },
+  "devDependencies": {
+    "@rsbuild/plugin-less": "catalog:build",
+    "@rsbuild/plugin-react": "catalog:build",
+    "@rslib/core": "^0.16.1",
+    "@rstest/core": "^0.5.4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@packages/share": "workspace:^",
+    "@packages/utils": "workspace:^",
+    "react": "catalog:react",
+    "react-dom": "catalog:react"
+  },
+  "private": true
+}
