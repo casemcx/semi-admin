@@ -1,3 +1,4 @@
+import type { Permission } from '@/configs/pemission';
 import type { LoginDto, UserInfo, UserStore } from '@/types/user';
 import { merge } from 'lodash-es';
 
@@ -67,7 +68,7 @@ const _useUserStore = create<UserStore>()(
       /**
        * @description 设置权限
        */
-      setPermissions: (permissions: string[]) => {
+      setPermissions: (permissions: Permission[]) => {
         set({ permissions });
       },
     }),

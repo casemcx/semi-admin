@@ -1,3 +1,4 @@
+import type { Permission } from '@/configs/pemission';
 import type { UserInfo } from './user-info';
 
 /**
@@ -28,7 +29,7 @@ export type UserState = {
   /**
    * @description 权限
    */
-  permissions: string[];
+  permissions: Permission[];
 };
 
 /**
@@ -58,7 +59,7 @@ export type UserActions = {
   /**
    * @description 设置权限
    */
-  setPermissions: (permissions: string[]) => void;
+  setPermissions: (permissions: Permission[]) => void;
 };
 
 /**

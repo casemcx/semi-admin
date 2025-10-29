@@ -1,3 +1,5 @@
+import type { Permission } from '@/configs/pemission';
+
 export interface UserInfo {
   /**
    * id
@@ -39,5 +41,5 @@ export interface UserInfo {
   /**
    * 权限列表
    */
-  permissions: string[];
+  permissions: Permission[];
 }
