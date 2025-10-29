@@ -1,4 +1,4 @@
-import type { FormSchema } from '@packages/components/types';
+import type { FormSchema } from '@/types';
 import { FormField } from './form-field';
 import { ReadonlyField } from './readonly-field';
 

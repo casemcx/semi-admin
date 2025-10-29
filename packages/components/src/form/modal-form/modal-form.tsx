@@ -1,5 +1,5 @@
+import type { FormSchema } from '@/types';
 import { Button, Modal, Space } from '@douyinfe/semi-ui';
-import type { FormSchema } from '@packages/components/types';
 import { useState } from 'react';
 import { ProForm } from '../pro-form';
 

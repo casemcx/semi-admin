@@ -1,5 +1,5 @@
+import type { FormSchema } from '@/types';
 import { Form } from '@douyinfe/semi-ui';
-import type { FormSchema } from '@packages/components/types';
 
 export const ImageUploadField = <T extends Record<string, any>>(
   props: FormSchema<T>,

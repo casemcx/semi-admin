@@ -225,6 +225,9 @@ importers:
       '@modern-js/runtime':
         specifier: catalog:build
         version: 2.68.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@packages/components':
+        specifier: workspace:^
+        version: link:../../packages/components
       '@packages/share':
         specifier: workspace:^
         version: link:../../packages/share
@@ -234,9 +237,6 @@ importers:
       '@packages/utils':
         specifier: workspace:^
         version: link:../../packages/utils
-      rslib-project:
-        specifier: workspace:^
-        version: link:../../packages/rslib-project
       vditor:
         specifier: ^3.11.2
         version: 3.11.2
@@ -260,34 +260,7 @@ importers:
         specifier: ^20.2.0
         version: 20.2.0
 
-  packages/config:
-    devDependencies:
-      '@tailwindcss/postcss':
-        specifier: ^4.1.4
-        version: 4.1.16
-      autoprefixer:
-        specifier: ^10.4.21
-        version: 10.4.21(postcss@8.5.6)
-      postcss:
-        specifier: ^8.5.3
-        version: 8.5.6
-      postcss-loader:
-        specifier: ^8.1.1
-        version: 8.2.0(@rspack/core@1.5.0(@swc/helpers@0.5.17))(postcss@8.5.6)(typescript@5.9.3)(webpack@5.102.1)
-      tailwindcss:
-        specifier: ^3.4.17
-        version: 3.4.18(yaml@2.8.1)
-      tw-animate-css:
-        specifier: ^1.2.5
-        version: 1.4.0
-
-  packages/hooks:
-    dependencies:
-      '@packages/share':
-        specifier: workspace:^
-        version: link:../share
-
-  packages/rslib-project:
+  packages/components:
     dependencies:
       '@packages/share':
         specifier: workspace:^
@@ -332,6 +305,33 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+
+  packages/config:
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: ^4.1.4
+        version: 4.1.16
+      autoprefixer:
+        specifier: ^10.4.21
+        version: 10.4.21(postcss@8.5.6)
+      postcss:
+        specifier: ^8.5.3
+        version: 8.5.6
+      postcss-loader:
+        specifier: ^8.1.1
+        version: 8.2.0(@rspack/core@1.5.0(@swc/helpers@0.5.17))(postcss@8.5.6)(typescript@5.9.3)(webpack@5.102.1)
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.18(yaml@2.8.1)
+      tw-animate-css:
+        specifier: ^1.2.5
+        version: 1.4.0
+
+  packages/hooks:
+    dependencies:
+      '@packages/share':
+        specifier: workspace:^
+        version: link:../share
 
   packages/share: {}
 
@@ -8673,6 +8673,14 @@ snapshots:
     transitivePeerDependencies:
       - webpack-hot-middleware
 
+  '@rsbuild/plugin-react@1.4.1(@rsbuild/core@1.4.10)':
+    dependencies:
+      '@rsbuild/core': 1.4.10
+      '@rspack/plugin-react-refresh': 1.5.2(react-refresh@0.17.0)
+      react-refresh: 0.17.0
+    transitivePeerDependencies:
+      - webpack-hot-middleware
+
   '@rsbuild/plugin-react@1.4.1(@rsbuild/core@1.6.0-beta.1)':
     dependencies:
       '@rsbuild/core': 1.6.0-beta.1
@@ -8715,7 +8723,7 @@ snapshots:
   '@rsbuild/plugin-svgr@1.2.1(@rsbuild/core@1.4.10)(typescript@5.7.3)':
     dependencies:
       '@rsbuild/core': 1.4.10
-      '@rsbuild/plugin-react': 1.3.4(@rsbuild/core@1.4.10)
+      '@rsbuild/plugin-react': 1.4.1(@rsbuild/core@1.4.10)
       '@svgr/core': 8.1.0(typescript@5.7.3)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.7.3))
       '@svgr/plugin-svgo': 8.1.0(@svgr/core@8.1.0(typescript@5.7.3))(typescript@5.7.3)
@@ -8729,7 +8737,7 @@ snapshots:
   '@rsbuild/plugin-svgr@1.2.1(@rsbuild/core@1.4.10)(typescript@5.9.3)':
     dependencies:
       '@rsbuild/core': 1.4.10
-      '@rsbuild/plugin-react': 1.3.4(@rsbuild/core@1.4.10)
+      '@rsbuild/plugin-react': 1.4.1(@rsbuild/core@1.4.10)
       '@svgr/core': 8.1.0(typescript@5.9.3)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))
       '@svgr/plugin-svgo': 8.1.0(@svgr/core@8.1.0(typescript@5.9.3))(typescript@5.9.3)
@@ -9379,7 +9387,7 @@ snapshots:
 
   '@types/react-dom@18.3.1':
     dependencies:
-      '@types/react': 18.3.11
+      '@types/react': 19.2.2
 
   '@types/react-helmet@6.1.11':
     dependencies:

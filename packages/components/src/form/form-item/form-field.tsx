@@ -1,4 +1,4 @@
-import type { FormSchema } from '@packages/components/types';
+import type { FormSchema } from '@/types';
 import { DateField, DateTimeField, TimeField } from './fields/date-field';
 import { ImageUploadField } from './fields/image';
 import {

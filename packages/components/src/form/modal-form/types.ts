@@ -1,6 +1,6 @@
+import type { ProFormProps } from '@/form/pro-form/types';
+import type { FormSchema } from '@/types';
 import type { Modal } from '@douyinfe/semi-ui';
-import type { ProFormProps } from '@packages/components/form/pro-form/types';
-import type { FormSchema } from '@packages/components/types';
 import type { ComponentPropsWithoutRef } from 'react';
 
 // @ts-ignore

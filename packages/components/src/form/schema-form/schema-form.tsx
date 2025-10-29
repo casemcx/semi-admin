@@ -1,5 +1,5 @@
+import type { FormSchema } from '@/types';
 import { Col, Row } from '@douyinfe/semi-ui';
-import type { FormSchema } from '@packages/components/types';
 import { useMemo } from 'react';
 import { FormItem } from '../form-item';
 import { ProForm } from '../pro-form';

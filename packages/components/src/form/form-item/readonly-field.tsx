@@ -1,5 +1,5 @@
+import type { FormSchema } from '@/types';
 import { useFormState } from '@douyinfe/semi-ui';
-import type { FormSchema } from '@packages/components/types';
 import { useMemo } from 'react';
 import { ImageCarousel, MarkdownPreview } from './fields';
 

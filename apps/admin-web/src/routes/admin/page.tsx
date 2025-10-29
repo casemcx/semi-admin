@@ -1,4 +1,4 @@
-import { ProForm } from 'rslib-project';
+import { ProForm } from '@packages/components';
 
 const AdminPage = () => {
   return (

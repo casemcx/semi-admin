@@ -7,11 +7,10 @@ import {
   useMemo,
 } from 'react';
 
-import { useTableColumns } from '@packages/hooks';
-import { ProForm } from '../form';
-import { ReadonlyField } from '../form/form-item';
-import type { ProTableSchema } from '../types';
-import { isIntelligentRenderType } from '../types/render';
+import { ProForm, ReadonlyField } from '@/form';
+import { useTableColumns } from '@/hooks';
+import type { ProTableSchema } from '@/types';
+import { isIntelligentRenderType } from './utils';
 
 export interface ProTableProps<T extends Record<string, any> = any>
   extends Omit<
