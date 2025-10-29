@@ -1,4 +1,8 @@
 import { Outlet } from '@modern-js/runtime/router';
+
+import { ConfigProvider } from '@douyinfe/semi-ui';
+import zh_CN from '@douyinfe/semi-ui/lib/es/locale/source/zh_CN';
+
 import './tailwind.css';
 import './index.css';
 
@@ -7,8 +11,10 @@ import '@/locales';
 
 export default function Layout() {
   return (
-    <div className="w-full h-full m-0 p-0">
-      <Outlet />
-    </div>
+    <ConfigProvider locale={zh_CN}>
+      <div className="w-full h-full m-0 p-0">
+        <Outlet />
+      </div>
+    </ConfigProvider>
   );
 }
