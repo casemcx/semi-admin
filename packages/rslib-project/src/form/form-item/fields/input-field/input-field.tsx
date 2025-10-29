@@ -1,6 +1,6 @@
 import { Form } from '@douyinfe/semi-ui';
+import { useFormPlaceholders } from '@packages/components/hooks';
 import type { FormSchema } from '@packages/components/types';
-import { useFormPlaceholders } from '../../hooks';
 
 interface FormFieldProps<T extends Record<string, any>> {
   column: FormSchema<T>;

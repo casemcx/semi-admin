@@ -1,6 +1,5 @@
 import { Form } from '@douyinfe/semi-ui';
 import type { FormSchema } from '@packages/components/types';
-import type { ImageCarouselProps } from './image-carousel';
 
 export const ImageUploadField = <T extends Record<string, any>>(
   props: FormSchema<T>,
