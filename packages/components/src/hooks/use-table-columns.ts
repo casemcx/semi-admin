@@ -1,10 +1,23 @@
-import type { ProTableSchema } from '@packages/components';
+import type { ProTableSchema } from '@/types';
 import { omit } from 'lodash-es';
 import { useMemo } from 'react';
 
+interface ReturnType<V extends Record<string, any>> {
+  /** 搜索列 */
+  searchColumns: ProTableSchema<V>[];
+  /** 创建列 */
+  createColumns: ProTableSchema<V>[];
+  /** 编辑列 */
+  editColumns: ProTableSchema<V>[];
+  /** 表格列 */
+  tableColumns: ProTableSchema<V>[];
+  /** 详情列 */
+  detailColumns: ProTableSchema<V>[];
+}
+
 export const useTableColumns = <V extends Record<string, any>>(
   columns: ProTableSchema<V>[],
-) => {
+): ReturnType<V> => {
   const searchColumns = useMemo<ProTableSchema<V>[]>(() => {
     return columns
       .filter(column => column.key !== 'actions')

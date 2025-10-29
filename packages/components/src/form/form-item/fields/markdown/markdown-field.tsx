@@ -1,5 +1,7 @@
 import { withField } from '@douyinfe/semi-ui';
+import type { CommonFieldProps } from '@douyinfe/semi-ui/lib/es/form/interface';
 import { useEffect, useId, useMemo, useRef } from 'react';
+import type { ComponentType, RefAttributes } from 'react';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 
@@ -53,9 +55,16 @@ export const Markdown = (props: MarkdownProps) => {
   return <div id={vditorId} className={styles.vditor} {...rest} />;
 };
 
-const MarkdownFormFiled = withField(Markdown, {
-  valueKey: 'value',
-  onKeyChangeFnName: 'onChange',
-});
+type MarkdownFormFieldProps = Omit<MarkdownProps, 'defaultValue' | 'value'> &
+  CommonFieldProps &
+  RefAttributes<any>;
+
+const MarkdownFormFiled: ComponentType<MarkdownFormFieldProps> = withField(
+  Markdown,
+  {
+    valueKey: 'value',
+    onKeyChangeFnName: 'onChange',
+  },
+);
 
 export default MarkdownFormFiled;
