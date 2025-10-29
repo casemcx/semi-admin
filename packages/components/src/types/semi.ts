@@ -1,6 +1,6 @@
 import type { Form as SemiForm } from '@douyinfe/semi-ui';
 import type { ComponentPropsWithoutRef } from 'react';
-import type { MarkdownProps } from '../form/form-item/markdown/markdown-types';
+import type { MarkdownProps } from '../form/form-item/fields/markdown/markdown-types';
 
 export type SemiFormType =
   | 'input'

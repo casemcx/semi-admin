@@ -1,5 +1,5 @@
 import { Form } from '@douyinfe/semi-ui';
-import { useFormPlaceholders } from '../hooks';
+import { useFormPlaceholders } from '../../hooks';
 
 import type { FormSchema } from '@packages/components/types';
 

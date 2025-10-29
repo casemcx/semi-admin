@@ -1,7 +1,6 @@
 import { useFormState } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
-import { ImageCarousel } from '../image';
-import { MarkdownPreview } from '../markdown/markdown-preview';
+import { ImageCarousel, MarkdownPreview } from './fields';
 
 import type { FormSchema } from '@packages/components/types';
 

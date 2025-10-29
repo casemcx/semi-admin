@@ -1,20 +1,20 @@
-import { DateField, DateTimeField, TimeField } from './date-field';
-import { ImageUploadField } from './image';
+import { DateField, DateTimeField, TimeField } from './fields/date-field';
+import { ImageUploadField } from './fields/image';
 import {
   InputField,
   NumberField,
   PasswordField,
   TextAreaField,
-} from './input-field';
-import { MarkdownFormField } from './markdown-field';
+} from './fields/input-field';
+import MarkdownFormField from './fields/markdown';
 import {
   CascaderField,
   CheckboxGroupField,
   RadioGroupField,
   SelectField,
   TreeSelectField,
-} from './select-field';
-import { SwitchField, UploadField } from './special-field';
+} from './fields/select-field';
+import { SwitchField, UploadField } from './fields/special-field';
 
 import type { FormSchema } from '@packages/components/types';
 
@@ -63,7 +63,13 @@ export const FormField = <T extends Record<string, any>>({
     case 'treeSelect':
       return <TreeSelectField column={column} />;
     case 'markdown':
-      return <MarkdownFormField column={column} />;
+      return (
+        <MarkdownFormField
+          id={String(column.name)}
+          field={String(column.name)}
+          {...(column.fieldProps || {})}
+        />
+      );
     default:
       // 默认使用 Input
       return <InputField column={column} />;

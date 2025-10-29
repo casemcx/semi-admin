@@ -3,13 +3,13 @@ import { ReadonlyField } from './readonly-field';
 
 import type { FormSchema } from '@packages/components/types';
 
-export type FieldRenderProps<T extends Record<string, any>> = {
+export type FormItemProps<T extends Record<string, any>> = {
   column: FormSchema<T>;
   index: number;
 };
 
-export const FieldRender = <T extends Record<string, any>>(
-  props: FieldRenderProps<T>,
+export const FormItem = <T extends Record<string, any>>(
+  props: FormItemProps<T>,
 ) => {
   const { column, index } = props;
 
