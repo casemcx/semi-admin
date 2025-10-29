@@ -12,7 +12,6 @@
   "dependencies": {
     "@modern-js/plugin-tailwindcss": "catalog:build",
     "@modern-js/runtime": "catalog:build",
-    "@modern-js/plugin-polyfill": "catalog:build",
     "@packages/share": "workspace:^",
     "@packages/ui": "workspace:^",
     "@packages/utils": "workspace:^",
@@ -25,6 +24,7 @@
     "@modern-js/tsconfig": "catalog:build",
     "rsbuild-plugin-glsl": "catalog:build",
     "unplugin-auto-import": "catalog:build",
-    "tailwindcss": "~3.4.14"
+    "@modern-js/plugin-polyfill": "catalog:build",
+    "tailwindcss": "catalog:tailwindcss"
   }
 }

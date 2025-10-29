@@ -1,6 +1,7 @@
 import { Outlet } from '@modern-js/runtime/router';
 
 import { ConfigProvider } from '@douyinfe/semi-ui';
+import '@douyinfe/semi-ui/dist/css/semi.min.css';
 import zh_CN from '@douyinfe/semi-ui/lib/es/locale/source/zh_CN';
 
 import './tailwind.css';

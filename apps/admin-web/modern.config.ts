@@ -24,6 +24,10 @@ export default defineConfig({
       ],
     },
   },
+  output: {
+    polyfill: 'ua',
+    sourceMap: true,
+  },
   plugins: [
     tailwindcssPlugin(),
     pluginGlsl(),

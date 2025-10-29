@@ -243,9 +243,6 @@ importers:
 
   apps/admin-web:
     dependencies:
-      '@modern-js/plugin-polyfill':
-        specifier: catalog:build
-        version: 2.68.5
       '@modern-js/plugin-tailwindcss':
         specifier: catalog:build
         version: 2.68.5(@modern-js/runtime@2.68.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.18(yaml@2.8.1))
@@ -274,6 +271,9 @@ importers:
       '@modern-js/app-tools':
         specifier: catalog:build
         version: 2.68.5(@rspack/core@1.5.0(@swc/helpers@0.5.17))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@5.3.11(@babel/core@7.28.5)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1))(tsconfig-paths@4.2.0)(typescript@5.9.3)
+      '@modern-js/plugin-polyfill':
+        specifier: catalog:build
+        version: 2.68.5
       '@modern-js/tsconfig':
         specifier: catalog:build
         version: 2.68.5
@@ -281,7 +281,7 @@ importers:
         specifier: catalog:build
         version: 1.0.1(@rsbuild/core@1.4.10)
       tailwindcss:
-        specifier: ~3.4.14
+        specifier: catalog:tailwindcss
         version: 3.4.18(yaml@2.8.1)
       unplugin-auto-import:
         specifier: catalog:build
