@@ -1,7 +1,7 @@
 import { Button, Modal, Space } from '@douyinfe/semi-ui';
 import { useState } from 'react';
 
-import type { FormSchema } from '@components/form/types';
+import type { FormSchema } from '@packages/components/types';
 import ProForm from '../pro-form';
 
 import type { ModalFormProps } from './types';

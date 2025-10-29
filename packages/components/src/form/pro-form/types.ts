@@ -2,7 +2,7 @@ import type { Form } from '@douyinfe/semi-ui';
 import type { ButtonProps } from '@douyinfe/semi-ui/lib/es/button';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
-import type { FormInstance, FormSchema } from '@components/form/types';
+import type { FormInstance, FormSchema } from '@packages/components/types';
 
 export interface ProFormProps<T extends Record<string, any> = any>
   extends Omit<

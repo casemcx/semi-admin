@@ -16,7 +16,7 @@ import {
 } from './select-field';
 import { SwitchField, UploadField } from './special-field';
 
-import type { FormSchema } from '@components/form/types';
+import type { FormSchema } from '@packages/components/types';
 
 interface FormFieldProps<T extends Record<string, any>> {
   column: FormSchema<T>;

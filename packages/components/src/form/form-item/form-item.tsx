@@ -1,7 +1,7 @@
 import { FormField } from './form-field';
 import { ReadonlyField } from './readonly-field';
 
-import type { FormSchema } from '@components/form/types';
+import type { FormSchema } from '@packages/components/types';
 
 export type FieldRenderProps<T extends Record<string, any>> = {
   column: FormSchema<T>;

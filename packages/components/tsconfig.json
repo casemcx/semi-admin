@@ -6,7 +6,7 @@
     "baseUrl": "./",
     "paths": {
       "@packages/*": ["../*/src"],
-      "@components/*": ["src/*"]
+      "@packages/components/*": ["src/*"]
     }
   },
   "include": ["src"],

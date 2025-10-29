@@ -1,5 +1,5 @@
-import type { ProFormProps } from '@components/form/pro-form/types';
-import type { FormSchema } from '@components/form/types';
+import type { ProFormProps } from '@packages/components/form/pro-form/types';
+import type { FormSchema } from '@packages/components/types';
 
 export interface SchemaFormProps<T extends Record<string, any> = any>
   extends Omit<ProFormProps<T>, 'columns' | 'children'> {

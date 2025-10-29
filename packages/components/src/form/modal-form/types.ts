@@ -1,8 +1,8 @@
 import type { Modal } from '@douyinfe/semi-ui';
 import type { ComponentPropsWithoutRef } from 'react';
 
-import type { ProFormProps } from '@components/form/pro-form/types';
-import type { FormSchema } from '@components/form/types';
+import type { ProFormProps } from '@packages/components/form/pro-form/types';
+import type { FormSchema } from '@packages/components/types';
 
 export type ModalProps = ComponentPropsWithoutRef<typeof Modal>;
 

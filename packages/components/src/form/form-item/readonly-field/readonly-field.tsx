@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { ImageCarousel } from '../image';
 import { MarkdownPreview } from '../markdown/markdown-preview';
 
-import type { FormSchema } from '@components/form/types';
+import type { FormSchema } from '@packages/components/types';
 
 interface ReadonlyFieldProps<T extends Record<string, any>> {
   column: FormSchema<T>;
