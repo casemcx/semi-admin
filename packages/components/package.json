@@ -1,5 +1,5 @@
 {
-  "name": "rslib-project",
+  "name": "@packages/components",
   "version": "1.0.0",
   "type": "module",
   "exports": {
