@@ -1,4 +1,4 @@
-import { PrismaClient } from '@generated/prisma';
+import { PrismaClient } from '@generated/client';
 import {
   Global,
   Injectable,

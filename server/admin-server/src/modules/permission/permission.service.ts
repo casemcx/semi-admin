@@ -4,7 +4,7 @@ import {
   UpdatePermissionDto,
 } from '@/models/permission';
 import { PrismaService } from '@/services/prisma';
-import { Prisma } from '@generated/prisma';
+import { Prisma } from '@generated/client';
 import {
   BadRequestException,
   Injectable,

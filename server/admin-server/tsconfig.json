@@ -21,7 +21,7 @@
     "moduleResolution": "node",
     "paths": {
       "@/*": ["./src/*"],
-      "@generated/*": ["./generated/*"]
+      "@generated/*": ["./generated/prisma/*"]
     }
   }
 }

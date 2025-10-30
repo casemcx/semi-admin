@@ -1,3 +1,10 @@
+import { Result, ResultPage } from '@/models/common';
+import {
+  CreatePermissionDto,
+  QueryPermissionDto,
+  UpdatePermissionDto,
+} from '@/models/permission';
+import { Permission } from '@generated/client';
 import {
   Body,
   Controller,
@@ -17,11 +24,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import {
-  CreatePermissionDto,
-  QueryPermissionDto,
-  UpdatePermissionDto,
-} from '../../models/permission';
 import { PermissionService } from './permission.service';
 
 @ApiTags('权限管理')
@@ -32,7 +34,7 @@ export class PermissionController {
 
   @Post('create')
   @ApiOperation({ summary: '创建权限' })
-  @ApiResponse({ status: 201, description: '权限创建成功' })
+  @ApiResponse({ status: 201, description: '权限创建成功', type: Result })
   @ApiResponse({ status: 400, description: '请求参数错误' })
   async create(@Body() createPermissionDto: CreatePermissionDto) {
     return this.permissionService.create(createPermissionDto);
@@ -40,7 +42,11 @@ export class PermissionController {
 
   @Post('findPage')
   @ApiOperation({ summary: '获取权限列表' })
-  @ApiResponse({ status: 200, description: '获取成功' })
+  @ApiResponse({
+    status: 200,
+    description: '获取成功',
+    type: Result<ResultPage<Permissions>>,
+  })
   @ApiBody({ type: QueryPermissionDto })
   async findPage(@Body() query: QueryPermissionDto) {
     return this.permissionService.findPage(query);
@@ -48,14 +54,22 @@ export class PermissionController {
 
   @Get('tree')
   @ApiOperation({ summary: '获取权限树' })
-  @ApiResponse({ status: 200, description: '获取成功' })
+  @ApiResponse({
+    status: 200,
+    description: '获取成功',
+    type: Result<Permission[]>,
+  })
   async getTree() {
     return this.permissionService.getTree();
   }
 
   @Get(':id')
   @ApiOperation({ summary: '获取权限详情' })
-  @ApiResponse({ status: 200, description: '获取成功' })
+  @ApiResponse({
+    status: 200,
+    description: '获取成功',
+    type: Result<Permission>,
+  })
   @ApiResponse({ status: 404, description: '权限不存在' })
   @ApiParam({ name: 'id', description: '权限ID' })
   async findOne(@Param('id') id: string) {
@@ -77,7 +91,7 @@ export class PermissionController {
 
   @Delete(':id')
   @ApiOperation({ summary: '删除权限' })
-  @ApiResponse({ status: 200, description: '删除成功' })
+  @ApiResponse({ status: 200, description: '删除成功', type: Result<void> })
   @ApiResponse({ status: 404, description: '权限不存在' })
   @ApiResponse({ status: 400, description: '存在子权限或系统权限无法删除' })
   @ApiParam({ name: 'id', description: '权限ID' })

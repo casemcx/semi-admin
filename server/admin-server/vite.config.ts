@@ -1,4 +1,4 @@
-// vite.config.ts
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import { VitePluginNode } from 'vite-plugin-node';
 
@@ -24,5 +24,11 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@generated': path.resolve(__dirname, './generated/prisma'),
+    },
   },
 });
