@@ -1,98 +1,141 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 权限管理模块
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+基于 NestJS + Prisma 实现的权限管理 CRUD 功能。
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 功能特性
 
-## Description
+- ✅ 完整的 CRUD 操作
+- ✅ 树形结构权限管理
+- ✅ 软删除
+- ✅ 数据验证
+- ✅ API 文档支持
+- ✅ 分页查询
+- ✅ 条件筛选
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## API 接口
 
-## Project setup
-
-```bash
-$ pnpm install
+### 1. 创建权限
+```
+POST /permission/create
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+请求体示例：
+```json
+{
+  "name": "订单管理",
+  "code": "order:manage",
+  "type": 1,
+  "parentId": 0,
+  "path": "/orders",
+  "component": "OrderManage",
+  "icon": "ShoppingOutlined",
+  "sort": 1,
+  "status": 1,
+  "description": "订单管理模块"
+}
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+### 2. 获取权限列表
+```
+POST /permission/page
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+请求体：
+```json
+{
+  "page": 1,
+  "limit": 10,
+  "name": "用户",
+  "code": "user",
+  "type": 1,
+  "status": 1,
+  "parentId": 0
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+查询参数：
+- `page`: 页码（默认 1）
+- `limit`: 每页数量（默认 10）
+- `name`: 权限名称（模糊搜索）
+- `code`: 权限编码（模糊搜索）
+- `type`: 权限类型（1-菜单，2-按钮，3-接口）
+- `status`: 状态（0-禁用，1-启用）
+- `parentId`: 父权限ID
 
-## Resources
+### 3. 获取权限树
+```
+GET /permission/tree
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+返回树形结构的权限数据。
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 4. 获取单个权限
+```
+GET /permission/:id
+```
 
-## Support
+### 5. 更新权限
+```
+PATCH /permission/:id
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 6. 删除权限
+```
+DELETE /permission/:id
+```
 
-## Stay in touch
+## 权限类型说明
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **1 - 菜单**: 前端路由菜单
+- **2 - 按钮**: 页面操作按钮
+- **3 - 接口**: 后端 API 接口
 
-## License
+## 字段说明
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | BigInt | 主键 |
+| parentId | BigInt | 父权限ID（0表示顶级） |
+| name | String | 权限名称 |
+| code | String | 权限编码（唯一） |
+| type | Int | 权限类型 |
+| path | String? | 路由路径（菜单类型） |
+| component | String? | 组件路径（菜单类型） |
+| icon | String? | 图标（菜单类型） |
+| method | String? | HTTP方法（接口类型） |
+| apiPath | String? | API路径（接口类型） |
+| sort | Int | 排序 |
+| status | Int | 状态（0-禁用，1-启用） |
+| isSystem | Int | 是否系统权限（0-否，1-是） |
+| description | String? | 权限描述 |
+| createdAt | DateTime | 创建时间 |
+| updatedAt | DateTime | 更新时间 |
+| deletedAt | DateTime? | 删除时间（软删除） |
+
+## 业务规则
+
+1. 权限编码必须唯一
+2. 系统权限（isSystem=1）不能修改和删除
+3. 存在子权限的权限不能删除
+4. 不能将自己设为父权限
+5. 支持软删除
+
+## 测试
+
+打开 `test-permission.html` 文件在浏览器中测试所有 API 接口。
+
+## 数据库初始化
+
+运行 `scripts/init-db.sql` 创建数据库表和初始数据。
+
+## 注意事项
+
+1. 本示例使用 Prisma 本地开发服务器
+2. 生产环境请配置正确的数据库连接
+3. API 使用字符串 ID，服务端自动转换为 BigInt
+
+4. 生成增删查改模块
+
+```
+cd ./src/modules && nest g res {模块名}
+```

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Permission API Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #666;
+      margin-top: 0;
+    }
+    button {
+      background-color: #1890ff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #40a9ff;
+    }
+    pre {
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    input, textarea, select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 300px;
+      margin-bottom: 10px;
+    }
+    label {
+      display: inline-block;
+      width: 100px;
+      margin-bottom: 5px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .error {
+      color: #ff4d4f;
+    }
+    .success {
+      color: #52c41a;
+    }
+  </style>
+</head>
+<body>
+  <h1>权限管理 API 测试</h1>
+
+  <!-- 创建权限 -->
+  <div class="section">
+    <h2>创建权限</h2>
+    <div class="form-group">
+      <label>权限名称:</label>
+      <input type="text" id="createName" placeholder="例如: 订单管理">
+    </div>
+    <div class="form-group">
+      <label>权限编码:</label>
+      <input type="text" id="createCode" placeholder="例如: order:manage">
+    </div>
+    <div class="form-group">
+      <label>权限类型:</label>
+      <select id="createType">
+        <option value="1">菜单</option>
+        <option value="2">按钮</option>
+        <option value="3">接口</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>父权限ID:</label>
+      <input type="number" id="createParentId" value="0">
+    </div>
+    <div class="form-group">
+      <label>路由路径:</label>
+      <input type="text" id="createPath" placeholder="例如: /orders">
+    </div>
+    <div class="form-group">
+      <label>组件路径:</label>
+      <input type="text" id="createComponent" placeholder="例如: OrderManage">
+    </div>
+    <div class="form-group">
+      <label>图标:</label>
+      <input type="text" id="createIcon" placeholder="例如: ShoppingOutlined">
+    </div>
+    <button onclick="createPermission()">创建权限</button>
+    <pre id="createResult"></pre>
+  </div>
+
+  <!-- 获取权限列表 -->
+  <div class="section">
+    <h2>获取权限列表</h2>
+    <div class="form-group">
+      <label>页码:</label>
+      <input type="number" id="listPage" value="1">
+    </div>
+    <div class="form-group">
+      <label>每页数量:</label>
+      <input type="number" id="listLimit" value="10">
+    </div>
+    <div class="form-group">
+      <label>权限名称:</label>
+      <input type="text" id="listName" placeholder="模糊搜索">
+    </div>
+    <button onclick="listPermissions()">获取列表</button>
+    <button onclick="getTree()">获取权限树</button>
+    <pre id="listResult"></pre>
+  </div>
+
+  <!-- 获取单个权限 -->
+  <div class="section">
+    <h2>获取权限详情</h2>
+    <div class="form-group">
+      <label>权限ID:</label>
+      <input type="text" id="getId" placeholder="输入权限ID">
+    </div>
+    <button onclick="getPermission()">获取详情</button>
+    <pre id="getResult"></pre>
+  </div>
+
+  <!-- 更新权限 -->
+  <div class="section">
+    <h2>更新权限</h2>
+    <div class="form-group">
+      <label>权限ID:</label>
+      <input type="text" id="updateId" placeholder="输入权限ID">
+    </div>
+    <div class="form-group">
+      <label>权限名称:</label>
+      <input type="text" id="updateName" placeholder="新的权限名称">
+    </div>
+    <div class="form-group">
+      <label>权限描述:</label>
+      <input type="text" id="updateDescription" placeholder="权限描述">
+    </div>
+    <button onclick="updatePermission()">更新权限</button>
+    <pre id="updateResult"></pre>
+  </div>
+
+  <!-- 删除权限 -->
+  <div class="section">
+    <h2>删除权限</h2>
+    <div class="form-group">
+      <label>权限ID:</label>
+      <input type="text" id="deleteId" placeholder="输入权限ID">
+    </div>
+    <button onclick="deletePermission()">删除权限</button>
+    <pre id="deleteResult"></pre>
+  </div>
+
+  <script>
+    const BASE_URL = 'http://localhost:3000/permission';
+
+    async function request(url, options = {}) {
+      try {
+        const response = await fetch(url, {
+          headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+          },
+          ...options
+        });
+        const data = await response.json();
+        return { success: response.ok, data, status: response.status };
+      } catch (error) {
+        return { success: false, error: error.message };
+      }
+    }
+
+    async function createPermission() {
+      const data = {
+        name: document.getElementById('createName').value,
+        code: document.getElementById('createCode').value,
+        type: parseInt(document.getElementById('createType').value),
+        parentId: document.getElementById('createParentId').value ? BigInt(document.getElementById('createParentId').value) : 0n,
+        path: document.getElementById('createPath').value || null,
+        component: document.getElementById('createComponent').value || null,
+        icon: document.getElementById('createIcon').value || null,
+        sort: 0,
+        status: 1
+      };
+
+      const result = await request(`${BASE_URL}/create`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+
+      document.getElementById('createResult').innerHTML = JSON.stringify(result, null, 2);
+      if (result.success) {
+        document.getElementById('createResult').className = 'success';
+      } else {
+        document.getElementById('createResult').className = 'error';
+      }
+    }
+
+    async function listPermissions() {
+      const data = {
+        page: parseInt(document.getElementById('listPage').value) || 1,
+        limit: parseInt(document.getElementById('listLimit').value) || 10,
+        name: document.getElementById('listName').value || undefined
+      };
+
+      const result = await request(`${BASE_URL}/page`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+
+      document.getElementById('listResult').innerHTML = JSON.stringify(result, null, 2);
+    }
+
+    async function getTree() {
+      const result = await request(`${BASE_URL}/tree`);
+      document.getElementById('listResult').innerHTML = JSON.stringify(result, null, 2);
+    }
+
+    async function getPermission() {
+      const id = document.getElementById('getId').value;
+      if (!id) {
+        alert('请输入权限ID');
+        return;
+      }
+
+      const result = await request(`${BASE_URL}/${id}`);
+      document.getElementById('getResult').innerHTML = JSON.stringify(result, null, 2);
+    }
+
+    async function updatePermission() {
+      const id = document.getElementById('updateId').value;
+      if (!id) {
+        alert('请输入权限ID');
+        return;
+      }
+
+      const data = {};
+      if (document.getElementById('updateName').value) {
+        data.name = document.getElementById('updateName').value;
+      }
+      if (document.getElementById('updateDescription').value) {
+        data.description = document.getElementById('updateDescription').value;
+      }
+
+      const result = await request(`${BASE_URL}/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+      });
+
+      document.getElementById('updateResult').innerHTML = JSON.stringify(result, null, 2);
+    }
+
+    async function deletePermission() {
+      const id = document.getElementById('deleteId').value;
+      if (!id) {
+        alert('请输入权限ID');
+        return;
+      }
+
+      if (!confirm('确定要删除这个权限吗？')) {
+        return;
+      }
+
+      const result = await request(`${BASE_URL}/${id}`, {
+        method: 'DELETE'
+      });
+
+      document.getElementById('deleteResult').innerHTML = JSON.stringify(result, null, 2);
+    }
+
+    // 初始化时加载权限列表
+    window.onload = function() {
+      listPermissions();
+    };
+  </script>
+</body>
+</html>

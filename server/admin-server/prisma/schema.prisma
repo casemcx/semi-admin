@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Permission {
+  id          BigInt    @id @default(autoincrement())
+  parentId    BigInt    @default(0) @map("parent_id")
+  name        String    @db.VarChar(50)
+  code        String    @unique @db.VarChar(100)
+  type        Int       // 权限类型：1-菜单 2-按钮 3-接口
+  path        String?   @db.VarChar(255)
+  component   String?   @db.VarChar(255)
+  icon        String?   @db.VarChar(100)
+  method      String?   @db.VarChar(10)
+  apiPath     String?   @map("api_path") @db.VarChar(255)
+  sort        Int       @default(0)
+  status      Int       @default(1) // 状态：0-禁用 1-启用
+  isSystem    Int       @default(0) @map("is_system") // 是否系统权限：0-否 1-是
+  description String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  parent   Permission?   @relation("PermissionHierarchy", fields: [parentId], references: [id])
+  children Permission[]  @relation("PermissionHierarchy")
+
+  @@map("permission")
+  @@index([parentId])
+  @@index([type])
+  @@index([status])
+  @@index([sort])
+}

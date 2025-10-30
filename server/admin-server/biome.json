@@ -16,6 +16,9 @@
       "arrowParentheses": "asNeeded",
       "jsxQuoteStyle": "double",
       "lineWidth": 80
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
   },
   "linter": {
@@ -29,7 +32,8 @@
       },
       "style": {
         "noNonNullAssertion": "off",
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "useImportType": "off"
       },
       "complexity": {
         "useOptionalChain": "off",
@@ -42,6 +46,6 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": [".vscode", "node_modules", "dist", "auto-imports.d.ts", "server"]
+    "ignore": [".vscode", "node_modules", "dist", "auto-imports.d.ts"]
   }
 }
