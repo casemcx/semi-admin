@@ -86,8 +86,14 @@ check_dependencies() {
     # 检查 prisma 是否安装
     if [ ! -d "node_modules/@prisma/client" ] || [ ! -d "node_modules/prisma" ]; then
         print_warning "Prisma 未安装，正在安装..."
-        npm install prisma @prisma/client
-        print_success "Prisma 安装完成"
+        echo -e "${YELLOW}Running: pnpm install prisma @prisma/client${NC}"
+        pnpm install prisma @prisma/client
+        if [ $? -eq 0 ]; then
+            print_success "Prisma 安装完成"
+        else
+            print_error "Prisma 安装失败"
+            exit 1
+        fi
     fi
 }
 
@@ -95,6 +101,7 @@ check_dependencies() {
 cmd_dev() {
     print_header "启动 Prisma 开发服务器"
     check_dependencies
+    echo -e "${YELLOW}Running: npx prisma dev${NC}"
     npx prisma dev
 }
 
@@ -110,8 +117,14 @@ cmd_migrate() {
 
     print_header "创建并执行迁移: $name"
     check_dependencies
+    echo -e "${YELLOW}Running: npx prisma migrate dev --name \"$name\"${NC}"
     npx prisma migrate dev --name "$name"
-    print_success "迁移 '$name' 创建并执行成功"
+    if [ $? -eq 0 ]; then
+        print_success "迁移 '$name' 创建并执行成功"
+    else
+        print_error "迁移执行失败"
+        exit 1
+    fi
 }
 
 # 推送 schema 到数据库
@@ -125,24 +138,37 @@ cmd_push() {
         read -p "确定继续吗？(y/N): " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
+            echo -e "${YELLOW}Running: npx prisma db push --force-reset${NC}"
             npx prisma db push --force-reset
         else
             print_info "操作已取消"
             exit 0
         fi
     else
+        echo -e "${YELLOW}Running: npx prisma db push${NC}"
         npx prisma db push
     fi
 
-    print_success "Schema 推送成功"
+    if [ $? -eq 0 ]; then
+        print_success "Schema 推送成功"
+    else
+        print_error "Schema 推送失败"
+        exit 1
+    fi
 }
 
 # 生成 Prisma Client
 cmd_generate() {
     print_header "生成 Prisma Client"
     check_dependencies
+    echo -e "${YELLOW}Running: npx prisma generate${NC}"
     npx prisma generate
-    print_success "Prisma Client 生成成功"
+    if [ $? -eq 0 ]; then
+        print_success "Prisma Client 生成成功"
+    else
+        print_error "Prisma Client 生成失败"
+        exit 1
+    fi
 }
 
 # 打开 Prisma Studio
@@ -150,6 +176,7 @@ cmd_studio() {
     print_header "启动 Prisma Studio"
     check_dependencies
     print_info "Prisma Studio 将在浏览器中打开"
+    echo -e "${YELLOW}Running: npx prisma studio${NC}"
     npx prisma studio
 }
 
@@ -157,6 +184,7 @@ cmd_studio() {
 cmd_status() {
     print_header "迁移状态"
     check_dependencies
+    echo -e "${YELLOW}Running: npx prisma migrate status${NC}"
     npx prisma migrate status
 }
 
@@ -168,8 +196,14 @@ cmd_reset() {
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         check_dependencies
+        echo -e "${YELLOW}Running: npx prisma migrate reset${NC}"
         npx prisma migrate reset
-        print_success "数据库重置成功"
+        if [ $? -eq 0 ]; then
+            print_success "数据库重置成功"
+        else
+            print_error "数据库重置失败"
+            exit 1
+        fi
     else
         print_info "操作已取消"
         exit 0
@@ -227,6 +261,7 @@ EOF
 cmd_diff() {
     print_header "Schema 与数据库差异"
     check_dependencies
+    echo -e "${YELLOW}Running: npx prisma migrate diff --from-schema-datamodel prisma/schema.prisma --to-schema-datasource postgresql${NC}"
     npx prisma migrate diff --from-schema-datamodel prisma/schema.prisma --to-schema-datasource postgresql
 }
 
@@ -234,8 +269,14 @@ cmd_diff() {
 cmd_deploy() {
     print_header "部署迁移"
     check_dependencies
+    echo -e "${YELLOW}Running: npx prisma migrate deploy${NC}"
     npx prisma migrate deploy
-    print_success "迁移部署成功"
+    if [ $? -eq 0 ]; then
+        print_success "迁移部署成功"
+    else
+        print_error "迁移部署失败"
+        exit 1
+    fi
 }
 
 # 启动 Docker PostgreSQL
@@ -268,7 +309,12 @@ cmd_init() {
 
     # 安装依赖
     print_info "安装 Prisma 依赖..."
+    echo -e "${YELLOW}Running: pnpm install prisma @prisma/client${NC}"
     pnpm install prisma @prisma/client
+    if [ $? -ne 0 ]; then
+        print_error "依赖安装失败"
+        exit 1
+    fi
 
     # 生成客户端
     cmd_generate

@@ -1,4 +1,5 @@
 import { ResultCode } from './result-code';
+import { ResultPage } from './result-page';
 export class Result<T> {
   code: number;
   msg: string;
@@ -26,8 +27,18 @@ export class Result<T> {
    * @param message 消息
    * @returns Result<T>
    */
-  static success<T>(data: T, message: string): Result<T> {
+  static success<T>(data: T, message = 'success'): Result<T> {
     return new Result<T>(true, ResultCode.SUCCESS, message, 'success', data);
+  }
+
+  static page<T>(data: ResultPage<T>, message: string): Result<ResultPage<T>> {
+    return new Result<ResultPage<T>>(
+      true,
+      ResultCode.SUCCESS,
+      message,
+      'success',
+      data,
+    );
   }
 
   /**
