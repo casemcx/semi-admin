@@ -17,6 +17,7 @@
     "@packages/share": "workspace:^",
     "@packages/ui": "workspace:^",
     "@packages/utils": "workspace:^",
+    "@packages/hooks": "workspace:^",
     "vditor": "^3.11.2"
   },
   "devDependencies": {

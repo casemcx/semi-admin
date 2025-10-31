@@ -7,7 +7,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 export type ModalProps = ComponentPropsWithoutRef<typeof Modal>;
 
 export interface ModalFormProps<T extends Record<string, any>>
-  extends Omit<ModalProps, 'onOk' | 'children' | 'footer'> {
+  extends Omit<ModalProps, 'onOk' | 'footer'> {
   /** 表单字段配置 */
   columns?: FormSchema<T>[] | Array<FormSchema<T> & Record<string, any>>;
   /** 初始值 */
@@ -40,4 +40,7 @@ export interface ModalFormProps<T extends Record<string, any>>
    * @default "modal-form"
    */
   formName?: string;
+
+  /** 表单配置 */
+  formProps?: ProFormProps<T>;
 }

@@ -255,6 +255,9 @@ importers:
       '@packages/components':
         specifier: workspace:^
         version: link:../../packages/components
+      '@packages/hooks':
+        specifier: workspace:^
+        version: link:../../packages/hooks
       '@packages/share':
         specifier: workspace:^
         version: link:../../packages/share

@@ -26,7 +26,6 @@ export const useTableQuery = <
 
   const fetchData = async (params: Partial<QueryPage<T>> = query) => {
     setLoading(true);
-
     try {
       const response = await request(params as QueryPage<T>);
 
@@ -39,16 +38,27 @@ export const useTableQuery = <
           total,
         });
       } else {
-        return Promise.reject(response.msg);
+        setDataSource([]);
+        setQuery({
+          ...query,
+          ...params,
+          total: 0,
+        });
       }
     } catch (error) {
-      return Promise.reject(error);
+      setDataSource([]);
+      setQuery({
+        ...query,
+        ...params,
+        total: 0,
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleSearch = (params: Partial<QueryPage<T>> = query) => {
+    console.log('handleSearch', params);
     setQuery({
       ...params,
       pageNum: 1,
@@ -58,6 +68,8 @@ export const useTableQuery = <
       fetchData({
         ...params,
         pageNum: 1,
+      }).catch(error => {
+        console.error('handleSearch error', error);
       });
     });
   };

@@ -5,6 +5,7 @@ import type {
   UpdatePermissionDto,
 } from '@/types/user';
 import { request } from '@/utils/request';
+import type { QueryPageResult } from '@packages/share';
 
 /**
  * @description 创建权限
@@ -21,7 +22,10 @@ export const createPermission = (data: CreatePermissionDto) => {
  * @returns ResultPage<Permission>
  */
 export const getPermissionPage = (data: PermissionQuery) => {
-  return request.post<any>('/api/permission/findPage', data);
+  return request.post<QueryPageResult<Permission>>(
+    '/api/permission/findPage',
+    data,
+  );
 };
 
 /**
