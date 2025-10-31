@@ -1,10 +1,11 @@
+import { Result, ResultPage } from '@/models/common';
 import {
   CreatePermissionDto,
   QueryPermissionDto,
   UpdatePermissionDto,
 } from '@/models/permission';
 import { PrismaService } from '@/services/prisma';
-import { Prisma } from '@generated/client';
+import { Permission, Prisma } from '@generated/client';
 import {
   BadRequestException,
   Injectable,
@@ -46,11 +47,7 @@ export class PermissionService {
       },
     });
 
-    return {
-      success: true,
-      data: permission,
-      message: '权限创建成功',
-    };
+    return Result.success(permission, '权限创建成功');
   }
 
   async findPage(query: QueryPermissionDto) {
@@ -85,14 +82,9 @@ export class PermissionService {
       this.prisma.permission.count({ where }),
     ]);
 
-    return {
-      success: true,
-      data,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
+    const resultPage = new ResultPage<Permission>(total, page, limit, data);
+
+    return Result.page(resultPage, '查询成功');
   }
 
   async findOne(id: string) {
@@ -117,10 +109,7 @@ export class PermissionService {
       throw new NotFoundException(`权限 ID ${id} 不存在`);
     }
 
-    return {
-      success: true,
-      data: permission,
-    };
+    return Result.success(permission);
   }
 
   async update(id: string, updatePermissionDto: UpdatePermissionDto) {
@@ -188,11 +177,7 @@ export class PermissionService {
       },
     });
 
-    return {
-      success: true,
-      data: permission,
-      message: '权限更新成功',
-    };
+    return Result.success(permission, '权限更新成功');
   }
 
   async remove(id: string) {
@@ -226,10 +211,7 @@ export class PermissionService {
       data: { deletedAt: new Date() },
     });
 
-    return {
-      success: true,
-      message: '权限删除成功',
-    };
+    return Result.success(undefined, '权限删除成功');
   }
 
   async getTree() {
@@ -250,10 +232,7 @@ export class PermissionService {
 
     const tree = buildTree();
 
-    return {
-      success: true,
-      data: tree,
-    };
+    return Result.success(tree);
   }
 
   async findByCode(code: string) {

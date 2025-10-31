@@ -45,7 +45,7 @@ export class PermissionController {
   @ApiResponse({
     status: 200,
     description: '获取成功',
-    type: Result<ResultPage<Permissions>>,
+    type: Result<ResultPage<Permission>>,
   })
   @ApiBody({ type: QueryPermissionDto })
   async findPage(@Body() query: QueryPermissionDto) {

@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config(); // 加载环境变量
+
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { ValidationPipe } from '@nestjs/common';
@@ -72,17 +75,13 @@ async function bootstrap() {
   // 设置全局前缀
   app.setGlobalPrefix('api');
 
-  const port = Number.parseInt(process.env.PORT || '3000', 10);
+  const port = Number.parseInt(process.env.PORT || '5000', 10);
 
   if (import.meta.env.PROD) {
     await app.listen(port, '0.0.0.0');
-  } else {
-    await app.listen(port, '0.0.0.0');
+    console.log(`🚀 Server is running on http://localhost:${port}`);
+    console.log(`📚 API Documentation: http://localhost:${port}/api-docs`);
   }
-
-  console.log(`🚀 Server is running on http://localhost:${port}`);
-  console.log(`📚 API Documentation: http://localhost:${port}/api-docs`);
-
   return app;
 }
 

@@ -1,27 +1,24 @@
 export class ResultPage<T> {
-  code: number;
-  msg: string;
-  message: string;
   data?: T[];
   total: number;
   page: number;
   limit: number;
+  hasNext: boolean;
+  hasPrev: boolean;
 
   constructor(
-    code: number,
-    msg: string,
-    message: string,
     total: number,
     page: number,
     limit: number,
     data?: T[],
+    hasNext?: boolean,
+    hasPrev?: boolean,
   ) {
-    this.code = code;
-    this.msg = msg;
-    this.message = message;
     this.total = total;
     this.page = page;
     this.limit = limit;
     this.data = data;
+    this.hasNext = hasNext ?? page < Math.ceil(total / limit);
+    this.hasPrev = hasPrev ?? page > 1;
   }
 }
