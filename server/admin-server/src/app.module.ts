@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { ResponseInterceptor } from './common';
+import { ErrorInterceptor, ResponseInterceptor } from './common';
 import { ServiceModule } from './modules';
 import { PrismaModule } from './services/prisma';
 
 @Module({
   imports: [ServiceModule, PrismaModule],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorInterceptor,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,

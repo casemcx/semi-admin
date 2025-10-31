@@ -8,13 +8,13 @@ export class QueryPermissionDto {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  page?: number = 1;
+  pageNum?: number = 1;
 
   @ApiPropertyOptional({ description: '每页数量', example: 10 })
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  limit?: number = 10;
+  pageSize?: number = 10;
 
   @ApiPropertyOptional({ description: '权限名称', example: '用户' })
   @IsOptional()

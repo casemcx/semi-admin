@@ -40,7 +40,7 @@ export class CreatePermissionDto {
   @ApiPropertyOptional({ description: '父权限ID', example: 0 })
   @IsOptional()
   @IsInt()
-  parentId?: bigint | null;
+  parentId?: bigint;
 
   @ApiPropertyOptional({ description: '路由路径', example: '/users' })
   @IsOptional()

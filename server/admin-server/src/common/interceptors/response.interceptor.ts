@@ -13,7 +13,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
     return next.handle().pipe(
       map(data => {
         // 如果数据已经是标准格式，直接返回
-        if (data && typeof data === 'object' && 'success' in data) {
+        if (data && typeof data === 'object') {
           return {
             ...data,
             timestamp: new Date().toISOString(),

@@ -11,6 +11,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { omit } from 'lodash-es';
 
 @Injectable()
 export class PermissionService {
@@ -41,18 +42,23 @@ export class PermissionService {
     }
 
     const permission = await this.prisma.permission.create({
-      data: {
-        ...createPermissionDto,
-        parentId: createPermissionDto.parentId || 0n,
-      },
+      data: omit(createPermissionDto, ['parentId']),
     });
 
     return Result.success(permission, '权限创建成功');
   }
 
   async findPage(query: QueryPermissionDto) {
-    const { page = 1, limit = 10, name, code, type, status, parentId } = query;
-    const skip = (page - 1) * limit;
+    const {
+      pageNum = 1,
+      pageSize = 10,
+      name,
+      code,
+      type,
+      status,
+      parentId,
+    } = query;
+    const skip = (pageNum - 1) * pageSize;
 
     const where: Prisma.PermissionWhereInput = {
       deletedAt: null,
@@ -67,7 +73,7 @@ export class PermissionService {
       this.prisma.permission.findMany({
         where,
         skip,
-        take: limit,
+        take: pageSize,
         orderBy: [{ sort: 'asc' }, { createdAt: 'desc' }],
         include: {
           parent: {
@@ -82,7 +88,12 @@ export class PermissionService {
       this.prisma.permission.count({ where }),
     ]);
 
-    const resultPage = new ResultPage<Permission>(total, page, limit, data);
+    const resultPage = new ResultPage<Permission>(
+      total,
+      pageNum,
+      pageSize,
+      data,
+    );
 
     return Result.page(resultPage, '查询成功');
   }
