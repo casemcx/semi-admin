@@ -1,4 +1,4 @@
-import type { UserInfo } from './user-info';
+import type { UserInfo } from '../user-info';
 
 export interface LoginDto {
   /**
