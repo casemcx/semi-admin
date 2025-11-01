@@ -8,6 +8,7 @@ export {}
 declare global {
   const API_BASE_URL: typeof import('../src/configs/request').API_BASE_URL
   const AppRouter: typeof import('../src/configs/router').AppRouter
+  const Permission: typeof import('../src/configs/pemission').Permission
   const createRef: typeof import('react').createRef
   const forwardRef: typeof import('react').forwardRef
   const lazy: typeof import('react').lazy
@@ -109,6 +110,9 @@ declare global {
 }
 // for type re-export
 declare global {
+  // @ts-ignore
+  export type { Permission } from '../src/configs/pemission'
+  import('../src/configs/pemission')
   // @ts-ignore
   export type { AppRouter } from '../src/configs/router'
   import('../src/configs/router')

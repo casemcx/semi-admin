@@ -21,6 +21,9 @@ function ModalForm<T extends Record<string, any>>({
   gutter,
   getFormApi,
   formName = 'modal-form',
+  formProps,
+  children,
+  className,
   ...modalProps
 }: ModalFormProps<T>) {
   const [internalLoading, setInternalLoading] = useState(false);
@@ -102,7 +105,10 @@ function ModalForm<T extends Record<string, any>>({
             </div>
           )
         }
-      />
+        {...formProps}
+      >
+        {children}
+      </ProForm>
     </Modal>
   );
 }
