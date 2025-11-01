@@ -1,6 +1,7 @@
 import type { FormInstance, FormSchema } from '@/types';
 import type { Form } from '@douyinfe/semi-ui';
 import type { ButtonProps } from '@douyinfe/semi-ui/lib/es/button';
+import type { RowProps } from '@douyinfe/semi-ui/lib/es/grid';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 export interface ProFormProps<T extends Record<string, any> = any>
@@ -87,4 +88,6 @@ export interface ProFormProps<T extends Record<string, any> = any>
   submitButtonProps?: ButtonProps;
 
   resetButtonProps?: ButtonProps;
+
+  rowProps?: RowProps;
 }

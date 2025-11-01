@@ -1,9 +1,9 @@
 import type { Status } from '@packages/share';
 
 export enum PermissionType {
-  MENU = 'menu',
-  BUTTON = 'button',
-  API = 'api',
+  MENU = 1,
+  BUTTON = 2,
+  API = 3,
 }
 
 export interface Permission {
@@ -11,7 +11,7 @@ export interface Permission {
   parentId: string;
   name: string;
   code: string;
-  type: string;
+  type: PermissionType;
   path?: string;
   component?: string;
   icon?: string;

@@ -6,6 +6,7 @@ import zh_CN from '@douyinfe/semi-ui/lib/es/locale/source/zh_CN';
 
 import './tailwind.css';
 import './index.css';
+import '@packages/components/styles.css';
 
 // 初始化i18n
 import '@/locales';

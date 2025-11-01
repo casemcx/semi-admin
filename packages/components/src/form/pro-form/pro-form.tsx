@@ -24,6 +24,7 @@ const ProForm = <T extends Record<string, any> = any>({
   submitButtonProps,
   resetButtonProps,
   className,
+  rowProps,
   ...formProps
 }: ProFormProps<T>) => {
   const { loading, run } = useRequest(
@@ -46,7 +47,11 @@ const ProForm = <T extends Record<string, any> = any>({
     }
 
     return (
-      <Row gutter={readonly ? 42 : gutter}>
+      <Row
+        style={{ width: '100%' }}
+        gutter={readonly ? 42 : gutter}
+        {...rowProps}
+      >
         {columns.map((column, index) => (
           <Col
             {...colProps}
@@ -63,7 +68,7 @@ const ProForm = <T extends Record<string, any> = any>({
         ))}
       </Row>
     );
-  }, [children, columns, colProps, gutter, readonly]);
+  }, [children, columns, colProps, gutter, readonly, rowProps]);
 
   const renderActions = useCallback(() => {
     if (readonly || (!showSubmit && !showReset)) {

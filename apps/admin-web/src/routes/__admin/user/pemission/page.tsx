@@ -3,9 +3,7 @@
 import {
   createPermission,
   deletePermission,
-  getPermissionDetail,
   getPermissionPage,
-  getPermissionTree,
   updatePermission,
 } from '@/api';
 import type { Permission } from '@/types/user';
@@ -51,7 +49,6 @@ export default function UserPermissionPage() {
     handleEdit,
     handleModalOk,
     handleModalCancel,
-    loading: formLoading,
   } = useTableFormState<Permission>(
     {},
     {
@@ -86,6 +83,11 @@ export default function UserPermissionPage() {
     {
       name: 'name',
       title: '权限名称',
+      ellipsis: true,
+      type: 'input',
+      colProps: {
+        span: 12,
+      },
       width: 200,
       render: (value: any, record: Permission) => {
         const renderIcon = () => {
@@ -106,10 +108,25 @@ export default function UserPermissionPage() {
       name: 'code',
       title: '权限编码',
       width: 180,
+      type: 'input',
+      colProps: {
+        span: 12,
+      },
     },
     {
       name: 'type',
       title: '权限类型',
+      type: 'select',
+      colProps: {
+        span: 12,
+      },
+      fieldProps: {
+        optionList: [
+          { label: '菜单', value: PermissionType.MENU },
+          { label: '按钮', value: PermissionType.BUTTON },
+          { label: '接口', value: PermissionType.API },
+        ],
+      },
       width: 120,
       render: (value: any) => {
         const typeMap = {
@@ -142,12 +159,6 @@ export default function UserPermissionPage() {
       },
     },
     {
-      name: 'component',
-      title: '组件',
-      width: 200,
-      render: (value: any) => (value as string) || '-',
-    },
-    {
       name: 'sort',
       title: '排序',
       width: 80,
@@ -156,6 +167,10 @@ export default function UserPermissionPage() {
       name: 'status',
       title: '状态',
       width: 100,
+      type: 'switch',
+      colProps: {
+        span: 12,
+      },
       render: value => {
         return (value as Status) === Status.ENABLED ? (
           <span style={{ color: '#52c41a' }}>启用</span>
@@ -165,21 +180,11 @@ export default function UserPermissionPage() {
       },
     },
     {
-      name: 'isSystem',
-      title: '系统权限',
-      width: 100,
-      render: (value: any) => {
-        return (value as Status) === Status.ENABLED ? (
-          <span style={{ color: '#faad14' }}>是</span>
-        ) : (
-          <span style={{ color: '#8c8c8c' }}>否</span>
-        );
-      },
-    },
-    {
       name: 'createdAt',
       title: '创建时间',
       width: 180,
+      hiddenInCreate: true,
+      hiddenInEdit: true,
       render: (value: any) => new Date(value as Date).toLocaleString(),
     },
     {
@@ -188,6 +193,9 @@ export default function UserPermissionPage() {
       width: 150,
       fixed: 'right',
       hiddenInEdit: true,
+      hiddenInSearch: true,
+      hiddenInCreate: true,
+      hiddenInTable: true,
       render: (_: any, record: Permission) => (
         <Space>
           <Button
@@ -243,6 +251,13 @@ export default function UserPermissionPage() {
           pageSizeOpts: [10, 20, 50, 100],
           onPageChange: handlePageChange,
         }}
+        toolBar={
+          <div>
+            <Button type="primary" onClick={handleAdd}>
+              新增权限
+            </Button>
+          </div>
+        }
         scroll={{ x: 1200 }}
         showCard={false}
       />

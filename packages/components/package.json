@@ -6,16 +6,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./styles.css": {
+      "import": "./dist/styles.css"
     }
   },
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "build": "rslib build",
+    "build": "run-p build:*",
+    "build:lib": "rslib build",
+    "build:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
     "check": "biome check --write",
-    "dev": "rslib build --watch",
+    "dev": "npm run build:css && npm run build:lib --watch",
+    "dev:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch",
     "format": "biome format --write",
-    "postinstall": "rslib build",
+    "postinstall": "npm run build",
     "test": "rstest"
   },
   "devDependencies": {
@@ -28,6 +34,7 @@
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "jsdom": "^26.1.0",
+    "tailwindcss": "catalog:tailwindcss",
     "typescript": "catalog:node"
   },
   "peerDependencies": {

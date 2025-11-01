@@ -117,13 +117,7 @@ const AdminLayout = () => {
                   },
                 ]}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                  }}
-                >
+                <div className="flex items-center cursor-pointer">
                   <Avatar
                     color="orange"
                     size="small"
