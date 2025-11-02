@@ -1,5 +1,5 @@
 export class ResultPage<T> {
-  data?: T[];
+  records?: T[];
   total: number;
   page: number;
   limit: number;
@@ -10,14 +10,14 @@ export class ResultPage<T> {
     total: number,
     page: number,
     limit: number,
-    data?: T[],
+    records?: T[],
     hasNext?: boolean,
     hasPrev?: boolean,
   ) {
     this.total = total;
     this.page = page;
     this.limit = limit;
-    this.data = data;
+    this.records = records;
     this.hasNext = hasNext ?? page < Math.ceil(total / limit);
     this.hasPrev = hasPrev ?? page > 1;
   }

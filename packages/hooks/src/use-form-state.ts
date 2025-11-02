@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export interface UseTableFormStateOptions<T> {
-  onSubmit?: (values: T, isEdit: boolean) => Promise<void>;
+  onSubmit?: (values: T, isEdit: boolean) => Promise<any>;
   onCancel?: () => void;
   onReset?: () => void;
 }

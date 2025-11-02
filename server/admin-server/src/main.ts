@@ -1,6 +1,11 @@
 import { config } from 'dotenv';
 config(); // 加载环境变量
 
+// Ensure JSON serialization can handle bigint values
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { ValidationPipe } from '@nestjs/common';
@@ -8,7 +13,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import type { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
@@ -24,8 +28,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
+      whitelist: true, // 只过滤不在 DTO 中的属性，但不报错
       transformOptions: {
         enableImplicitConversion: true,
       },

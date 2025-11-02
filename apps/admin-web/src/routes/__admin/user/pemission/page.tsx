@@ -28,6 +28,7 @@ import { useCallback } from 'react';
 const { Title } = Typography;
 
 export default function UserPermissionPage() {
+  console.log('1231');
   const {
     loading,
     dataSource,
@@ -54,10 +55,25 @@ export default function UserPermissionPage() {
     {
       onSubmit: async (values: Permission, isEdit: boolean) => {
         if (isEdit) {
-          await updatePermission(values.id, values);
-        } else {
-          await createPermission(values);
+          const result = await updatePermission(values.id, values);
+          console.log(result, 'result');
+          if (result.code !== ResultCode.SUCCESS) {
+            Toast.error(result.msg);
+            return Promise.reject(result.msg);
+          }
+          Toast.success('更新成功');
+          fetchData();
+          return Promise.resolve();
         }
+
+        const result = await createPermission(values);
+        if (result.code !== ResultCode.SUCCESS) {
+          Toast.error(result.msg);
+          return Promise.reject(result.msg);
+        }
+        Toast.success('新增成功');
+        fetchData();
+        return Promise.resolve();
       },
     },
   );
@@ -237,7 +253,7 @@ export default function UserPermissionPage() {
 
       <ProTable<Permission>
         columns={columns}
-        dataSource={dataSource}
+        dataSource={[]}
         loading={loading}
         rowKey={record => record.id.toString()}
         onSearch={handleSearch}

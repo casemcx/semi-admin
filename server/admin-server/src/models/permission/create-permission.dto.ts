@@ -35,12 +35,7 @@ export class CreatePermissionDto {
     example: PermissionType.MENU,
   })
   @IsEnum(PermissionType)
-  type: PermissionType;
-
-  @ApiPropertyOptional({ description: '父权限ID', example: 0 })
-  @IsOptional()
-  @IsInt()
-  parentId?: bigint;
+  type: number;
 
   @ApiPropertyOptional({ description: '路由路径', example: '/users' })
   @IsOptional()
@@ -84,7 +79,7 @@ export class CreatePermissionDto {
   })
   @IsOptional()
   @IsEnum(PermissionStatus)
-  status?: PermissionStatus;
+  status?: number;
 
   @ApiPropertyOptional({ description: '权限描述', example: '用户管理模块' })
   @IsOptional()

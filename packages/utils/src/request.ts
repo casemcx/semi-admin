@@ -39,13 +39,16 @@ export class AxiosService {
     );
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => {
+        console.log(response, 'response');
         const { data, status } = response;
-        if (status !== ResultCode.SUCCESS) {
+        if (status < 200 || status >= 300) {
           return Promise.resolve({
             ...data,
             code: ResultCode.OVERDUE,
           });
         }
+
+        console.log(data, 'data');
         if (data.code !== ResultCode.SUCCESS) {
           return Promise.resolve({
             ...data,

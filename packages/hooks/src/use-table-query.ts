@@ -1,7 +1,7 @@
 import useUrlState from '@ahooksjs/use-url-state';
 import type { QueryPage, QueryPageResult, ResultData } from '@packages/share';
 import { ResultCode } from '@packages/share';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface TablePagination {
   currentPage: number;
@@ -24,97 +24,135 @@ export const useTableQuery = <
     total: 0,
   } as QueryPage<T>);
 
-  const fetchData = async (params: Partial<QueryPage<T>> = query) => {
-    setLoading(true);
-    try {
-      const response = await request(params as QueryPage<T>);
+  const queryRef = useRef(query);
 
-      if (response.code === ResultCode.SUCCESS) {
-        const { records, total } = response.data;
-        setDataSource(records);
-        setQuery({
-          ...query,
-          ...params,
-          total,
-        });
-      } else {
-        setDataSource([]);
-        setQuery({
-          ...query,
-          ...params,
-          total: 0,
-        });
-      }
-    } catch (error) {
-      setDataSource([]);
-      setQuery({
-        ...query,
+  useEffect(() => {
+    queryRef.current = query;
+  }, [query]);
+
+  const fetchData = useCallback(
+    async (params: Partial<QueryPage<T>> = {}) => {
+      const finalParams = {
+        ...queryRef.current,
         ...params,
-        total: 0,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+      };
 
-  const handleSearch = (params: Partial<QueryPage<T>> = query) => {
-    console.log('handleSearch', params);
-    setQuery({
-      ...params,
-      pageNum: 1,
-    });
+      setLoading(true);
+      try {
+        const response = await request(finalParams as QueryPage<T>);
 
-    requestAnimationFrame(() => {
-      fetchData({
+        if (response.code === ResultCode.SUCCESS) {
+          const { records, total } = response.data;
+          setDataSource(records);
+          setQuery(prev => ({
+            ...prev,
+            ...finalParams,
+            total,
+          }));
+        } else {
+          setDataSource([]);
+          setQuery(prev => ({
+            ...prev,
+            ...finalParams,
+            total: 0,
+          }));
+        }
+      } catch (error) {
+        setDataSource([]);
+        setQuery(prev => ({
+          ...prev,
+          ...finalParams,
+          total: 0,
+        }));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [request, setQuery],
+  );
+
+  const handleSearch = useCallback(
+    (params: Partial<QueryPage<T>> = {}) => {
+      const nextParams = {
+        ...queryRef.current,
         ...params,
         pageNum: 1,
-      }).catch(error => {
-        console.error('handleSearch error', error);
-      });
-    });
-  };
+      };
 
-  const handleReset = () => {
-    setQuery({
+      setQuery(prev => ({
+        ...prev,
+        ...nextParams,
+      }));
+
+      requestAnimationFrame(() => {
+        fetchData({
+          ...params,
+          pageNum: 1,
+        }).catch(error => {
+          console.error('handleSearch error', error);
+        });
+      });
+    },
+    [fetchData, setQuery],
+  );
+
+  const handleReset = useCallback(() => {
+    const defaultQuery = {
       pageNum: 1,
       pageSize: 10,
-    } as QueryPage<T>);
+    } as QueryPage<T>;
+
+    setQuery(prev => ({
+      ...prev,
+      ...defaultQuery,
+    }));
 
     requestAnimationFrame(() => {
-      fetchData({
-        pageNum: 1,
-        pageSize: 10,
-      } as QueryPage<T>);
-    });
-  };
-
-  const handlePageChange = (currentPage: number, pageSize?: number) => {
-    setQuery({
-      ...query,
-      pageNum: currentPage,
-      pageSize: pageSize || query.pageSize,
-    });
-
-    requestAnimationFrame(() => {
-      fetchData({
-        ...query,
-        pageNum: currentPage,
-        pageSize: pageSize || query.pageSize,
+      fetchData(defaultQuery).catch(error => {
+        console.error('handleReset error', error);
       });
     });
-  };
+  }, [fetchData, setQuery]);
 
-  const startTableTransition = async (fn: () => Promise<void>) => {
+  const handlePageChange = useCallback(
+    (currentPage: number, pageSize?: number) => {
+      const nextPageSize = pageSize ?? queryRef.current.pageSize;
+      const nextParams = {
+        ...queryRef.current,
+        pageNum: currentPage,
+        pageSize: nextPageSize,
+      };
+
+      setQuery(prev => ({
+        ...prev,
+        ...nextParams,
+      }));
+
+      requestAnimationFrame(() => {
+        fetchData({
+          pageNum: currentPage,
+          pageSize: nextPageSize,
+          ...query,
+        }).catch(error => {
+          console.error('handlePageChange error', error);
+        });
+      });
+    },
+    [fetchData, setQuery, query],
+  );
+
+  const startTableTransition = useCallback(async (fn: () => Promise<void>) => {
     setLoading(true);
 
     try {
       await fn();
     } catch (error) {
-      return Promise.reject(error);
-    } finally {
       setLoading(false);
+      return Promise.reject(error);
     }
-  };
+
+    setLoading(false);
+  }, []);
 
   return {
     loading,

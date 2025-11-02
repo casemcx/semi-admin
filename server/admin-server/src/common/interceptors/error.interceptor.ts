@@ -28,6 +28,7 @@ export class ErrorInterceptor implements NestInterceptor {
         const timestamp = new Date().toISOString();
         const path: string | undefined = request?.url;
 
+        console.log(err, 'err');
         if (err instanceof HttpException) {
           const statusCode = err.getStatus();
           const response = err.getResponse();

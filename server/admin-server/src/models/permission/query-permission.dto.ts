@@ -32,7 +32,7 @@ export class QueryPermissionDto {
   })
   @IsOptional()
   @IsEnum(PermissionType)
-  type?: PermissionType;
+  type?: number;
 
   @ApiPropertyOptional({
     description: '状态',
@@ -40,11 +40,5 @@ export class QueryPermissionDto {
   })
   @IsOptional()
   @IsEnum(PermissionStatus)
-  status?: PermissionStatus;
-
-  @ApiPropertyOptional({ description: '父权限ID', example: 0 })
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  parentId?: bigint | null;
+  status?: number;
 }

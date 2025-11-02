@@ -1,3 +1,4 @@
+import { guid } from '@/common/utils';
 import { Result, ResultPage } from '@/models/common';
 import {
   CreatePermissionDto,
@@ -11,7 +12,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { omit } from 'lodash-es';
 
 @Injectable()
 export class PermissionService {
@@ -29,35 +29,18 @@ export class PermissionService {
       );
     }
 
-    // If parentId is provided, check if parent exists
-    if (createPermissionDto.parentId && createPermissionDto.parentId !== 0n) {
-      const parent = await this.prisma.permission.findUnique({
-        where: { id: createPermissionDto.parentId },
-      });
-      if (!parent) {
-        throw new BadRequestException(
-          `父权限 ID ${createPermissionDto.parentId} 不存在`,
-        );
-      }
-    }
-
     const permission = await this.prisma.permission.create({
-      data: omit(createPermissionDto, ['parentId']),
+      data: {
+        ...createPermissionDto,
+        id: guid(),
+      },
     });
 
     return Result.success(permission, '权限创建成功');
   }
 
   async findPage(query: QueryPermissionDto) {
-    const {
-      pageNum = 1,
-      pageSize = 10,
-      name,
-      code,
-      type,
-      status,
-      parentId,
-    } = query;
+    const { pageNum = 1, pageSize = 10, name, code, type, status } = query;
     const skip = (pageNum - 1) * pageSize;
 
     const where: Prisma.PermissionWhereInput = {
@@ -66,7 +49,6 @@ export class PermissionService {
       code: code ? { contains: code } : undefined,
       type: type !== undefined ? type : undefined,
       status: status !== undefined ? status : undefined,
-      parentId: parentId !== undefined ? parentId : undefined,
     };
 
     const [data, total] = await Promise.all([
@@ -75,15 +57,6 @@ export class PermissionService {
         skip,
         take: pageSize,
         orderBy: [{ sort: 'asc' }, { createdAt: 'desc' }],
-        include: {
-          parent: {
-            select: {
-              id: true,
-              name: true,
-              code: true,
-            },
-          },
-        },
       }),
       this.prisma.permission.count({ where }),
     ]);
@@ -101,19 +74,6 @@ export class PermissionService {
   async findOne(id: string) {
     const permission = await this.prisma.permission.findUnique({
       where: { id: BigInt(id), deletedAt: null },
-      include: {
-        parent: {
-          select: {
-            id: true,
-            name: true,
-            code: true,
-          },
-        },
-        children: {
-          where: { deletedAt: null },
-          orderBy: { sort: 'asc' },
-        },
-      },
     });
 
     if (!permission) {
@@ -148,44 +108,9 @@ export class PermissionService {
       }
     }
 
-    // Check if new parent exists (and is not itself)
-    if (updatePermissionDto.parentId !== undefined) {
-      if (
-        updatePermissionDto.parentId &&
-        updatePermissionDto.parentId === BigInt(id)
-      ) {
-        throw new BadRequestException('不能将自己设为父权限');
-      }
-
-      if (updatePermissionDto.parentId && updatePermissionDto.parentId !== 0n) {
-        const parent = await this.prisma.permission.findUnique({
-          where: { id: updatePermissionDto.parentId, deletedAt: null },
-        });
-        if (!parent) {
-          throw new BadRequestException(
-            `父权限 ID ${updatePermissionDto.parentId} 不存在`,
-          );
-        }
-      }
-    }
-
-    // Prevent updating system permission
-    if (existing.isSystem === 1) {
-      throw new BadRequestException('系统权限不能修改');
-    }
-
     const permission = await this.prisma.permission.update({
       where: { id: BigInt(id) },
       data: updatePermissionDto,
-      include: {
-        parent: {
-          select: {
-            id: true,
-            name: true,
-            code: true,
-          },
-        },
-      },
     });
 
     return Result.success(permission, '权限更新成功');
@@ -195,25 +120,10 @@ export class PermissionService {
     // Check if permission exists
     const permission = await this.prisma.permission.findUnique({
       where: { id: BigInt(id), deletedAt: null },
-      include: {
-        children: {
-          where: { deletedAt: null },
-        },
-      },
     });
 
     if (!permission) {
       throw new NotFoundException(`权限 ID ${id} 不存在`);
-    }
-
-    // Check if has children
-    if (permission.children.length > 0) {
-      throw new BadRequestException('存在子权限，无法删除');
-    }
-
-    // Prevent deleting system permission
-    if (permission.isSystem === 1) {
-      throw new BadRequestException('系统权限不能删除');
     }
 
     // Soft delete
@@ -231,19 +141,8 @@ export class PermissionService {
       orderBy: [{ sort: 'asc' }, { createdAt: 'desc' }],
     });
 
-    // Build tree structure
-    const buildTree = (parentId = 0n): any[] => {
-      return permissions
-        .filter(p => p.parentId === parentId)
-        .map(p => ({
-          ...p,
-          children: buildTree(p.id),
-        }));
-    };
-
-    const tree = buildTree();
-
-    return Result.success(tree);
+    // Since there's no parentId field, return flat list
+    return Result.success(permissions);
   }
 
   async findByCode(code: string) {
