@@ -28,12 +28,10 @@ import { useCallback } from 'react';
 const { Title } = Typography;
 
 export default function UserPermissionPage() {
-  console.log('1231');
   const {
     loading,
     dataSource,
     query,
-    setQuery,
     fetchData,
     handleSearch,
     handleReset,

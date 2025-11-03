@@ -18,6 +18,8 @@ export const useTableQuery = <
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<R[]>([]);
 
+  const [total, setTotal] = useState(0);
+
   const [query, setQuery] = useUrlState<QueryPage<T>>({
     pageNum: 1,
     pageSize: 10,
@@ -26,44 +28,28 @@ export const useTableQuery = <
 
   const queryRef = useRef(query);
 
-  useEffect(() => {
-    queryRef.current = query;
-  }, [query]);
-
   const fetchData = useCallback(
     async (params: Partial<QueryPage<T>> = {}) => {
-      const finalParams = {
-        ...queryRef.current,
-        ...params,
-      };
-
       setLoading(true);
+
+      setQuery(prev => ({
+        ...prev,
+        ...params,
+      }));
+
       try {
-        const response = await request(finalParams as QueryPage<T>);
+        const response = await request(params);
 
         if (response.code === ResultCode.SUCCESS) {
           const { records, total } = response.data;
           setDataSource(records);
-          setQuery(prev => ({
-            ...prev,
-            ...finalParams,
-            total,
-          }));
+          setTotal(total);
         } else {
           setDataSource([]);
-          setQuery(prev => ({
-            ...prev,
-            ...finalParams,
-            total: 0,
-          }));
+          setTotal(0);
         }
       } catch (error) {
         setDataSource([]);
-        setQuery(prev => ({
-          ...prev,
-          ...finalParams,
-          total: 0,
-        }));
       } finally {
         setLoading(false);
       }
@@ -158,6 +144,7 @@ export const useTableQuery = <
     loading,
     dataSource,
     query,
+    total,
     setQuery,
     fetchData,
     handleSearch,
