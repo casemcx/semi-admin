@@ -251,7 +251,7 @@ export default function UserPermissionPage() {
 
       <ProTable<Permission>
         columns={columns}
-        dataSource={[]}
+        dataSource={dataSource}
         loading={loading}
         rowKey={record => record.id.toString()}
         onSearch={handleSearch}
