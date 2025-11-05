@@ -8,11 +8,7 @@
 docker-compose -f docker/docker-compose.dev.yml up -d
 ```
 
-### 2. 初始化信息
-
-```bash
-sh ./scripts/prisma.sh migrate init-db
-```
+### 2. 启动开发服务器
 
 ```bash
 pnpm dev

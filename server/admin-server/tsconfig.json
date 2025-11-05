@@ -20,8 +20,7 @@
     "types": ["vite/client", "jest"],
     "moduleResolution": "NodeNext",
     "paths": {
-      "@/*": ["./src/*"],
-      "@generated/*": ["./generated/prisma/*"]
+      "@/*": ["./src/*"]
     }
   }
 }
