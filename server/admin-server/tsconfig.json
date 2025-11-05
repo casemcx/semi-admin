@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "NodeNext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "types": ["vite/client", "jest"],
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "paths": {
       "@/*": ["./src/*"],
       "@generated/*": ["./generated/prisma/*"]
