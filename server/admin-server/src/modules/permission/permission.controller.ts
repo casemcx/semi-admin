@@ -4,7 +4,7 @@ import {
   QueryPermissionDto,
   UpdatePermissionDto,
 } from '@/models/permission';
-import { Permission } from '@generated/client';
+import { Permission } from '@/models/permission/permission.entity';
 import {
   Body,
   Controller,

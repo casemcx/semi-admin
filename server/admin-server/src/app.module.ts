@@ -1,11 +1,19 @@
 import { Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ErrorInterceptor, ResponseInterceptor } from './common';
+import { dbConfig } from './config/db';
 import { ServiceModule } from './modules';
-import { PrismaModule } from './services/prisma';
 
 @Module({
-  imports: [ServiceModule, PrismaModule],
+  imports: [
+    TypeOrmModule.forRoot({
+      ...dbConfig,
+      entities: ['dist/**/*.entity{.js,.ts}'],
+      autoLoadEntities: true,
+    }),
+    ServiceModule,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,

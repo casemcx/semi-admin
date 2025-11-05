@@ -5,21 +5,25 @@ import {
   QueryPermissionDto,
   UpdatePermissionDto,
 } from '@/models/permission';
-import { PrismaService } from '@/services/prisma';
-import { Permission, Prisma } from '@generated/client';
+import { Permission } from '@/models/permission/permission.entity';
 import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class PermissionService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    @InjectRepository(Permission)
+    private permissionRepository: Repository<Permission>,
+  ) {}
 
   async create(createPermissionDto: CreatePermissionDto) {
     // Check if permission code already exists
-    const existing = await this.prisma.permission.findUnique({
+    const existing = await this.permissionRepository.findOne({
       where: { code: createPermissionDto.code },
     });
 
@@ -29,37 +33,43 @@ export class PermissionService {
       );
     }
 
-    const permission = await this.prisma.permission.create({
-      data: {
-        ...createPermissionDto,
-        id: guid(),
-      },
-    });
+    const permission = this.permissionRepository.create(createPermissionDto);
+    const result = await this.permissionRepository.save(permission);
 
-    return Result.success(permission, '权限创建成功');
+    return Result.success(result, '权限创建成功');
   }
 
   async findPage(query: QueryPermissionDto) {
     const { pageNum = 1, pageSize = 10, name, code, type, status } = query;
     const skip = (pageNum - 1) * pageSize;
 
-    const where: Prisma.PermissionWhereInput = {
-      deletedAt: null,
-      name: name ? { contains: name } : undefined,
-      code: code ? { contains: code } : undefined,
-      type: type !== undefined ? type : undefined,
-      status: status !== undefined ? status : undefined,
-    };
+    const queryBuilder = this.permissionRepository
+      .createQueryBuilder('permission')
+      .where('permission.deletedAt IS NULL');
 
-    const [data, total] = await Promise.all([
-      this.prisma.permission.findMany({
-        where,
-        skip,
-        take: pageSize,
-        orderBy: [{ sort: 'asc' }, { createdAt: 'desc' }],
-      }),
-      this.prisma.permission.count({ where }),
-    ]);
+    if (name) {
+      queryBuilder.andWhere('permission.name LIKE :name', {
+        name: `%${name}%`,
+      });
+    }
+    if (code) {
+      queryBuilder.andWhere('permission.code LIKE :code', {
+        code: `%${code}%`,
+      });
+    }
+    if (type !== undefined) {
+      queryBuilder.andWhere('permission.type = :type', { type });
+    }
+    if (status !== undefined) {
+      queryBuilder.andWhere('permission.status = :status', { status });
+    }
+
+    const [data, total] = await queryBuilder
+      .orderBy('permission.sort', 'ASC')
+      .addOrderBy('permission.createdAt', 'DESC')
+      .skip(skip)
+      .take(pageSize)
+      .getManyAndCount();
 
     const resultPage = new ResultPage<Permission>(
       total,
@@ -72,8 +82,8 @@ export class PermissionService {
   }
 
   async findOne(id: string) {
-    const permission = await this.prisma.permission.findUnique({
-      where: { id: BigInt(id), deletedAt: null },
+    const permission = await this.permissionRepository.findOne({
+      where: { id: Number(id), deletedAt: null },
     });
 
     if (!permission) {
@@ -85,12 +95,12 @@ export class PermissionService {
 
   async update(id: string, updatePermissionDto: UpdatePermissionDto) {
     // Check if permission exists
-    const existing = await this.prisma.permission.findUnique({
-      where: { id: BigInt(id), deletedAt: null },
+    const existing = await this.permissionRepository.findOne({
+      where: { id: Number(id), deletedAt: null },
     });
 
     if (!existing) {
-      throw new NotFoundException(`权限 ID ${BigInt(id)} 不存在`);
+      throw new NotFoundException(`权限 ID ${id} 不存在`);
     }
 
     // Check if updating code to an existing one
@@ -98,7 +108,7 @@ export class PermissionService {
       updatePermissionDto.code &&
       updatePermissionDto.code !== existing.code
     ) {
-      const duplicate = await this.prisma.permission.findUnique({
+      const duplicate = await this.permissionRepository.findOne({
         where: { code: updatePermissionDto.code },
       });
       if (duplicate) {
@@ -108,18 +118,19 @@ export class PermissionService {
       }
     }
 
-    const permission = await this.prisma.permission.update({
-      where: { id: BigInt(id) },
-      data: updatePermissionDto,
+    await this.permissionRepository.update(Number(id), updatePermissionDto);
+
+    const updatedPermission = await this.permissionRepository.findOne({
+      where: { id: Number(id) },
     });
 
-    return Result.success(permission, '权限更新成功');
+    return Result.success(updatedPermission, '权限更新成功');
   }
 
   async remove(id: string) {
     // Check if permission exists
-    const permission = await this.prisma.permission.findUnique({
-      where: { id: BigInt(id), deletedAt: null },
+    const permission = await this.permissionRepository.findOne({
+      where: { id: Number(id), deletedAt: null },
     });
 
     if (!permission) {
@@ -127,40 +138,41 @@ export class PermissionService {
     }
 
     // Soft delete
-    await this.prisma.permission.update({
-      where: { id: BigInt(id) },
-      data: { deletedAt: new Date() },
+    await this.permissionRepository.update(Number(id), {
+      deletedAt: new Date(),
     });
 
     return Result.success(undefined, '权限删除成功');
   }
 
   async getTree() {
-    const permissions = await this.prisma.permission.findMany({
-      where: { deletedAt: null },
-      orderBy: [{ sort: 'asc' }, { createdAt: 'desc' }],
-    });
+    const permissions = await this.permissionRepository
+      .createQueryBuilder('permission')
+      .where('permission.deletedAt IS NULL')
+      .orderBy('permission.sort', 'ASC')
+      .addOrderBy('permission.createdAt', 'DESC')
+      .getMany();
 
     // Since there's no parentId field, return flat list
     return Result.success(permissions);
   }
 
   async findByCode(code: string) {
-    const permission = await this.prisma.permission.findUnique({
+    const permission = await this.permissionRepository.findOne({
       where: { code, deletedAt: null },
     });
 
     return permission;
   }
 
-  async findByIds(ids: bigint[]) {
-    const permissions = await this.prisma.permission.findMany({
-      where: {
-        id: { in: ids },
-        deletedAt: null,
-      },
-      orderBy: [{ sort: 'asc' }, { createdAt: 'desc' }],
-    });
+  async findByIds(ids: number[]) {
+    const permissions = await this.permissionRepository
+      .createQueryBuilder('permission')
+      .where('permission.id IN (:...ids)', { ids })
+      .andWhere('permission.deletedAt IS NULL')
+      .orderBy('permission.sort', 'ASC')
+      .addOrderBy('permission.createdAt', 'DESC')
+      .getMany();
 
     return permissions;
   }

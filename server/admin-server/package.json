@@ -9,7 +9,6 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "biome check --write",
-    "postinstall": "prisma generate",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
