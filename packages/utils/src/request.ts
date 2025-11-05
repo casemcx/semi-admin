@@ -39,7 +39,6 @@ export class AxiosService {
     );
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => {
-        console.log(response, 'response');
         const { data, status } = response;
         if (status < 200 || status >= 300) {
           return Promise.resolve({
@@ -48,7 +47,6 @@ export class AxiosService {
           });
         }
 
-        console.log(data, 'data');
         if (data.code !== ResultCode.SUCCESS) {
           return Promise.resolve({
             ...data,

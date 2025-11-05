@@ -103,19 +103,16 @@ export default function UserPermissionPage() {
         span: 12,
       },
       width: 200,
-      render: (value: any, record: Permission) => {
-        const renderIcon = () => {
-          if (record.icon) {
-            return <span style={{ marginRight: 8 }}>{record.icon}</span>;
-          }
-          return null;
-        };
-        return (
-          <span>
-            {renderIcon()}
-            {value}
-          </span>
-        );
+      render: (...args: any[]) => {
+        // const renderIcon = () => {
+        //   if (record.icon) {
+        //     return <span style={{ marginRight: 8 }}>{record.icon}</span>;
+        //   }
+        //   return null;
+        // };
+
+        console.log(args, 'value, record');
+        return <span>-</span>;
       },
     },
     {
@@ -240,6 +237,10 @@ export default function UserPermissionPage() {
   ];
 
   const { createColumns, editColumns } = useTableColumns(columns);
+
+  useEffect(() => {
+    console.log(dataSource, 'dataSource');
+  }, [dataSource]);
 
   return (
     <Card>

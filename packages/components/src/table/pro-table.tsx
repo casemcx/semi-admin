@@ -150,21 +150,27 @@ const ProTable = <T extends Record<string, any> = any>({
   const tableColumns = useMemo(() => {
     return baseTableColumns.map((col, index) => {
       // 如果有自定义render函数，则使用自定义render
-      if (col.render) {
-        return col;
-      }
+
+      // if (col.render) {
+      //   return col;
+      // }
 
       // 对于特定字段类型，使用ReadonlyField作为默认渲染
       if (isIntelligentRenderType(col.type)) {
         return {
           ...col,
-          render: (value: any, record: T) => {
-            return createElement(ReadonlyField<T>, {
-              column: { ...col, readonly: true } as any,
-              index,
-              value,
-              record,
-            });
+          render: (value: any, record: T, ...args: any[]) => {
+            console.log(value, record, args, 'isIntelligentRenderType, record');
+
+            return '-';
+            // return (
+            //   <ReadonlyField
+            //     column={col}
+            //     index={index}
+            //     value={value}
+            //     record={record}
+            //   />
+            // );
           },
         };
       }

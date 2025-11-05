@@ -7,6 +7,9 @@
     "lint": "biome check --write",
     "prepare": "simple-git-hooks",
     "reset": "npx rimraf node_modules ./**/node_modules",
+    "dev": "turbo run dev --parallel",
+    "dev:web": "turbo run dev --filter=admin-web",
+    "dev:server": "turbo run dev --filter=admin-server",
     "dev:admin": "pnpm -C apps/admin-web dev",
     "dev:admin-server": "pnpm -C server/admin-server dev"
   },
@@ -49,6 +52,7 @@
     "simple-git-hooks": "catalog:lint",
     "tailwind-merge": "catalog:tailwindcss",
     "tailwindcss": "catalog:tailwindcss",
+    "turbo": "^2.4.0",
     "typescript": "catalog:node"
   },
   "simple-git-hooks": {

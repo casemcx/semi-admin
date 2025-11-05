@@ -1,5 +1,5 @@
 {
-  "name": "apps",
+  "name": "admin-web",
   "version": "0.1.0",
   "scripts": {
     "dev": "modern dev",
