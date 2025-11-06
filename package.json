@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "biome check --write",
     "prepare": "simple-git-hooks",
-    "commit": "git-cz",
+    "commit": "git add . && git-cz && git push",
     "reset": "npx rimraf node_modules ./**/node_modules",
     "dev": "turbo run dev --parallel",
     "dev:web": "turbo run dev --filter=admin-web",
