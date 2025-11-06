@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/common/base-entity';
+import { RolePermission } from '@/models/role-permission/role-permission.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, Index, Unique } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Unique } from 'typeorm';
 
 @Entity('permission')
 @Index('idx_permission_type', ['type'])
@@ -136,4 +137,11 @@ export class Permission extends BaseEntity {
     nullable: false,
   })
   parentId: string;
+
+  // 关联角色权限
+  @OneToMany(
+    () => RolePermission,
+    rolePermission => rolePermission.permission,
+  )
+  rolePermissions?: RolePermission[];
 }
