@@ -79,7 +79,7 @@ export class PermissionController {
     return this.permissionService.findById(id);
   }
 
-  @Patch('/updateById')
+  @Post('/updateById')
   @ApiOperation({ summary: '更新权限' })
   @ApiResponse({ status: 200, description: '更新成功' })
   @ApiResponse({ status: 400, description: '请求参数错误' })

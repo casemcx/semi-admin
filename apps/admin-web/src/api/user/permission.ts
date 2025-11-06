@@ -41,18 +41,17 @@ export const getPermissionTree = () => {
  * @param id 权限ID
  * @returns Permission
  */
-export const getPermissionDetail = (id: string) => {
+export const getPermissionById = (id: string) => {
   return request.get<Permission>(`/api/permission/${id}`);
 };
 
 /**
  * @description 更新权限
- * @param id 权限ID
  * @param data UpdatePermissionDto
  * @returns Permission
  */
-export const updatePermission = (id: string, data: UpdatePermissionDto) => {
-  return request.put<Permission>(`/api/permission/${id}`, data);
+export const updatePermissionById = (data: UpdatePermissionDto) => {
+  return request.post<Permission>('/api/permission/updateById', data);
 };
 
 /**
@@ -60,6 +59,6 @@ export const updatePermission = (id: string, data: UpdatePermissionDto) => {
  * @param id 权限ID
  * @returns void
  */
-export const deletePermission = (id: string) => {
-  return request.delete<void>(`/api/permission/${id}`);
+export const deletePermissionById = (id: string) => {
+  return request.delete<void>(`/api/permission/deleteById/${id}`);
 };

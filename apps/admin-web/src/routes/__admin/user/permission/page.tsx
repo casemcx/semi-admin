@@ -2,9 +2,9 @@
 
 import {
   createPermission,
-  deletePermission,
+  deletePermissionById,
   getPermissionPage,
-  updatePermission,
+  updatePermissionById,
 } from '@/api';
 import { useLocal } from '@/locales';
 import type { Permission } from '@/types/user';
@@ -58,7 +58,7 @@ export default function UserPermissionPage() {
     {
       onSubmit: async (values: Permission, isEdit: boolean) => {
         if (isEdit) {
-          const result = await updatePermission(values.id, values);
+          const result = await updatePermissionById(values);
           console.log(result, 'result');
           if (result.code !== ResultCode.SUCCESS) {
             Toast.error(result.msg);
@@ -84,7 +84,7 @@ export default function UserPermissionPage() {
   const handleDelete = useCallback(
     (id: string) => {
       startTableTransition(async () => {
-        const result = await deletePermission(id);
+        const result = await deletePermissionById(id);
         if (result.code !== ResultCode.SUCCESS) {
           Toast.error(result.msg);
         } else {

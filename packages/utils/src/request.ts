@@ -93,6 +93,14 @@ export class AxiosService {
     }) as Promise<ResultData<T>>;
   }
 
+  patch<T>(url: string, data: unknown): Promise<ResultData<T>> {
+    return this.axiosInstance({
+      url: url,
+      method: Method.PATCH,
+      data,
+    }) as Promise<ResultData<T>>;
+  }
+
   use<T extends Middleware.RESULT | Middleware.RESPONSE>(
     type: T,
     options: ResultInterceptor<T>,
