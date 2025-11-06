@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "biome check --write",
     "prepare": "simple-git-hooks",
-    "commit": "git add . && git-cz && git push",
+    "commit": "git-cz",
     "reset": "npx rimraf node_modules ./**/node_modules",
     "dev": "turbo run dev --parallel",
     "dev:web": "turbo run dev --filter=admin-web",
@@ -81,8 +81,8 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog",
-      "config": ".cz-config.js"
+      "path": "./node_modules/cz-emoji",
+      "config": ".cz-emoji.json"
     }
   }
 }
