@@ -5,5 +5,5 @@ const snowflake = new SnowflakeIdv1({
 });
 
 export function guid() {
-  return snowflake.NextBigId();
+  return snowflake.NextBigId().toString();
 }

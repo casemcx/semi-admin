@@ -3,9 +3,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, Index, Unique } from 'typeorm';
 
 @Entity('permission')
-@Unique(['code'])
 @Index('idx_permission_type', ['type'])
 @Index('idx_permission_status', ['status'])
+@Index('idx_permission_parent_id', ['parentId'])
 export class Permission extends BaseEntity {
   @ApiProperty({ type: String, description: '权限名称', maxLength: 50 })
   @Column({
@@ -126,4 +126,14 @@ export class Permission extends BaseEntity {
     nullable: true,
   })
   description?: string;
+
+  @ApiProperty({ type: String, description: '父权限ID', default: '-1' })
+  @Column({
+    type: 'varchar',
+    length: 20,
+    default: '-1',
+    comment: '父权限ID',
+    nullable: false,
+  })
+  parentId: string;
 }

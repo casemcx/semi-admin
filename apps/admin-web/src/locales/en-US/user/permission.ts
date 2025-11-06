@@ -34,7 +34,8 @@ export default {
   'user.pemission.form.title.create': 'Add Permission',
 
   // Confirmation Messages
-  'user.pemission.delete.confirm': 'Are you sure you want to delete this permission?',
+  'user.pemission.delete.confirm':
+    'Are you sure you want to delete this permission?',
   'user.pemission.delete.confirm.ok': 'Confirm',
   'user.pemission.delete.confirm.cancel': 'Cancel',
   'user.pemission.delete.success': 'Delete Success',

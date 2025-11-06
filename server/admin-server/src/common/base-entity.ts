@@ -1,3 +1,4 @@
+import { StatusEnum } from '@/config';
 import {
   Column,
   CreateDateColumn,
@@ -8,15 +9,15 @@ import {
 
 export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column({
     type: 'int',
-    default: 1,
-    comment: '状态, 0: 删除，1: 正常',
-    nullable: false,
+    default: StatusEnum.ENABLED,
+    comment: '状态, 0: 禁用，1: 启用',
+    nullable: true,
   })
-  public status: number;
+  public status: StatusEnum;
 
   @CreateDateColumn({
     comment: '创建时间',

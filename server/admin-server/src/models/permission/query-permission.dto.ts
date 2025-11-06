@@ -41,4 +41,9 @@ export class QueryPermissionDto {
   @IsOptional()
   @IsEnum(PermissionStatus)
   status?: number;
+
+  @ApiPropertyOptional({ description: '父权限ID', example: 0 })
+  @IsOptional()
+  @IsString()
+  parentId?: string;
 }
