@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "biome check --write",
     "prepare": "simple-git-hooks",
+    "commit": "git-cz",
     "reset": "npx rimraf node_modules ./**/node_modules",
     "dev": "turbo run dev --parallel",
     "dev:web": "turbo run dev --filter=admin-web",
@@ -35,6 +36,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:lint",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@modern-js/app-tools": "catalog:build",
     "@modern-js/tsconfig": "catalog:build",
     "@tailwindcss/postcss": "catalog:tailwindcss",
@@ -45,6 +48,9 @@
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "clsx": "catalog:tailwindcss",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "cz-emoji": "1.3.2-canary.2",
     "lint-staged": "catalog:lint",
     "postcss": "catalog:tailwindcss",
     "postcss-loader": "catalog:tailwindcss",
@@ -56,7 +62,8 @@
     "typescript": "catalog:node"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "npx lint-staged",
+    "commit-msg": "npx --no -- commitlint --edit ${1}"
   },
   "engines": {
     "node": ">=16.18.1"
@@ -71,5 +78,11 @@
     "server/admin-server/**/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
       "biome check --files-ignore-unknown=true --config-path=./server/admin-server/biome.json"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog",
+      "config": ".cz-config.js"
+    }
   }
 }
