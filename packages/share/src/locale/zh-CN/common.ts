@@ -26,6 +26,12 @@ export default {
   'common.warning': '警告',
   'common.info': '提示',
 
+  // 操作结果
+  'common.createSuccess': '新增成功',
+  'common.updateSuccess': '更新成功',
+  'common.deleteSuccess': '删除成功',
+  'common.operationSuccess': '操作成功',
+
   // 表单验证
   'common.required': '必填项',
   'common.pleaseEnter': '请输入',

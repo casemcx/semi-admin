@@ -1,9 +1,9 @@
 import { zh } from '@packages/share';
-import pemission from './user/pemission';
+import permission from './user/permission';
 
 export default {
   translation: {
     ...zh,
-    ...pemission,
+    ...permission,
   },
 };

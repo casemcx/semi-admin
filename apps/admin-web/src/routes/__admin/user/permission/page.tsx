@@ -6,6 +6,7 @@ import {
   getPermissionPage,
   updatePermission,
 } from '@/api';
+import { useLocal } from '@/locales';
 import type { Permission } from '@/types/user';
 import { PermissionType } from '@/types/user/permission';
 import { IconDelete, IconEdit } from '@douyinfe/semi-icons';
@@ -23,11 +24,13 @@ import { ModalForm, ProTable, useTableColumns } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
 import { useTableFormState, useTableQuery } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 const { Title } = Typography;
 
 export default function UserPermissionPage() {
+  const intl = useLocal();
+
   const {
     loading,
     dataSource,
@@ -39,7 +42,9 @@ export default function UserPermissionPage() {
     startTableTransition,
   } = useTableQuery<Permission>(getPermissionPage);
 
-  useMount(fetchData);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const {
     isEdit,
@@ -59,7 +64,7 @@ export default function UserPermissionPage() {
             Toast.error(result.msg);
             return Promise.reject(result.msg);
           }
-          Toast.success('更新成功');
+          Toast.success(intl.get('common.updateSuccess'));
           fetchData();
           return Promise.resolve();
         }
@@ -69,7 +74,7 @@ export default function UserPermissionPage() {
           Toast.error(result.msg);
           return Promise.reject(result.msg);
         }
-        Toast.success('新增成功');
+        Toast.success(intl.get('common.createSuccess'));
         fetchData();
         return Promise.resolve();
       },
@@ -83,12 +88,12 @@ export default function UserPermissionPage() {
         if (result.code !== ResultCode.SUCCESS) {
           Toast.error(result.msg);
         } else {
-          Toast.success('删除成功');
+          Toast.success(intl.get('common.deleteSuccess'));
           fetchData();
         }
       });
     },
-    [startTableTransition, fetchData],
+    [startTableTransition, fetchData, intl],
   );
 
   ///  表单
@@ -96,7 +101,7 @@ export default function UserPermissionPage() {
   const columns: ProTableProps<Permission>['columns'] = [
     {
       name: 'name',
-      title: '权限名称',
+      title: intl.get('user.pemission.name'),
       ellipsis: true,
       type: 'input',
       colProps: {
@@ -104,20 +109,13 @@ export default function UserPermissionPage() {
       },
       width: 200,
       render: (...args: any[]) => {
-        // const renderIcon = () => {
-        //   if (record.icon) {
-        //     return <span style={{ marginRight: 8 }}>{record.icon}</span>;
-        //   }
-        //   return null;
-        // };
-
         console.log(args, 'value, record');
         return <span>-</span>;
       },
     },
     {
       name: 'code',
-      title: '权限编码',
+      title: intl.get('user.pemission.code'),
       width: 180,
       type: 'input',
       colProps: {
@@ -126,24 +124,42 @@ export default function UserPermissionPage() {
     },
     {
       name: 'type',
-      title: '权限类型',
+      title: intl.get('user.pemission.type'),
       type: 'select',
       colProps: {
         span: 12,
       },
       fieldProps: {
         optionList: [
-          { label: '菜单', value: PermissionType.MENU },
-          { label: '按钮', value: PermissionType.BUTTON },
-          { label: '接口', value: PermissionType.API },
+          {
+            label: intl.get('user.pemission.type.menu'),
+            value: PermissionType.MENU,
+          },
+          {
+            label: intl.get('user.pemission.type.button'),
+            value: PermissionType.BUTTON,
+          },
+          {
+            label: intl.get('user.pemission.type.api'),
+            value: PermissionType.API,
+          },
         ],
       },
       width: 120,
       render: (value: any) => {
         const typeMap = {
-          [PermissionType.MENU]: { text: '菜单', color: 'blue' },
-          [PermissionType.BUTTON]: { text: '按钮', color: 'green' },
-          [PermissionType.API]: { text: '接口', color: 'orange' },
+          [PermissionType.MENU]: {
+            text: intl.get('user.pemission.type.menu'),
+            color: 'blue',
+          },
+          [PermissionType.BUTTON]: {
+            text: intl.get('user.pemission.type.button'),
+            color: 'green',
+          },
+          [PermissionType.API]: {
+            text: intl.get('user.pemission.type.api'),
+            color: 'orange',
+          },
         };
         const config = typeMap[value as PermissionType];
         return <span style={{ color: config?.color }}>{config?.text}</span>;
@@ -151,7 +167,7 @@ export default function UserPermissionPage() {
     },
     {
       name: 'path',
-      title: '路径/API',
+      title: intl.get('user.pemission.path'),
       width: 250,
       render: (_: any, record: Permission) => {
         if (record.type === PermissionType.API) {
@@ -171,12 +187,12 @@ export default function UserPermissionPage() {
     },
     {
       name: 'sort',
-      title: '排序',
+      title: intl.get('user.pemission.sort'),
       width: 80,
     },
     {
       name: 'status',
-      title: '状态',
+      title: intl.get('user.pemission.status'),
       width: 100,
       type: 'switch',
       colProps: {
@@ -184,15 +200,19 @@ export default function UserPermissionPage() {
       },
       render: value => {
         return (value as Status) === Status.ENABLED ? (
-          <span style={{ color: '#52c41a' }}>启用</span>
+          <span style={{ color: '#52c41a' }}>
+            {intl.get('user.pemission.status.enabled')}
+          </span>
         ) : (
-          <span style={{ color: '#ff4d4f' }}>禁用</span>
+          <span style={{ color: '#ff4d4f' }}>
+            {intl.get('user.pemission.status.disabled')}
+          </span>
         );
       },
     },
     {
       name: 'createdAt',
-      title: '创建时间',
+      title: intl.get('user.pemission.createdAt'),
       width: 180,
       hiddenInCreate: true,
       hiddenInEdit: true,
@@ -200,7 +220,7 @@ export default function UserPermissionPage() {
     },
     {
       name: 'action',
-      title: '操作',
+      title: intl.get('user.pemission.action'),
       width: 150,
       fixed: 'right',
       hiddenInEdit: true,
@@ -214,13 +234,13 @@ export default function UserPermissionPage() {
             icon={<IconEdit />}
             onClick={() => handleEdit(record)}
           >
-            编辑
+            {intl.get('user.pemission.action.edit')}
           </Button>
           <Popconfirm
-            title="确定要删除这个权限吗？"
+            title={intl.get('user.pemission.delete.confirm')}
             onConfirm={() => handleDelete(record.id)}
-            okText="确定"
-            cancelText="取消"
+            okText={intl.get('user.pemission.delete.confirm.ok')}
+            cancelText={intl.get('user.pemission.delete.confirm.cancel')}
           >
             <Button
               size="small"
@@ -228,7 +248,7 @@ export default function UserPermissionPage() {
               icon={<IconDelete />}
               disabled={record.isSystem === Status.ENABLED}
             >
-              删除
+              {intl.get('user.pemission.action.delete')}
             </Button>
           </Popconfirm>
         </Space>
@@ -246,7 +266,7 @@ export default function UserPermissionPage() {
     <Card>
       <Row justify="space-between" align="middle" style={{ marginBottom: 16 }}>
         <Col>
-          <Title heading={5}>权限管理</Title>
+          <Title heading={5}>{intl.get('user.pemission.title')}</Title>
         </Col>
       </Row>
 
@@ -269,7 +289,7 @@ export default function UserPermissionPage() {
         toolBar={
           <div>
             <Button type="primary" onClick={handleAdd}>
-              新增权限
+              {intl.get('user.pemission.action.add')}
             </Button>
           </div>
         }
@@ -278,7 +298,11 @@ export default function UserPermissionPage() {
       />
 
       <ModalForm
-        title={isEdit ? '编辑权限' : '新增权限'}
+        title={
+          isEdit
+            ? intl.get('user.pemission.form.title.edit')
+            : intl.get('user.pemission.form.title.create')
+        }
         visible={modalVisible}
         onCancel={handleModalCancel}
         width={600}

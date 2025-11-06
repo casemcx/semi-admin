@@ -26,6 +26,12 @@ export default {
   'common.warning': 'Warning',
   'common.info': 'Info',
 
+  // Operation Results
+  'common.createSuccess': 'Create Success',
+  'common.updateSuccess': 'Update Success',
+  'common.deleteSuccess': 'Delete Success',
+  'common.operationSuccess': 'Operation Success',
+
   // Form validation
   'common.required': 'Required',
   'common.pleaseEnter': 'Please enter',
