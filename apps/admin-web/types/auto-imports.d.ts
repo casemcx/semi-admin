@@ -50,6 +50,7 @@ declare global {
   const useHistoryTravel: typeof import('ahooks').useHistoryTravel
   const useHover: typeof import('ahooks').useHover
   const useId: typeof import('react').useId
+  const useImageTool: typeof import('../src/hooks/useImageTool').useImageTool
   const useImperativeHandle: typeof import('react').useImperativeHandle
   const useInViewport: typeof import('ahooks').useInViewport
   const useInfiniteScroll: typeof import('ahooks').useInfiniteScroll
@@ -116,4 +117,7 @@ declare global {
   // @ts-ignore
   export type { AppRouter } from '../src/configs/router'
   import('../src/configs/router')
+  // @ts-ignore
+  export type { IUseImageToolState, IUseImageToolReturn } from '../src/hooks/useImageTool'
+  import('../src/hooks/useImageTool')
 }

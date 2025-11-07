@@ -1,6 +1,6 @@
 import { guid } from '@/common/utils';
 import { StatusEnum } from '@/config';
-import { Result, ResultPage } from '@/models/common';
+import { ResultPage } from '@/models/common';
 import {
   CreatePermissionDto,
   QueryPermissionDto,
@@ -42,7 +42,7 @@ export class PermissionService {
       updatedAt: new Date(),
     });
 
-    return Result.success(result, '权限创建成功');
+    return result;
   }
 
   async findPage(query: QueryPermissionDto) {
@@ -84,7 +84,7 @@ export class PermissionService {
       data,
     );
 
-    return Result.page(resultPage, '查询成功');
+    return resultPage;
   }
 
   async findById(id: string) {
@@ -96,7 +96,7 @@ export class PermissionService {
       throw new NotFoundException(`权限 ID ${id} 不存在`);
     }
 
-    return Result.success(permission);
+    return permission;
   }
 
   async updateById(updatePermissionDto: UpdatePermissionDto) {
@@ -129,7 +129,7 @@ export class PermissionService {
       ...rest,
       updatedAt: new Date(),
     });
-    return Result.success(null, '权限更新成功');
+    return;
   }
 
   async removeById(id: string) {
@@ -147,7 +147,7 @@ export class PermissionService {
       deletedAt: new Date(),
     });
 
-    return Result.success(undefined, '权限删除成功');
+    return;
   }
 
   async getTree() {
@@ -156,7 +156,7 @@ export class PermissionService {
       order: { sort: 'ASC', createdAt: 'DESC' },
     });
 
-    return Result.success(permissions);
+    return permissions;
   }
 
   async getPermissionByParentId(parentId: string) {
@@ -169,7 +169,7 @@ export class PermissionService {
       .orderBy('permission.sort', 'ASC')
       .addOrderBy('permission.createdAt', 'DESC')
       .getMany();
-    return Result.success(permissions);
+    return permissions;
   }
 
   async findByCode(code: string) {

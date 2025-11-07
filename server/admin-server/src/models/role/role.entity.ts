@@ -62,7 +62,7 @@ export class Role extends BaseEntity {
     comment: '状态：0-禁用 1-启用',
     nullable: false,
   })
-  status: number;
+  declare status: number;
 
   @ApiProperty({
     type: Number,

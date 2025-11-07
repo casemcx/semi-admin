@@ -36,7 +36,8 @@ export class PermissionController {
   @ApiResponse({ status: 201, description: '权限创建成功', type: Result })
   @ApiResponse({ status: 400, description: '请求参数错误' })
   async create(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionService.create(createPermissionDto);
+    const result = await this.permissionService.create(createPermissionDto);
+    return Result.success(result, '权限创建成功');
   }
 
   @Post('findPage')
@@ -48,7 +49,8 @@ export class PermissionController {
   })
   @ApiBody({ type: QueryPermissionDto })
   async findPage(@Body() query: QueryPermissionDto) {
-    return this.permissionService.findPage(query);
+    const result = await this.permissionService.findPage(query);
+    return Result.page(result, '查询成功');
   }
 
   @Get('tree')
@@ -59,11 +61,21 @@ export class PermissionController {
     type: Result<Permission[]>,
   })
   async getTree() {
-    return this.permissionService.getTree();
+    const result = await this.permissionService.getTree();
+    return Result.success(result, '查询成功');
   }
 
+  @Get('code/:code')
+  @ApiOperation({ summary: '根据编码获取权限' })
+  @ApiResponse({
+    status: 200,
+    description: '获取成功',
+    type: Result<Permission>,
+  })
+  @ApiParam({ name: 'code', description: '权限编码' })
   async findByCode(@Param('code') code: string) {
-    return this.permissionService.findByCode(code);
+    const result = await this.permissionService.findByCode(code);
+    return Result.success(result, '查询成功');
   }
 
   @Get(':id')
@@ -76,7 +88,8 @@ export class PermissionController {
   @ApiResponse({ status: 404, description: '权限不存在' })
   @ApiParam({ name: 'id', description: '权限ID' })
   async findById(@Param('id') id: string) {
-    return this.permissionService.findById(id);
+    const result = await this.permissionService.findById(id);
+    return Result.success(result, '查询成功');
   }
 
   @Post('/updateById')
@@ -86,7 +99,8 @@ export class PermissionController {
   @ApiResponse({ status: 404, description: '权限不存在' })
   @ApiBody({ type: UpdatePermissionDto })
   async updateById(@Body() updatePermissionDto: UpdatePermissionDto) {
-    return this.permissionService.updateById(updatePermissionDto);
+    await this.permissionService.updateById(updatePermissionDto);
+    return Result.success(null, '权限更新成功');
   }
 
   @Delete('/deleteById/:id')
@@ -96,6 +110,7 @@ export class PermissionController {
   @ApiResponse({ status: 400, description: '存在子权限或系统权限无法删除' })
   @ApiParam({ name: 'id', description: '权限ID' })
   async removeById(@Param('id') id: string) {
-    return this.permissionService.removeById(id);
+    await this.permissionService.removeById(id);
+    return Result.success(null, '权限删除成功');
   }
 }

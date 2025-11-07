@@ -1,5 +1,5 @@
 import { guid } from '@/common/utils';
-import { Result, ResultPage } from '@/models/common';
+import { ResultPage } from '@/models/common';
 import {
   CreateRolePermissionDto,
   QueryRolePermissionDto,
@@ -31,10 +31,10 @@ export class RolePermissionService {
 
   async create(createRolePermissionDto: CreateRolePermissionDto) {
     // Check if role exists and is enabled
-    const roleResult = await this.roleService.findById(
+    const role = await this.roleService.findById(
       createRolePermissionDto.roleId,
     );
-    if (!roleResult.data) {
+    if (!role) {
       throw new NotFoundException(
         `角色 ID ${createRolePermissionDto.roleId} 不存在`,
       );
@@ -43,12 +43,11 @@ export class RolePermissionService {
     // Check if all permissions exist and are enabled
     const permissions = [];
     for (const permissionId of createRolePermissionDto.permissionIds) {
-      const permissionResult =
-        await this.permissionService.findById(permissionId);
-      if (!permissionResult.data || permissionResult.data.status !== 1) {
+      const permission = await this.permissionService.findById(permissionId);
+      if (!permission || permission.status !== 1) {
         throw new BadRequestException(`权限 ID ${permissionId} 不存在或已禁用`);
       }
-      permissions.push(permissionResult.data);
+      permissions.push(permission);
     }
 
     // Remove existing role permissions
@@ -70,7 +69,7 @@ export class RolePermissionService {
 
     const result = await this.rolePermissionRepository.save(rolePermissions);
 
-    return Result.success(result, '角色权限分配成功');
+    return result;
   }
 
   async findPage(query: QueryRolePermissionDto) {
@@ -141,7 +140,7 @@ export class RolePermissionService {
       data,
     );
 
-    return Result.page(resultPage, '查询成功');
+    return resultPage;
   }
 
   async findByRoleId(roleId: string) {
@@ -157,7 +156,7 @@ export class RolePermissionService {
       .addOrderBy('permission.createdAt', 'DESC')
       .getMany();
 
-    return Result.success(rolePermissions);
+    return rolePermissions;
   }
 
   async findByPermissionId(permissionId: string) {
@@ -172,7 +171,7 @@ export class RolePermissionService {
       .addOrderBy('role.createdAt', 'DESC')
       .getMany();
 
-    return Result.success(rolePermissions);
+    return rolePermissions;
   }
 
   async removeById(roleId: string, permissionId: string) {
@@ -185,8 +184,6 @@ export class RolePermissionService {
     }
 
     await this.rolePermissionRepository.delete({ roleId, permissionId });
-
-    return Result.success(undefined, '角色权限取消成功');
   }
 
   async removeByRoleId(roleId: string) {
@@ -199,8 +196,6 @@ export class RolePermissionService {
     }
 
     await this.rolePermissionRepository.delete({ roleId });
-
-    return Result.success(undefined, '角色所有权限取消成功');
   }
 
   async getRolePermissions(roleId: string) {
@@ -253,20 +248,19 @@ export class RolePermissionService {
     createdBy?: string,
   ) {
     // Check if role exists
-    const roleResult = await this.roleService.findById(roleId);
-    if (!roleResult.data) {
+    const role = await this.roleService.findById(roleId);
+    if (!role) {
       throw new NotFoundException(`角色 ID ${roleId} 不存在`);
     }
 
     // Check if all permissions exist and are enabled
     const permissions = [];
     for (const permissionId of permissionIds) {
-      const permissionResult =
-        await this.permissionService.findById(permissionId);
-      if (!permissionResult.data || permissionResult.data.status !== 1) {
+      const permission = await this.permissionService.findById(permissionId);
+      if (!permission || permission.status !== 1) {
         throw new BadRequestException(`权限 ID ${permissionId} 不存在或已禁用`);
       }
-      permissions.push(permissionResult.data);
+      permissions.push(permission);
     }
 
     // Remove existing role permissions
@@ -284,6 +278,6 @@ export class RolePermissionService {
 
     const result = await this.rolePermissionRepository.save(rolePermissions);
 
-    return Result.success(result, '角色权限分配成功');
+    return result;
   }
 }

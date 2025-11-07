@@ -37,7 +37,8 @@ export class RoleController {
   @ApiResponse({ status: 201, description: '角色创建成功', type: Result })
   @ApiResponse({ status: 400, description: '请求参数错误' })
   async create(@Body() createRoleDto: CreateRoleDto) {
-    return this.roleService.create(createRoleDto);
+    const result = await this.roleService.create(createRoleDto);
+    return Result.success(result, '角色创建成功');
   }
 
   @Post('findPage')
@@ -49,7 +50,8 @@ export class RoleController {
   })
   @ApiBody({ type: QueryRoleDto })
   async findPage(@Body() query: QueryRoleDto) {
-    return this.roleService.findPage(query);
+    const result = await this.roleService.findPage(query);
+    return Result.page(result, '查询成功');
   }
 
   @Get('enabled')
@@ -60,7 +62,8 @@ export class RoleController {
     type: Result<Role[]>,
   })
   async findAllEnabled() {
-    return this.roleService.findAllEnabled();
+    const result = await this.roleService.findAllEnabled();
+    return Result.success(result, '查询成功');
   }
 
   @Get(':id')
@@ -73,7 +76,8 @@ export class RoleController {
   @ApiResponse({ status: 404, description: '角色不存在' })
   @ApiParam({ name: 'id', description: '角色ID' })
   async findById(@Param('id') id: string) {
-    return this.roleService.findById(id);
+    const result = await this.roleService.findById(id);
+    return Result.success(result, '查询成功');
   }
 
   @Post('updateById')
@@ -83,7 +87,8 @@ export class RoleController {
   @ApiResponse({ status: 404, description: '角色不存在' })
   @ApiBody({ type: UpdateRoleDto })
   async updateById(@Body() updateRoleDto: UpdateRoleDto) {
-    return this.roleService.updateById(updateRoleDto);
+    await this.roleService.updateById(updateRoleDto);
+    return Result.success(null, '角色更新成功');
   }
 
   @Delete('deleteById/:id')
@@ -93,7 +98,8 @@ export class RoleController {
   @ApiResponse({ status: 400, description: '系统角色不能删除' })
   @ApiParam({ name: 'id', description: '角色ID' })
   async removeById(@Param('id') id: string) {
-    return this.roleService.removeById(id);
+    await this.roleService.removeById(id);
+    return Result.success(null, '角色删除成功');
   }
 
   @Patch('updateStatus/:id')
@@ -102,6 +108,7 @@ export class RoleController {
   @ApiResponse({ status: 404, description: '角色不存在' })
   @ApiParam({ name: 'id', description: '角色ID' })
   async updateStatus(@Param('id') id: string, @Query('status') status: number) {
-    return this.roleService.updateStatus(id, status);
+    await this.roleService.updateStatus(id, status);
+    return Result.success(null, '角色状态更新成功');
   }
 }

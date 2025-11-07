@@ -37,7 +37,8 @@ export class UserController {
   @ApiResponse({ status: 201, description: '用户创建成功', type: Result })
   @ApiResponse({ status: 400, description: '请求参数错误' })
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    const result = await this.userService.create(createUserDto);
+    return Result.success(result, '用户创建成功');
   }
 
   @Post('findPage')
@@ -49,7 +50,8 @@ export class UserController {
   })
   @ApiBody({ type: QueryUserDto })
   async findPage(@Body() query: QueryUserDto) {
-    return this.userService.findPage(query);
+    const resultPage = await this.userService.findPage(query);
+    return Result.page(resultPage, '查询成功');
   }
 
   @Get(':id')
@@ -62,7 +64,8 @@ export class UserController {
   @ApiResponse({ status: 404, description: '用户不存在' })
   @ApiParam({ name: 'id', description: '用户ID' })
   async findById(@Param('id') id: string) {
-    return this.userService.findById(id);
+    const result = await this.userService.findById(id);
+    return Result.success(result, '查询成功');
   }
 
   @Post('updateById')
@@ -72,7 +75,8 @@ export class UserController {
   @ApiResponse({ status: 404, description: '用户不存在' })
   @ApiBody({ type: UpdateUserDto })
   async updateById(@Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateById(updateUserDto);
+    await this.userService.updateById(updateUserDto);
+    return Result.success(null, '用户更新成功');
   }
 
   @Delete('deleteById/:id')
@@ -81,7 +85,8 @@ export class UserController {
   @ApiResponse({ status: 404, description: '用户不存在' })
   @ApiParam({ name: 'id', description: '用户ID' })
   async removeById(@Param('id') id: string) {
-    return this.userService.removeById(id);
+    await this.userService.removeById(id);
+    return Result.success(undefined, '用户删除成功');
   }
 
   @Patch('updateStatus/:id')

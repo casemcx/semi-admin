@@ -1,5 +1,5 @@
 import { guid } from '@/common/utils';
-import { Result, ResultPage } from '@/models/common';
+import { ResultPage } from '@/models/common';
 import {
   CreateUserRoleDto,
   QueryUserRoleDto,
@@ -32,21 +32,19 @@ export class UserRoleService {
 
   async create(createUserRoleDto: CreateUserRoleDto) {
     // Check if user exists using UserService
-    const userResult = await this.userService.findById(
-      createUserRoleDto.userId,
-    );
-    if (!userResult.data) {
+    const user = await this.userService.findById(createUserRoleDto.userId);
+    if (!user) {
       throw new NotFoundException(`用户 ID ${createUserRoleDto.userId} 不存在`);
     }
 
     // Check if all roles exist and are enabled using RoleService
     const roles = [];
     for (const roleId of createUserRoleDto.roleIds) {
-      const roleResult = await this.roleService.findById(roleId);
-      if (!roleResult.data || roleResult.data.status !== 1) {
+      const role = await this.roleService.findById(roleId);
+      if (!role || role.status !== 1) {
         throw new BadRequestException(`角色 ID ${roleId} 不存在或已禁用`);
       }
-      roles.push(roleResult.data);
+      roles.push(role);
     }
 
     // Remove existing user roles
@@ -64,7 +62,7 @@ export class UserRoleService {
 
     const result = await this.userRoleRepository.save(userRoles);
 
-    return Result.success(result, '用户角色分配成功');
+    return result;
   }
 
   async findPage(query: QueryUserRoleDto) {
@@ -131,7 +129,7 @@ export class UserRoleService {
       records,
     );
 
-    return Result.page(resultPage, '查询成功');
+    return resultPage;
   }
 
   async findByUserId(userId: string) {
@@ -146,7 +144,7 @@ export class UserRoleService {
       .addOrderBy('role.createdAt', 'DESC')
       .getMany();
 
-    return Result.success(userRoles);
+    return userRoles;
   }
 
   async findByRoleId(roleId: string) {
@@ -165,7 +163,7 @@ export class UserRoleService {
       user: User.transformSafeUser(userRole.user),
     }));
 
-    return Result.success(records);
+    return records;
   }
 
   async removeById(userId: string, roleId: string) {
@@ -178,8 +176,6 @@ export class UserRoleService {
     }
 
     await this.userRoleRepository.delete({ userId, roleId });
-
-    return Result.success(undefined, '用户角色取消成功');
   }
 
   async removeByUserId(userId: string) {
@@ -192,8 +188,6 @@ export class UserRoleService {
     }
 
     await this.userRoleRepository.delete({ userId });
-
-    return Result.success(undefined, '用户所有角色取消成功');
   }
 
   async getUserRoles(userId: string) {

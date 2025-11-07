@@ -35,7 +35,8 @@ export class UserRoleController {
   @ApiResponse({ status: 400, description: '请求参数错误' })
   @ApiResponse({ status: 404, description: '用户或角色不存在' })
   async create(@Body() createUserRoleDto: CreateUserRoleDto) {
-    return this.userRoleService.create(createUserRoleDto);
+    const result = await this.userRoleService.create(createUserRoleDto);
+    return Result.success(result, '用户角色分配成功');
   }
 
   @Post('findPage')
@@ -47,7 +48,8 @@ export class UserRoleController {
   })
   @ApiBody({ type: QueryUserRoleDto })
   async findPage(@Body() query: QueryUserRoleDto) {
-    return this.userRoleService.findPage(query);
+    const result = await this.userRoleService.findPage(query);
+    return Result.success(result, '查询成功');
   }
 
   @Get('user/:userId')
@@ -59,7 +61,8 @@ export class UserRoleController {
   })
   @ApiParam({ name: 'userId', description: '用户ID' })
   async findByUserId(@Param('userId') userId: string) {
-    return this.userRoleService.findByUserId(userId);
+    const result = await this.userRoleService.findByUserId(userId);
+    return Result.success(result, '查询成功');
   }
 
   @Get('role/:roleId')
@@ -71,7 +74,8 @@ export class UserRoleController {
   })
   @ApiParam({ name: 'roleId', description: '角色ID' })
   async findByRoleId(@Param('roleId') roleId: string) {
-    return this.userRoleService.findByRoleId(roleId);
+    const result = await this.userRoleService.findByRoleId(roleId);
+    return Result.success(result, '查询成功');
   }
 
   @Delete('user/:userId/role/:roleId')
@@ -84,7 +88,8 @@ export class UserRoleController {
     @Param('userId') userId: string,
     @Param('roleId') roleId: string,
   ) {
-    return this.userRoleService.removeById(userId, roleId);
+    await this.userRoleService.removeById(userId, roleId);
+    return Result.success(null, '用户角色关联取消成功');
   }
 
   @Delete('user/:userId')
@@ -93,7 +98,8 @@ export class UserRoleController {
   @ApiResponse({ status: 404, description: '用户没有分配任何角色' })
   @ApiParam({ name: 'userId', description: '用户ID' })
   async removeByUserId(@Param('userId') userId: string) {
-    return this.userRoleService.removeByUserId(userId);
+    await this.userRoleService.removeByUserId(userId);
+    return Result.success(null, '用户所有角色取消成功');
   }
 
   @Get('user/:userId/roles')
@@ -105,7 +111,7 @@ export class UserRoleController {
   @ApiParam({ name: 'userId', description: '用户ID' })
   async getUserRoles(@Param('userId') userId: string) {
     const roles = await this.userRoleService.getUserRoles(userId);
-    return Result.success(roles);
+    return Result.success(roles, '查询成功');
   }
 
   @Get('role/:roleId/users')
@@ -117,6 +123,6 @@ export class UserRoleController {
   @ApiParam({ name: 'roleId', description: '角色ID' })
   async getRoleUsers(@Param('roleId') roleId: string) {
     const users = await this.userRoleService.getRoleUsers(roleId);
-    return Result.success(users);
+    return Result.success(users, '查询成功');
   }
 }

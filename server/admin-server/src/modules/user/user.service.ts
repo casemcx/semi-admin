@@ -1,6 +1,6 @@
 import { guid } from '@/common/utils';
 import { StatusEnum } from '@/config';
-import { Result, ResultPage } from '@/models/common';
+import { ResultPage } from '@/models/common';
 import {
   CreateUserDto,
   QueryUserDto,
@@ -63,7 +63,7 @@ export class UserService {
       updatedAt: new Date(),
     });
 
-    return Result.success(User.transformSafeUser(result), '用户创建成功');
+    return User.transformSafeUser(result);
   }
 
   async findPage(query: QueryUserDto) {
@@ -120,14 +120,12 @@ export class UserService {
       .take(pageSize)
       .getManyAndCount();
 
-    const resultPage = new ResultPage<User>(
+    return new ResultPage<User>(
       total,
       pageNum,
       pageSize,
       User.transformSafeUser(data),
     );
-
-    return Result.page(resultPage, '查询成功');
   }
 
   async findById(id: string) {
@@ -140,7 +138,7 @@ export class UserService {
     }
 
     // Remove password from response
-    return Result.success(User.transformSafeUser(user));
+    return User.transformSafeUser(user);
   }
 
   async findByUsername(username: string) {
@@ -218,8 +216,6 @@ export class UserService {
       ...rest,
       updatedAt: new Date(),
     });
-
-    return Result.success(null, '用户更新成功');
   }
 
   async removeById(id: string) {
@@ -236,8 +232,6 @@ export class UserService {
     await this.userRepository.update(id, {
       deletedAt: new Date(),
     });
-
-    return Result.success(undefined, '用户删除成功');
   }
 
   async updateLoginInfo(id: string, ip: string) {
@@ -255,7 +249,7 @@ export class UserService {
       .orderBy('user.createdAt', 'DESC')
       .getMany();
 
-    return Result.success(User.transformSafeUser(users));
+    return User.transformSafeUser(users);
   }
 
   async updateStatus(id: string, status: number) {
@@ -271,7 +265,5 @@ export class UserService {
       status,
       updatedAt: new Date(),
     });
-
-    return Result.success(null, '用户状态更新成功');
   }
 }

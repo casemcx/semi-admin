@@ -5,24 +5,24 @@ module.exports = {
       2,
       'always',
       [
-        'feat',     // 新功能
-        'fix',      // 修复bug
-        'docs',     // 文档更新
-        'style',    // 代码格式化（不影响代码运行的变动）
+        'feat', // 新功能
+        'fix', // 修复bug
+        'docs', // 文档更新
+        'style', // 代码格式化（不影响代码运行的变动）
         'refactor', // 重构（既不是新增功能，也不是修改bug的代码变动）
-        'perf',     // 性能优化
-        'test',     // 增加测试
-        'build',    // 构建系统或外部依赖的变动
-        'ci',       // CI配置文件和脚本的变动
-        'chore',    // 构建过程或辅助工具的变动
-        'revert',   // 回滚
-        'types',    // 类型定义文件修改
-        'wip',      // 开发中
-        'release',  // 发布
+        'perf', // 性能优化
+        'test', // 增加测试
+        'build', // 构建系统或外部依赖的变动
+        'ci', // CI配置文件和脚本的变动
+        'chore', // 构建过程或辅助工具的变动
+        'revert', // 回滚
+        'types', // 类型定义文件修改
+        'wip', // 开发中
+        'release', // 发布
         'workflow', // 工作流相关文件修改
-        'merge',    // 合并分支
+        'merge', // 合并分支
         'improvement', // 改进
-        'bump',     // 版本升级
+        'bump', // 版本升级
       ],
     ],
     'type-case': [2, 'always', 'lower-case'],

@@ -35,7 +35,10 @@ export class RolePermissionController {
   @ApiResponse({ status: 400, description: '请求参数错误' })
   @ApiResponse({ status: 404, description: '角色或权限不存在' })
   async create(@Body() createRolePermissionDto: CreateRolePermissionDto) {
-    return this.rolePermissionService.create(createRolePermissionDto);
+    const result = await this.rolePermissionService.create(
+      createRolePermissionDto,
+    );
+    return Result.success(result, '角色权限分配成功');
   }
 
   @Post('findPage')
@@ -47,7 +50,8 @@ export class RolePermissionController {
   })
   @ApiBody({ type: QueryRolePermissionDto })
   async findPage(@Body() query: QueryRolePermissionDto) {
-    return this.rolePermissionService.findPage(query);
+    const result = await this.rolePermissionService.findPage(query);
+    return Result.success(result, '查询成功');
   }
 
   @Get('role/:roleId')
@@ -59,7 +63,8 @@ export class RolePermissionController {
   })
   @ApiParam({ name: 'roleId', description: '角色ID' })
   async findByRoleId(@Param('roleId') roleId: string) {
-    return this.rolePermissionService.findByRoleId(roleId);
+    const result = await this.rolePermissionService.findByRoleId(roleId);
+    return Result.success(result, '查询成功');
   }
 
   @Get('permission/:permissionId')
@@ -71,7 +76,9 @@ export class RolePermissionController {
   })
   @ApiParam({ name: 'permissionId', description: '权限ID' })
   async findByPermissionId(@Param('permissionId') permissionId: string) {
-    return this.rolePermissionService.findByPermissionId(permissionId);
+    const result =
+      await this.rolePermissionService.findByPermissionId(permissionId);
+    return Result.success(result, '查询成功');
   }
 
   @Delete('role/:roleId/permission/:permissionId')
@@ -84,7 +91,8 @@ export class RolePermissionController {
     @Param('roleId') roleId: string,
     @Param('permissionId') permissionId: string,
   ) {
-    return this.rolePermissionService.removeById(roleId, permissionId);
+    await this.rolePermissionService.removeById(roleId, permissionId);
+    return Result.success(null, '角色权限关联取消成功');
   }
 
   @Delete('role/:roleId')
@@ -93,7 +101,8 @@ export class RolePermissionController {
   @ApiResponse({ status: 404, description: '角色没有分配任何权限' })
   @ApiParam({ name: 'roleId', description: '角色ID' })
   async removeByRoleId(@Param('roleId') roleId: string) {
-    return this.rolePermissionService.removeByRoleId(roleId);
+    await this.rolePermissionService.removeByRoleId(roleId);
+    return Result.success(null, '角色所有权限取消成功');
   }
 
   @Get('role/:roleId/permissions')
@@ -106,7 +115,7 @@ export class RolePermissionController {
   async getRolePermissions(@Param('roleId') roleId: string) {
     const permissions =
       await this.rolePermissionService.getRolePermissions(roleId);
-    return Result.success(permissions);
+    return Result.success(permissions, '查询成功');
   }
 
   @Get('permission/:permissionId/roles')
@@ -119,7 +128,7 @@ export class RolePermissionController {
   async getPermissionRoles(@Param('permissionId') permissionId: string) {
     const roles =
       await this.rolePermissionService.getPermissionRoles(permissionId);
-    return Result.success(roles);
+    return Result.success(roles, '查询成功');
   }
 
   @Post('role/:roleId/assign')
@@ -130,10 +139,11 @@ export class RolePermissionController {
     @Param('roleId') roleId: string,
     @Body() body: { permissionIds: string[]; createdBy?: string },
   ) {
-    return this.rolePermissionService.assignPermissionsToRole(
+    const result = await this.rolePermissionService.assignPermissionsToRole(
       roleId,
       body.permissionIds,
       body.createdBy,
     );
+    return Result.success(result, '权限分配成功');
   }
 }

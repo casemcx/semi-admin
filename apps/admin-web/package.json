@@ -13,11 +13,13 @@
     "@douyinfe/semi-icons": "^2.87.1",
     "@modern-js/plugin-tailwindcss": "catalog:build",
     "@modern-js/runtime": "catalog:build",
+    "@napi-rs/image": "^1.11.2",
     "@packages/components": "workspace:^",
+    "@packages/hooks": "workspace:^",
     "@packages/share": "workspace:^",
     "@packages/ui": "workspace:^",
     "@packages/utils": "workspace:^",
-    "@packages/hooks": "workspace:^",
+    "ahooks": "^3.9.6",
     "vditor": "^3.11.2"
   },
   "devDependencies": {

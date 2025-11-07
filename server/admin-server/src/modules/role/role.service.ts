@@ -1,6 +1,6 @@
 import { guid } from '@/common/utils';
 import { StatusEnum } from '@/config';
-import { Result, ResultPage } from '@/models/common';
+import { ResultPage } from '@/models/common';
 import {
   CreateRoleDto,
   QueryRoleDto,
@@ -43,7 +43,7 @@ export class RoleService {
       updatedAt: new Date(),
     });
 
-    return Result.success(result, '角色创建成功');
+    return result;
   }
 
   async findPage(query: QueryRoleDto) {
@@ -93,9 +93,7 @@ export class RoleService {
       .take(pageSize)
       .getManyAndCount();
 
-    const resultPage = new ResultPage<Role>(total, pageNum, pageSize, data);
-
-    return Result.page(resultPage, '查询成功');
+    return new ResultPage<Role>(total, pageNum, pageSize, data);
   }
 
   async findById(id: string) {
@@ -107,7 +105,7 @@ export class RoleService {
       throw new NotFoundException(`角色 ID ${id} 不存在`);
     }
 
-    return Result.success(role);
+    return role;
   }
 
   async findByCode(code: string) {
@@ -149,8 +147,6 @@ export class RoleService {
       ...rest,
       updatedAt: new Date(),
     });
-
-    return Result.success(null, '角色更新成功');
   }
 
   async removeById(id: string) {
@@ -172,8 +168,6 @@ export class RoleService {
     await this.roleRepository.update(id, {
       deletedAt: new Date(),
     });
-
-    return Result.success(undefined, '角色删除成功');
   }
 
   async findAllEnabled() {
@@ -185,7 +179,7 @@ export class RoleService {
       order: { sort: 'ASC', createdAt: 'DESC' },
     });
 
-    return Result.success(roles);
+    return roles;
   }
 
   async findByIds(ids: string[]) {
@@ -213,7 +207,5 @@ export class RoleService {
       status,
       updatedAt: new Date(),
     });
-
-    return Result.success(null, '角色状态更新成功');
   }
 }
