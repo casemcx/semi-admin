@@ -38,6 +38,7 @@ export default {
   'user.pemission.delete.confirm.ok': '确定',
   'user.pemission.delete.confirm.cancel': '取消',
   'user.pemission.delete.success': '删除成功',
+  'user.permission.cannotDeleteSystem': '不能删除系统权限',
 
   // 占位符
   'user.pemission.placeholder.empty': '-',

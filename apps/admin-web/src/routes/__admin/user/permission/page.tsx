@@ -2,6 +2,7 @@
 
 import {
   createPermission,
+  deletePermissionBatch,
   deletePermissionById,
   getPermissionPage,
   updatePermissionById,
@@ -14,22 +15,27 @@ import {
   Button,
   Card,
   Col,
+  Modal,
   Popconfirm,
   Row,
   Space,
   Toast,
   Typography,
 } from '@douyinfe/semi-ui';
+import type { RowSelectionProps } from '@douyinfe/semi-ui/lib/es/table';
 import { ModalForm, ProTable, useTableColumns } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
 import { useTableFormState, useTableQuery } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const { Title } = Typography;
 
 export default function UserPermissionPage() {
   const intl = useLocal();
+
+  // 批量选择状态
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const {
     loading,
@@ -90,11 +96,73 @@ export default function UserPermissionPage() {
         } else {
           Toast.success(intl.get('common.deleteSuccess'));
           fetchData();
+          setSelectedRowKeys([]);
         }
       });
     },
     [startTableTransition, fetchData, intl],
   );
+
+  // 批量删除处理函数
+  const handleBatchDelete = useCallback(() => {
+    if (selectedRowKeys.length === 0) {
+      Toast.warning(intl.get('common.selectAtLeastOne'));
+      return;
+    }
+
+    // 过滤掉系统权限
+    const systemPermissions = dataSource.filter(
+      item =>
+        selectedRowKeys.includes(item.id) && item.isSystem === Status.ENABLED,
+    );
+
+    if (systemPermissions.length > 0) {
+      Toast.error(intl.get('user.permission.cannotDeleteSystem'));
+      return;
+    }
+
+    Modal.confirm({
+      title: intl.get('common.batchDeleteConfirm'),
+      content: intl.get('common.batchDeleteContent', {
+        count: selectedRowKeys.length,
+      }),
+      okText: intl.get('common.confirm'),
+      cancelText: intl.get('common.cancel'),
+      onOk: async () => {
+        startTableTransition(async () => {
+          const result = await deletePermissionBatch(selectedRowKeys);
+          if (result.code !== ResultCode.SUCCESS) {
+            Toast.error(result.msg);
+          } else {
+            Toast.success(intl.get('common.batchDeleteSuccess'));
+            fetchData();
+            setSelectedRowKeys([]);
+          }
+        });
+      },
+    });
+  }, [selectedRowKeys, dataSource, startTableTransition, fetchData, intl]);
+
+  // rowSelection 配置
+  const rowSelection: RowSelectionProps<Permission> = {
+    selectedRowKeys,
+    onChange: selectedKeys => {
+      setSelectedRowKeys((selectedKeys || []) as string[]);
+    },
+    onSelectAll: (selected, selectedRows) => {
+      if (selected && selectedRows) {
+        const allIds = selectedRows
+          .filter(item => item.isSystem !== Status.ENABLED)
+          .map(item => item.id.toString());
+        setSelectedRowKeys(allIds);
+      } else {
+        setSelectedRowKeys([]);
+      }
+    },
+    getCheckboxProps: record => ({
+      disabled: record.isSystem === Status.ENABLED,
+    }),
+  };
 
   ///  表单
   // 表格列定义
@@ -275,6 +343,7 @@ export default function UserPermissionPage() {
         dataSource={dataSource}
         loading={loading}
         rowKey={record => record.id.toString()}
+        rowSelection={rowSelection}
         onSearch={handleSearch}
         onReset={handleReset}
         pagination={{
@@ -287,11 +356,18 @@ export default function UserPermissionPage() {
           onPageChange: handlePageChange,
         }}
         toolBar={
-          <div>
+          <Space>
+            <Button
+              type="danger"
+              disabled={selectedRowKeys.length === 0}
+              onClick={handleBatchDelete}
+            >
+              {intl.get('common.batchDelete')} ({selectedRowKeys.length})
+            </Button>
             <Button type="primary" onClick={handleAdd}>
               {intl.get('user.pemission.action.add')}
             </Button>
-          </div>
+          </Space>
         }
         scroll={{ x: 1200 }}
         showCard={false}

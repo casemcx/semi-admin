@@ -39,6 +39,7 @@ export default {
   'user.pemission.delete.confirm.ok': 'Confirm',
   'user.pemission.delete.confirm.cancel': 'Cancel',
   'user.pemission.delete.success': 'Delete Success',
+  'user.permission.cannotDeleteSystem': 'Cannot delete system permissions',
 
   // Placeholders
   'user.pemission.placeholder.empty': '-',

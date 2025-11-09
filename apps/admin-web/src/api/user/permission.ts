@@ -62,3 +62,12 @@ export const updatePermissionById = (data: UpdatePermissionDto) => {
 export const deletePermissionById = (id: string) => {
   return request.delete<void>(`/api/permission/deleteById/${id}`);
 };
+
+/**
+ * @description 批量删除权限
+ * @param ids 权限ID数组
+ * @returns void
+ */
+export const deletePermissionBatch = (ids: string[]) => {
+  return request.post<void>('/api/permission/deleteBatch', { ids });
+};

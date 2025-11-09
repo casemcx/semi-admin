@@ -92,4 +92,12 @@ export default {
   'common.pagination.pageSize': 'items/page',
   'common.pagination.total': 'Total {{total}} items',
   'common.pagination.goto': 'Go to',
+
+  // Batch Operations
+  'common.batchDelete': 'Batch Delete',
+  'common.batchDeleteConfirm': 'Confirm batch delete?',
+  'common.batchDeleteContent':
+    'Will delete {{count}} selected items, this operation cannot be undone',
+  'common.batchDeleteSuccess': 'Batch delete successful',
+  'common.selectAtLeastOne': 'Please select at least one item',
 };

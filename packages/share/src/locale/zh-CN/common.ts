@@ -90,4 +90,11 @@ export default {
   'common.pagination.pageSize': '条/页',
   'common.pagination.total': '共 {{total}} 条',
   'common.pagination.goto': '跳转至',
+
+  // 批量操作
+  'common.batchDelete': '批量删除',
+  'common.batchDeleteConfirm': '确定批量删除吗？',
+  'common.batchDeleteContent': '将删除选中的 {{count}} 项，此操作不可恢复',
+  'common.batchDeleteSuccess': '批量删除成功',
+  'common.selectAtLeastOne': '请至少选择一项',
 };
