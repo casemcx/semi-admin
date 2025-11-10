@@ -48,13 +48,14 @@ export default function UserPermissionPage() {
     startTableTransition,
   } = useTableQuery<Permission>(getPermissionPage);
 
-  useEffect(() => {
+  useMount(() => {
     fetchData();
-  }, [fetchData]);
+  });
 
   const {
     isEdit,
     modalVisible,
+    formValues,
     handleAdd,
     handleEdit,
     handleModalOk,
@@ -373,12 +374,13 @@ export default function UserPermissionPage() {
         showCard={false}
       />
 
-      <ModalForm
+      <ModalForm<Permission>
         title={
           isEdit
             ? intl.get('user.pemission.form.title.edit')
             : intl.get('user.pemission.form.title.create')
         }
+        initialValues={formValues}
         visible={modalVisible}
         onCancel={handleModalCancel}
         width={600}
