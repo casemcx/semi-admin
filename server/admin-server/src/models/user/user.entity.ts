@@ -1,5 +1,4 @@
 import { BaseEntity } from '@/common/base-entity';
-import { UserRole } from '@/models/user-role/user-role.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { hash } from 'bcrypt';
 import { omit } from 'lodash-es';
@@ -9,7 +8,6 @@ import {
   Column,
   Entity,
   Index,
-  OneToMany,
   Unique,
 } from 'typeorm';
 
@@ -101,7 +99,7 @@ export class User extends BaseEntity {
     required: false,
   })
   @Column({
-    type: 'datetime',
+    type: 'timestamp',
     comment: '最后登录时间',
     nullable: true,
   })
@@ -128,13 +126,6 @@ export class User extends BaseEntity {
       this.password = await hash(this.password, 10);
     }
   }
-
-  // 关联用户角色
-  @OneToMany(
-    () => UserRole,
-    userRole => userRole.user,
-  )
-  userRoles?: UserRole[];
 
   static transformSafeUser<T extends User | User[]>(user: T): T {
     if (Array.isArray(user)) {

@@ -1,8 +1,6 @@
 import { BaseEntity } from '@/common/base-entity';
-import { Permission } from '@/models/permission/permission.entity';
-import { Role } from '@/models/role/role.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, Index, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import { Column, Entity, Index, Unique } from 'typeorm';
 
 @Entity('role_permission')
 @Unique(['roleId', 'permissionId'])
@@ -43,20 +41,4 @@ export class RolePermission extends BaseEntity {
     nullable: true,
   })
   createdBy?: string;
-
-  // 关联角色
-  @ManyToOne(
-    () => Role,
-    role => role.rolePermissions,
-  )
-  @JoinColumn({ name: 'roleId' })
-  role?: Role;
-
-  // 关联权限
-  @ManyToOne(
-    () => Permission,
-    permission => permission.rolePermissions,
-  )
-  @JoinColumn({ name: 'permissionId' })
-  permission?: Permission;
 }

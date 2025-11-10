@@ -1,8 +1,6 @@
 import { BaseEntity } from '@/common/base-entity';
-import { RolePermission } from '@/models/role-permission/role-permission.entity';
-import { UserRole } from '@/models/user-role/user-role.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, Index, OneToMany, Unique } from 'typeorm';
+import { Column, Entity, Index, Unique } from 'typeorm';
 
 @Entity('role')
 @Unique(['code'])
@@ -76,18 +74,4 @@ export class Role extends BaseEntity {
     nullable: false,
   })
   isSystem: number;
-
-  // 关联用户角色
-  @OneToMany(
-    () => UserRole,
-    userRole => userRole.role,
-  )
-  userRoles?: UserRole[];
-
-  // 关联角色权限
-  @OneToMany(
-    () => RolePermission,
-    rolePermission => rolePermission.role,
-  )
-  rolePermissions?: RolePermission[];
 }

@@ -1,8 +1,6 @@
 import { BaseEntity } from '@/common/base-entity';
-import { Role } from '@/models/role/role.entity';
-import { User } from '@/models/user/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, Index, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import { Column, Entity, Index, Unique } from 'typeorm';
 
 @Entity('user_role')
 @Unique(['userId', 'roleId'])
@@ -43,20 +41,4 @@ export class UserRole extends BaseEntity {
     nullable: true,
   })
   createdBy?: string;
-
-  // 关联用户
-  @ManyToOne(
-    () => User,
-    user => user.userRoles,
-  )
-  @JoinColumn({ name: 'userId' })
-  user?: User;
-
-  // 关联角色
-  @ManyToOne(
-    () => Role,
-    role => role.userRoles,
-  )
-  @JoinColumn({ name: 'roleId' })
-  role?: Role;
 }
