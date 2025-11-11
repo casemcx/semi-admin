@@ -80,7 +80,7 @@ async function bootstrap() {
 
   const port = Number.parseInt(process.env.PORT || '5000', 10);
 
-  if (import.meta.env.PROD) {
+  if (process.env.PROD) {
     await app.listen(port, '0.0.0.0');
     console.log(`🚀 Server is running on http://localhost:${port}`);
     console.log(`📚 API Documentation: http://localhost:${port}/api-docs`);
@@ -88,8 +88,10 @@ async function bootstrap() {
   return app;
 }
 
+console.log(Number(process.env.PROD), 'Number(process.env.PROD)');
+
 // 开发环境启动
-if (!import.meta.env.PROD) {
+if (!Number(process.env.PROD)) {
   bootstrap();
 }
 

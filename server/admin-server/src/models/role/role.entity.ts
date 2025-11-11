@@ -55,7 +55,7 @@ export class Role extends BaseEntity {
     default: 1,
   })
   @Column({
-    type: 'tinyint',
+    type: 'smallint',
     default: 1,
     comment: '状态：0-禁用 1-启用',
     nullable: false,
@@ -68,7 +68,7 @@ export class Role extends BaseEntity {
     default: 0,
   })
   @Column({
-    type: 'tinyint',
+    type: 'smallint',
     default: 0,
     comment: '是否系统角色：0-否 1-是（系统角色不可删除）',
     nullable: false,

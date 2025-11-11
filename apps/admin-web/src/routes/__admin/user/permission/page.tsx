@@ -25,7 +25,11 @@ import {
 import type { RowSelectionProps } from '@douyinfe/semi-ui/lib/es/table';
 import { ModalForm, ProTable, useTableColumns } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
-import { useTableFormState, useTableQuery } from '@packages/hooks';
+import {
+  useRowSelection,
+  useTableFormState,
+  useTableQuery,
+} from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -144,26 +148,17 @@ export default function UserPermissionPage() {
     });
   }, [selectedRowKeys, dataSource, startTableTransition, fetchData, intl]);
 
-  // rowSelection 配置
-  const rowSelection: RowSelectionProps<Permission> = {
-    selectedRowKeys,
-    onChange: selectedKeys => {
-      setSelectedRowKeys((selectedKeys || []) as string[]);
-    },
+  const { rowSelection } = useRowSelection<Permission, string>({
+    defaultKeys: selectedRowKeys,
     onSelectAll: (selected, selectedRows) => {
       if (selected && selectedRows) {
-        const allIds = selectedRows
-          .filter(item => item.isSystem !== Status.ENABLED)
-          .map(item => item.id.toString());
+        const allIds = selectedRows.map(item => item.id.toString());
         setSelectedRowKeys(allIds);
       } else {
         setSelectedRowKeys([]);
       }
     },
-    getCheckboxProps: record => ({
-      disabled: record.isSystem === Status.ENABLED,
-    }),
-  };
+  });
 
   ///  表单
   // 表格列定义
