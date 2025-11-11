@@ -12,7 +12,7 @@
     "migration:gen": "./migration.sh generate",
     "migration:run": "./migration.sh run",
     "migration:revert": "./migration.sh revert",
-    "format:migrations": "biome format --write \"migrations/**/*.ts\"",
+    "format:migrations": "biome format --write",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",

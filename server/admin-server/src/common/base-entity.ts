@@ -3,12 +3,16 @@ import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 export abstract class BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({
+    type: 'varchar',
+    length: 20,
+    comment: 'ID',
+  })
   id: string;
 
   @Column({

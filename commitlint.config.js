@@ -1,8 +1,9 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
+    // 宽松的类型检查 - 可选
     'type-enum': [
-      2,
+      2, // 改为警告级别
       'always',
       [
         'feat', // 新功能
@@ -25,17 +26,27 @@ module.exports = {
         'bump', // 版本升级
       ],
     ],
-    'type-case': [2, 'always', 'lower-case'],
-    'type-empty': [2, 'never'],
-    'scope-case': [2, 'always', 'lower-case'],
-    'subject-case': [0], // 禁用 subject case 检查以支持中文
-    'subject-empty': [2, 'never'],
-    'subject-full-stop': [2, 'never', '.'],
-    'header-max-length': [2, 'always', 100], // 增加长度限制以支持 emoji
+    // 类型大小写 - 警告级别
+    'type-case': [1, 'always', 'lower-case'],
+    // 允许空的 type
+    'type-empty': [1, 'never'], // 改为警告级别
+    // 作用域大小写 - 警告级别
+    'scope-case': [1, 'always', 'lower-case'],
+    // 允许中文 subject，禁用大小写检查
+    'subject-case': [0], // 禁用
+    // 允许空的 subject
+    'subject-empty': [1, 'never'], // 改为警告级别
+    // 允许 subject 以句号结尾
+    'subject-full-stop': [0], // 禁用
+    // 增加 header 长度限制
+    'header-max-length': [1, 'always', 200], // 警告级别，增加长度
+    // body 格式检查 - 警告级别
     'body-leading-blank': [1, 'always'],
-    'body-max-line-length': [2, 'always', 100],
+    'body-max-line-length': [1, 'always', 100],
+    // footer 格式检查 - 警告级别
     'footer-leading-blank': [1, 'always'],
-    'footer-max-line-length': [2, 'always', 100],
-    'header-trim': [2, 'always'], // 去除首尾空白字符
+    'footer-max-line-length': [1, 'always', 100],
+    // 去除首尾空白字符 - 警告级别
+    'header-trim': [1, 'always'],
   },
 };
