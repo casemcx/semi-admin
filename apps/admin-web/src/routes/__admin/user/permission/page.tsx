@@ -172,9 +172,8 @@ export default function UserPermissionPage() {
         span: 12,
       },
       width: 200,
-      render: (...args: any[]) => {
-        console.log(args, 'value, record');
-        return <span>-</span>;
+      render: value => {
+        return <span>{value}</span>;
       },
     },
     {

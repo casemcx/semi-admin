@@ -3,6 +3,7 @@ import { Button, Modal, Space } from '@douyinfe/semi-ui';
 import { useState } from 'react';
 import { ProForm } from '../pro-form';
 
+import clsx from 'clsx';
 import type { ModalFormProps } from './types';
 
 function ModalForm<T extends Record<string, any>>({
@@ -58,13 +59,44 @@ function ModalForm<T extends Record<string, any>>({
   return (
     <Modal
       onCancel={onCancel}
-      footer={null}
+      footer={
+        readonly ? (
+          <div className="flex w-full justify-end pt-6 px-6 pb-6">
+            <Button onClick={onCancel}>关闭</Button>
+          </div>
+        ) : (
+          <div className="flex w-full justify-end pt-6 px-6 pb-6">
+            <Space>
+              {showReset && (
+                <Button
+                  htmlType="reset"
+                  onClick={handleReset}
+                  disabled={isDisabled}
+                >
+                  {resetText}
+                </Button>
+              )}
+              <Button onClick={onCancel} disabled={isDisabled}>
+                {cancelText}
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                form={formName}
+                loading={submitLoading}
+              >
+                {okText}
+              </Button>
+            </Space>
+          </div>
+        )
+      }
       bodyStyle={{ maxHeight: 'calc(80vh - 120px)', overflowY: 'auto' }}
-      className={className}
+      className={clsx(className, 'modal-form')}
       {...modalProps}
     >
-      <div className="modal-form-wrapper w-full h-full overflow-hidden flex flex-col">
-        <div className="modal-form-content flex-1 overflow-y-auto h-0">
+      <div className="modal-form-wrapper w-full flex flex-col">
+        <div className="modal-form-content flex-1">
           <ProForm<T>
             id={formName}
             columns={columns as FormSchema<T>[]}
@@ -76,38 +108,6 @@ function ModalForm<T extends Record<string, any>>({
             readonly={readonly}
             showSubmit={false}
             showReset={false}
-            footer={
-              readonly ? (
-                <div className="flex w-full justify-end pt-6 px-6 pb-6">
-                  <Button onClick={onCancel}>关闭</Button>
-                </div>
-              ) : (
-                <div className="flex w-full justify-end pt-6 px-6 pb-6">
-                  <Space>
-                    {showReset && (
-                      <Button
-                        htmlType="reset"
-                        onClick={handleReset}
-                        disabled={isDisabled}
-                      >
-                        {resetText}
-                      </Button>
-                    )}
-                    <Button onClick={onCancel} disabled={isDisabled}>
-                      {cancelText}
-                    </Button>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      form={formName}
-                      loading={submitLoading}
-                    >
-                      {okText}
-                    </Button>
-                  </Space>
-                </div>
-              )
-            }
             {...formProps}
           >
             {children}
