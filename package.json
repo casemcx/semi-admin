@@ -9,6 +9,7 @@
     "commit": "git add . && git-cz && git push",
     "reset": "npx rimraf node_modules ./**/node_modules",
     "dev": "turbo run dev --parallel",
+    "dev:build": "turbo run dev-build --parallel",
     "dev:web": "turbo run dev --filter=admin-web",
     "dev:server": "turbo run dev --filter=admin-server",
     "dev:admin": "pnpm -C apps/admin-web dev",
