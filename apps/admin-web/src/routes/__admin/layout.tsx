@@ -13,30 +13,27 @@ import {
   Nav,
 } from '@douyinfe/semi-ui';
 import type { OnSelectedData } from '@douyinfe/semi-ui/lib/es/navigation';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { AuthGuard } from '@/components';
 import { LanguageSwitch } from '@/components/locale';
 import { useUserStore } from '@/stores/user';
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useOutlet,
-} from '@modern-js/runtime/router';
+import { Outlet, useLocation, useNavigate } from '@modern-js/runtime/router';
 import styled from './index.module.less';
+import { getMenuItems } from './menu-items';
 
 const { Header, Sider, Content } = Layout;
 
 const AdminLayout = () => {
   const location = useLocation();
-  const currentOutlet = useOutlet();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   // 使用用户状态管理
   const { userInfo, logout, isAuthenticated } = useUserStore();
+
+  // 定义菜单项
+  const menuItems = getMenuItems(t);
 
   const handleNavSelect = (data: OnSelectedData) => {
     navigate(data.itemKey as string);
@@ -142,6 +139,7 @@ const AdminLayout = () => {
       <Layout>
         <Sider style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
           <Nav
+            items={menuItems}
             style={{ maxWidth: 220, height: '100%' }}
             footer={{
               collapseButton: true,
