@@ -1,6 +1,7 @@
 import {
   IconList,
   IconLock,
+  IconSetting,
   IconUser,
   IconUserGroup,
 } from '@douyinfe/semi-icons';
@@ -18,14 +19,24 @@ export const getMenuItems = (t: TFunction) => [
         icon: <IconList />,
       },
       {
-        itemKey: '/user/user-role',
-        text: t('menu.user.role'),
+        itemKey: '/user/role',
+        text: t('menu.user.roleManage'),
         icon: <IconUserGroup />,
       },
       {
         itemKey: '/user/permission',
         text: t('menu.user.permission'),
         icon: <IconLock />,
+      },
+      {
+        itemKey: '/user/user-role',
+        text: t('menu.user.userRole'),
+        icon: <IconUserGroup />,
+      },
+      {
+        itemKey: '/user/role-permission',
+        text: t('menu.user.rolePermission'),
+        icon: <IconSetting />,
       },
     ],
   },

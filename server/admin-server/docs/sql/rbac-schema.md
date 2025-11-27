@@ -141,7 +141,6 @@ CREATE TABLE `permission` (
   `deleted_at` DATETIME DEFAULT NULL COMMENT '删除时间（软删除）',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_code` (`code`),
-  KEY `idx_parent_id` (`parent_id`),
   KEY `idx_type` (`type`),
   KEY `idx_status` (`status`),
   KEY `idx_sort` (`sort`)
