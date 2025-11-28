@@ -28,8 +28,9 @@ import {
   useTableFormState,
   useTableQuery,
 } from '@packages/hooks';
+import { useMount } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const { Title } = Typography;
 
@@ -50,9 +51,9 @@ export default function RoleManagePage() {
     startTableTransition,
   } = useTableQuery<Role>(getRolePage);
 
-  useEffect(() => {
+  useMount(() => {
     fetchData();
-  }, []);
+  });
 
   const {
     isEdit,
@@ -246,9 +247,7 @@ export default function RoleManagePage() {
       hiddenInEdit: true,
       render: value => {
         return (value as Status) === Status.ENABLED ? (
-          <span style={{ color: '#1890ff' }}>
-            {intl.get('common.yes')}
-          </span>
+          <span style={{ color: '#1890ff' }}>{intl.get('common.yes')}</span>
         ) : (
           <span>{intl.get('common.no')}</span>
         );

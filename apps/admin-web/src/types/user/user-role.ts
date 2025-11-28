@@ -1,5 +1,5 @@
-import type { Role } from './role';
 import type { Status } from '@packages/share';
+import type { Role } from './role';
 
 export interface UserRole {
   id: string;

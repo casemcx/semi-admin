@@ -25,7 +25,7 @@ import { ProTable } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
 import { useTableQuery } from '@packages/hooks';
 import { ResultCode } from '@packages/share';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const { Title } = Typography;
 
@@ -52,11 +52,11 @@ export default function RolePermissionPage() {
     startTableTransition,
   } = useTableQuery<RolePermission>(getRolePermissionPage);
 
-  useEffect(() => {
+  useMount(() => {
     fetchData();
     loadAvailableRoles();
     loadPermissionTree();
-  }, []);
+  });
 
   const loadAvailableRoles = async () => {
     const result = await getAllEnabledRoles();
@@ -93,8 +93,15 @@ export default function RolePermissionPage() {
     }
   };
 
-  const handleTreeCheck = (checkedKeys: any) => {
-    const keys = Array.isArray(checkedKeys) ? checkedKeys : checkedKeys.checkedKeys || [];
+  const handleTreeCheck = (value?: any) => {
+    if (!value) {
+      setCheckedKeys([]);
+      setSelectedPermissionIds([]);
+      return;
+    }
+    const keys = Array.isArray(value)
+      ? value.map((v: any) => String(v))
+      : [String(value)];
     setCheckedKeys(keys);
     setSelectedPermissionIds(keys);
   };
@@ -245,7 +252,9 @@ export default function RolePermissionPage() {
               {intl.get('user.rolePermission.selectRole')}
             </div>
             <Select
-              placeholder={intl.get('user.rolePermission.selectRole.placeholder')}
+              placeholder={intl.get(
+                'user.rolePermission.selectRole.placeholder',
+              )}
               style={{ width: '100%' }}
               value={selectedRoleId}
               onChange={value => handleRoleChange(value as string)}
@@ -272,10 +281,9 @@ export default function RolePermissionPage() {
               >
                 <Tree
                   treeData={convertToTreeData(permissionTree)}
-                  checkable
                   multiple
-                  checkedKeys={checkedKeys}
-                  onCheck={handleTreeCheck}
+                  value={checkedKeys}
+                  onChange={handleTreeCheck}
                 />
               </div>
             </div>

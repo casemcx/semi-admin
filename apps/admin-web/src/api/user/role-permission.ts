@@ -1,11 +1,11 @@
 import type {
   AssignPermissionsToRoleDto,
-  RolePermissionQuery,
   RolePermission,
+  RolePermissionQuery,
 } from '@/types/user';
+import type { Permission } from '@/types/user';
 import { request } from '@/utils/request';
 import type { QueryPageResult } from '@packages/share';
-import type { Permission } from '@/types/user';
 
 /**
  * @description 为角色分配权限

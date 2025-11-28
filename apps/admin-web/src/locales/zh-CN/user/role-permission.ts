@@ -17,5 +17,4 @@ export default {
   'user.rolePermission.selectPermissions': '选择权限',
   'user.rolePermission.selectPermissions.placeholder': '请选择权限',
   'user.rolePermission.selectRoleAndPermissions': '请选择角色和权限',
-  'user.rolePermission.selectRole': '请选择角色',
 };

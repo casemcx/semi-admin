@@ -19,8 +19,9 @@ import {
 import { ModalForm, ProTable } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
 import { useRowSelection, useTableQuery } from '@packages/hooks';
+import { useMount } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const { Title } = Typography;
 
@@ -43,10 +44,10 @@ export default function UserRolePage() {
     startTableTransition,
   } = useTableQuery<UserRole>(getUserRolePage);
 
-  useEffect(() => {
+  useMount(() => {
     fetchData();
     loadAvailableRoles();
-  }, []);
+  });
 
   const loadAvailableRoles = async () => {
     const result = await getAllEnabledRoles();

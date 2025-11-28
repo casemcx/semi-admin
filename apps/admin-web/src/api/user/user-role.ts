@@ -1,11 +1,11 @@
 import type {
   AssignRolesToUserDto,
-  UserRoleQuery,
   UserRole,
+  UserRoleQuery,
 } from '@/types/user';
+import type { Role } from '@/types/user';
 import { request } from '@/utils/request';
 import type { QueryPageResult } from '@packages/share';
-import type { Role } from '@/types/user';
 
 /**
  * @description 为用户分配角色

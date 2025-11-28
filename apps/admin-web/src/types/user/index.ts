@@ -1,5 +1,6 @@
 export * from './user-info';
 export * from './user-stores';
+export * from './user';
 export * from './permission';
 export * from './role';
 export * from './user-role';

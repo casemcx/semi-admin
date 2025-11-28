@@ -31,6 +31,7 @@ export default {
   'common.updateSuccess': '更新成功',
   'common.deleteSuccess': '删除成功',
   'common.operationSuccess': '操作成功',
+  'common.assignSuccess': '分配成功',
 
   // 表单验证
   'common.required': '必填项',
