@@ -1,0 +1,19 @@
+pre-commit:
+  parallel: true
+  commands:
+    check-apps:
+      glob: "apps/**/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: npx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --config-path=./biome.json --colors=off {staged_files}
+
+    check-packages:
+      glob: "packages/**/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: npx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --config-path=./biome.json --colors=off {staged_files}
+
+    check-server:
+      glob: "server/admin-server/**/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: npx @biomejs/biome check --no-errors-on-unmatched --files-ignore-unknown=true --config-path=./server/admin-server/biome.json --colors=off {staged_files}
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx commitlint --edit {1}

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "biome check --write",
-    "prepare": "simple-git-hooks",
-    "commit": "git add . && git-cz && git push",
+    "prepare": "lefthook install",
+    "commit": "git status && git add -A && git-cz && git push",
     "reset": "npx rimraf node_modules ./**/node_modules",
     "dev": "turbo run dev --parallel",
     "dev:build": "turbo run dev-build --parallel",
@@ -37,8 +37,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:lint",
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
     "@modern-js/app-tools": "catalog:build",
     "@modern-js/tsconfig": "catalog:build",
     "@tailwindcss/postcss": "catalog:tailwindcss",
@@ -49,172 +49,23 @@
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "clsx": "catalog:tailwindcss",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "cz-emoji": "1.3.2-canary.2",
-    "lint-staged": "catalog:lint",
+    "commitizen": "^4.3.0",
+    "cz-git": "^1.7.0",
+    "lefthook": "^2.0.4",
     "postcss": "catalog:tailwindcss",
     "postcss-loader": "catalog:tailwindcss",
     "rimraf": "^6.0.1",
-    "simple-git-hooks": "catalog:lint",
     "tailwind-merge": "catalog:tailwindcss",
     "tailwindcss": "catalog:tailwindcss",
     "turbo": "^2.4.0",
     "typescript": "catalog:node"
   },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged",
-    "commit-msg": "npx --no -- commitlint --edit ${1}"
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
   },
   "engines": {
     "node": ">=16.18.1"
-  },
-  "lint-staged": {
-    "apps/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-      "biome check --files-ignore-unknown=true --config-path=./biome.json"
-    ],
-    "packages/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-      "biome check --files-ignore-unknown=true --config-path=./biome.json"
-    ],
-    "server/admin-server/**/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-      "biome check --files-ignore-unknown=true --config-path=./server/admin-server/biome.json"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-emoji"
-    },
-    "cz-emoji": {
-      "types": [
-        {
-          "emoji": "✨",
-          "code": ":sparkles:",
-          "description": "新功能",
-          "name": "feat"
-        },
-        {
-          "emoji": "🐛",
-          "code": ":bug:",
-          "description": "修复bug",
-          "name": "fix"
-        },
-        {
-          "emoji": "📝",
-          "code": ":memo:",
-          "description": "文档更新",
-          "name": "docs"
-        },
-        {
-          "emoji": "💄",
-          "code": ":lipstick:",
-          "description": "代码格式化（不影响代码运行的变动）",
-          "name": "style"
-        },
-        {
-          "emoji": "♻️",
-          "code": ":recycle:",
-          "description": "重构（既不是新增功能，也不是修改bug的代码变动）",
-          "name": "refactor"
-        },
-        {
-          "emoji": "⚡",
-          "code": ":zap:",
-          "description": "性能优化",
-          "name": "perf"
-        },
-        {
-          "emoji": "✅",
-          "code": ":white_check_mark:",
-          "description": "增加测试",
-          "name": "test"
-        },
-        {
-          "emoji": "📦",
-          "code": ":package:",
-          "description": "构建系统或外部依赖的变动",
-          "name": "build"
-        },
-        {
-          "emoji": "👷",
-          "code": ":construction_worker:",
-          "description": "CI配置文件和脚本的变动",
-          "name": "ci"
-        },
-        {
-          "emoji": "🔧",
-          "code": ":wrench:",
-          "description": "构建过程或辅助工具的变动",
-          "name": "chore"
-        },
-        {
-          "emoji": "⏪",
-          "code": ":rewind:",
-          "description": "回滚",
-          "name": "revert"
-        },
-        {
-          "emoji": "🏷️",
-          "code": ":label:",
-          "description": "类型定义文件修改",
-          "name": "types"
-        },
-        {
-          "emoji": "🚧",
-          "code": ":construction:",
-          "description": "开发中",
-          "name": "wip"
-        },
-        {
-          "emoji": "🎉",
-          "code": ":tada:",
-          "description": "发布",
-          "name": "release"
-        },
-        {
-          "emoji": "🔄",
-          "code": ":arrows_counterclockwise:",
-          "description": "工作流相关文件修改",
-          "name": "workflow"
-        },
-        {
-          "emoji": "🔀",
-          "code": ":twisted_rightwards_arrows:",
-          "description": "合并分支",
-          "name": "merge"
-        },
-        {
-          "emoji": "🚀",
-          "code": ":rocket:",
-          "description": "改进",
-          "name": "improvement"
-        },
-        {
-          "emoji": "⬆️",
-          "code": ":arrow_up:",
-          "description": "版本升级",
-          "name": "bump"
-        }
-      ],
-      "scopes": [
-        "admin-web",
-        "admin-server",
-        "components",
-        "utils",
-        "types",
-        "hooks",
-        "ui",
-        "config",
-        "docs",
-        "ci",
-        "build",
-        "*"
-      ],
-      "subjectMaxLength": 100,
-      "subjectMinLength": 3,
-      "bodyLineMaxLength": 100,
-      "breakingPrefix": "🚨 BREAKING CHANGE:",
-      "footerPrefix": "🔗 关闭的 Issue:",
-      "askForBreakingChangeFirst": false
-    }
   }
 }

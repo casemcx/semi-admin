@@ -84,5 +84,15 @@
     },
   },
   "emmet.triggerExpansionOnTab": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": true,
+  "explorer.fileNesting.patterns": {
+    "tsconfig.json": "tsconfig.*.json, env.d.ts",
+    "package.json": "package-lock.json, pnpm*, .yarnrc*, yarn*,.nvmrc,turbo.json,.npmrc,.nvmrc",
+    ".gitignore": ".gitignore,commitlint.config.*,lefthook.yml,biome.json",
+    ".npmrc": ".npmrc,.nvmrc",
+    "README.md": "README.md,CLAUDE.md,.claude-project-config.md",
+    ".env.local": ".env,.env.*",
+  },
 }

@@ -1,52 +1,114 @@
+// @see: https://cz-git.qbenben.com/zh/guide
+/** @type {import('cz-git').UserConfig} */
+
 module.exports = {
+  ignores: [commit => commit === 'init'],
   extends: ['@commitlint/config-conventional'],
   rules: {
-    // 宽松的类型检查 - 可选
+    // @see: https://commitlint.js.org/#/reference-rules
+    'body-leading-blank': [2, 'always'],
+    'footer-leading-blank': [1, 'always'],
+    'header-max-length': [2, 'always', 108],
+    'subject-empty': [2, 'never'],
+    'type-empty': [2, 'never'],
+    'subject-case': [0],
     'type-enum': [
-      2, // 改为警告级别
+      2,
       'always',
       [
-        'feat', // 新功能
-        'fix', // 修复bug
-        'docs', // 文档更新
-        'style', // 代码格式化（不影响代码运行的变动）
-        'refactor', // 重构（既不是新增功能，也不是修改bug的代码变动）
-        'perf', // 性能优化
-        'test', // 增加测试
-        'build', // 构建系统或外部依赖的变动
-        'ci', // CI配置文件和脚本的变动
-        'chore', // 构建过程或辅助工具的变动
-        'revert', // 回滚
-        'types', // 类型定义文件修改
-        'wip', // 开发中
-        'release', // 发布
-        'workflow', // 工作流相关文件修改
-        'merge', // 合并分支
-        'improvement', // 改进
-        'bump', // 版本升级
+        'feat',
+        'fix',
+        'docs',
+        'style',
+        'refactor',
+        'perf',
+        'test',
+        'build',
+        'ci',
+        'chore',
+        'revert',
+        'wip',
+        'workflow',
+        'types',
+        'release',
       ],
     ],
-    // 类型大小写 - 警告级别
-    'type-case': [1, 'always', 'lower-case'],
-    // 允许空的 type
-    'type-empty': [1, 'never'], // 改为警告级别
-    // 作用域大小写 - 警告级别
-    'scope-case': [1, 'always', 'lower-case'],
-    // 允许中文 subject，禁用大小写检查
-    'subject-case': [0], // 禁用
-    // 允许空的 subject
-    'subject-empty': [1, 'never'], // 改为警告级别
-    // 允许 subject 以句号结尾
-    'subject-full-stop': [0], // 禁用
-    // 增加 header 长度限制
-    'header-max-length': [1, 'always', 200], // 警告级别，增加长度
-    // body 格式检查 - 警告级别
-    'body-leading-blank': [1, 'always'],
-    'body-max-line-length': [1, 'always', 100],
-    // footer 格式检查 - 警告级别
-    'footer-leading-blank': [1, 'always'],
-    'footer-max-line-length': [1, 'always', 100],
-    // 去除首尾空白字符 - 警告级别
-    'header-trim': [1, 'always'],
+  },
+  prompt: {
+    messages: {
+      type: '选择你要提交的类型 :',
+      scope: '选择一个提交范围（可选）:',
+      customScope: '请输入自定义的提交范围 :',
+      subject: '填写简短精炼的变更描述 :\n',
+      body: '填写更加详细的变更描述（可选）。使用 "|" 换行 :\n',
+      breaking: '列举非兼容性重大的变更（可选）。使用 "|" 换行 :\n',
+      footerPrefixsSelect: '选择关联issue前缀（可选）:',
+      customFooterPrefixs: '输入自定义issue前缀 :',
+      footer: '列举关联issue (可选) 例如: #31, #I3244 :\n',
+      confirmCommit: '是否提交或修改commit ?',
+    },
+    types: [
+      { value: 'feat: 特性', name: '特性:   🚀  新增功能', emoji: '🚀' },
+      { value: 'fix: 修复', name: '修复:   🧩  修复缺陷', emoji: '🧩' },
+      { value: 'docs: 文档', name: '文档:   📚  文档变更', emoji: '📚' },
+      {
+        value: 'style: 格式',
+        name: '格式:   🎨  代码格式（不影响功能，例如空格、分号等格式修正）',
+        emoji: '🎨',
+      },
+      {
+        value: 'refactor: 重构',
+        name: '重构:   ♻️  代码重构（不包括 bug 修复、功能新增）',
+        emoji: '♻️',
+      },
+      { value: 'perf: 性能', name: '性能:   ⚡️  性能优化', emoji: '⚡️' },
+      {
+        value: 'test: 测试',
+        name: '测试:   ✅  添加疏漏测试或已有测试改动',
+        emoji: '✅',
+      },
+      {
+        value: 'chore: 构建',
+        name: '构建:   📦️  构建流程、外部依赖变更（如升级 npm 包、修改 webpack 配置等）',
+        emoji: '📦️',
+      },
+      {
+        value: 'ci: 集成',
+        name: '集成:   🎡  修改 CI 配置、脚本',
+        emoji: '🎡',
+      },
+      { value: 'revert: 回退', name: '回退:   ⏪️  回滚 commit', emoji: '⏪️' },
+      { value: 'build: 打包', name: '打包:   🔨  项目打包发布', emoji: '🔨' },
+    ],
+    useEmoji: true,
+    themeColorCode: '',
+    scopes: [],
+    allowCustomScopes: true,
+    allowEmptyScopes: true,
+    customScopesAlign: 'bottom',
+    customScopesAlias: 'custom',
+    emptyScopesAlias: 'empty',
+    upperCaseSubject: false,
+    allowBreakingChanges: ['feat', 'fix'],
+    breaklineNumber: 100,
+    breaklineChar: '|',
+    skipQuestions: [],
+    issuePrefixs: [
+      { value: 'closed', name: 'closed:   ISSUES has been processed' },
+    ],
+    customIssuePrefixsAlign: 'top',
+    emptyIssuePrefixsAlias: 'skip',
+    customIssuePrefixsAlias: 'custom',
+    allowCustomIssuePrefixs: true,
+    allowEmptyIssuePrefixs: true,
+    confirmColorize: true,
+    maxHeaderLength: Number.POSITIVE_INFINITY,
+    maxSubjectLength: Number.POSITIVE_INFINITY,
+    minSubjectLength: 0,
+    scopeOverrides: undefined,
+    defaultBody: '',
+    defaultIssues: '',
+    defaultScope: '',
+    defaultSubject: '',
   },
 };
