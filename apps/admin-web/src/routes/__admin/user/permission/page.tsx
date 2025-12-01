@@ -22,7 +22,6 @@ import {
   Toast,
   Typography,
 } from '@douyinfe/semi-ui';
-import type { RowSelectionProps } from '@douyinfe/semi-ui/lib/es/table';
 import { ModalForm, ProTable, useTableColumns } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
 import {
