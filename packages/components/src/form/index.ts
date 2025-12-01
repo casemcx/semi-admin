@@ -1,4 +1,3 @@
-export * from './form-item';
-export * from './modal-form';
-export * from './pro-form';
-export * from './schema-form';
+export * from './components';
+export * from './BaseForm';
+export * from './layouts';
