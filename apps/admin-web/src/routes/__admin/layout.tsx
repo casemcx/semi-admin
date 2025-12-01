@@ -13,27 +13,26 @@ import {
   Nav,
 } from '@douyinfe/semi-ui';
 import type { OnSelectedData } from '@douyinfe/semi-ui/lib/es/navigation';
-import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { LanguageSwitch } from '@/components/LangSwitch';
+import { useLocal } from '@/locales';
 import { useUserStore } from '@/stores/user';
 import { Outlet, useLocation, useNavigate } from '@modern-js/runtime/router';
 import styled from './index.module.less';
-import { getMenuItems } from './menu-items';
+import { userMenuItems } from './menu-items';
 
 const { Header, Sider, Content } = Layout;
 
 const AdminLayout = () => {
   const location = useLocation();
-  const { t } = useTranslation();
+  const intl = useLocal();
   const navigate = useNavigate();
 
   // 使用用户状态管理
   const { userInfo, logout, isAuthenticated } = useUserStore();
 
   // 定义菜单项
-  const menuItems = getMenuItems(t);
+  const { items: menuItems } = userMenuItems();
 
   const handleNavSelect = (data: OnSelectedData) => {
     navigate(data.itemKey as string);
@@ -41,8 +40,8 @@ const AdminLayout = () => {
 
   const handleLogout = () => {
     Modal.confirm({
-      title: t('common.logoutConfirm'),
-      content: t('common.logoutConfirmMessage'),
+      title: intl.get('common.logoutConfirm'),
+      content: intl.get('common.logoutConfirmMessage'),
       onOk: () => {
         // 使用store的logout方法
         logout();
@@ -71,7 +70,7 @@ const AdminLayout = () => {
           <Nav mode="horizontal" defaultSelectedKeys={['Home']}>
             <Nav.Header>
               <IconSemiLogo style={{ height: '36px', fontSize: 36 }} />
-              <h1>{t('menu.appName')}</h1>
+              <h1>{intl.get('menu.appName')}</h1>
             </Nav.Header>
             <Nav.Footer>
               <LanguageSwitch />
@@ -97,7 +96,7 @@ const AdminLayout = () => {
                 menu={[
                   {
                     node: 'item',
-                    name: t('common.profile'),
+                    name: intl.get('common.profile'),
                     onClick: () => {
                       // 跳转到个人资料页面
                       navigate('/admin/profile');
@@ -108,7 +107,7 @@ const AdminLayout = () => {
                   },
                   {
                     node: 'item',
-                    name: t('common.logout'),
+                    name: intl.get('common.logout'),
                     onClick: handleLogout,
                     icon: <IconExit />,
                   },
@@ -139,7 +138,7 @@ const AdminLayout = () => {
       <Layout>
         <Sider style={{ backgroundColor: 'var(--semi-color-bg-1)' }}>
           <Nav
-            items={menuItems}
+            items={menuItems.current}
             style={{ maxWidth: 220, height: '100%' }}
             footer={{
               collapseButton: true,
