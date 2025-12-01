@@ -28,7 +28,6 @@ import {
   useTableFormState,
   useTableQuery,
 } from '@packages/hooks';
-import { useMount } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
 import { useCallback, useState } from 'react';
 
@@ -210,7 +209,7 @@ export default function RoleManagePage() {
       name: 'sort',
       title: intl.get('user.role.sort'),
       width: 100,
-      type: 'inputNumber',
+      type: 'number',
       colProps: {
         span: 12,
       },

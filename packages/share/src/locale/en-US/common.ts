@@ -100,4 +100,8 @@ export default {
     'Will delete {{count}} selected items, this operation cannot be undone',
   'common.batchDeleteSuccess': 'Batch delete successful',
   'common.selectAtLeastOne': 'Please select at least one item',
+
+  // Yes/No
+  'common.yes': 'Yes',
+  'common.no': 'No',
 };

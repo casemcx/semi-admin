@@ -25,7 +25,6 @@ import { ProTable } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
 import { useTableQuery } from '@packages/hooks';
 import { ResultCode } from '@packages/share';
-import { useState } from 'react';
 
 const { Title } = Typography;
 

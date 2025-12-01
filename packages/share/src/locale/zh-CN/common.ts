@@ -98,4 +98,8 @@ export default {
   'common.batchDeleteContent': '将删除选中的 {{count}} 项，此操作不可恢复',
   'common.batchDeleteSuccess': '批量删除成功',
   'common.selectAtLeastOne': '请至少选择一项',
+
+  // 是/否
+  'common.yes': '是',
+  'common.no': '否',
 };

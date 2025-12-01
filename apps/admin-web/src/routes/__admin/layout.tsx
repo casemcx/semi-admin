@@ -16,7 +16,7 @@ import type { OnSelectedData } from '@douyinfe/semi-ui/lib/es/navigation';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { LanguageSwitch } from '@/components/locale';
+import { LanguageSwitch } from '@/components/LangSwitch';
 import { useUserStore } from '@/stores/user';
 import { Outlet, useLocation, useNavigate } from '@modern-js/runtime/router';
 import styled from './index.module.less';

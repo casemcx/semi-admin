@@ -68,5 +68,8 @@ export const deleteUserBatch = (ids: string[]) => {
  * @returns void
  */
 export const updateUserStatus = (id: string, status: number) => {
-  return request.patch<void>(`/api/user/updateStatus/${id}?status=${status}`);
+  return request.patch<void>(
+    `/api/user/updateStatus/${id}?status=${status}`,
+    {},
+  );
 };
