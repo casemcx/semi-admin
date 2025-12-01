@@ -1,2 +1,2 @@
-export * from './auth';
-export * from './locale';
+export * from './AuthGuard';
+export * from './LangSwitch';
