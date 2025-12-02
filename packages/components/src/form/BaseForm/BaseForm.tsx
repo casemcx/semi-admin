@@ -3,6 +3,8 @@ import { clsx } from '@packages/utils';
 import { useRequest } from 'ahooks';
 import { useCallback, useMemo } from 'react';
 
+import { useConfigStore } from '@/provider';
+
 import { FormItem } from '../components/FormItem';
 
 import type { ProFormProps } from './types';
@@ -13,8 +15,8 @@ const ProForm = <T extends Record<string, any> = any>({
   footer,
   showSubmit = true,
   showReset = true,
-  submitText = '提交',
-  resetText = '重置',
+  submitText,
+  resetText,
   colProps = { span: 24 },
   gutter = 16,
   actionsAlign = 'end',
@@ -27,6 +29,9 @@ const ProForm = <T extends Record<string, any> = any>({
   rowProps,
   ...formProps
 }: ProFormProps<T>) => {
+  const t = useConfigStore(state => state.t);
+  const finalSubmitText = submitText ?? t('submit');
+  const finalResetText = resetText ?? t('reset');
   const { loading, run } = useRequest(
     async (values: any) => onSubmit?.(values),
     { manual: true },
@@ -87,7 +92,7 @@ const ProForm = <T extends Record<string, any> = any>({
         <Space>
           {showReset && (
             <Button htmlType="reset" disabled={loading} {...resetButtonProps}>
-              {resetText}
+              {finalResetText}
             </Button>
           )}
           {showSubmit && (
@@ -97,7 +102,7 @@ const ProForm = <T extends Record<string, any> = any>({
               loading={loading}
               {...submitButtonProps}
             >
-              {submitText}
+              {finalSubmitText}
             </Button>
           )}
         </Space>
@@ -107,11 +112,11 @@ const ProForm = <T extends Record<string, any> = any>({
     actionsAlign,
     loading,
     resetButtonProps,
-    resetText,
+    finalResetText,
     showReset,
     showSubmit,
     submitButtonProps,
-    submitText,
+    finalSubmitText,
     readonly,
   ]);
 

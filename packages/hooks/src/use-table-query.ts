@@ -1,7 +1,7 @@
 import useUrlState from '@ahooksjs/use-url-state';
 import type { QueryPage, QueryPageResult, ResultData } from '@packages/share';
 import { ResultCode } from '@packages/share';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export interface TablePagination {
   currentPage: number;

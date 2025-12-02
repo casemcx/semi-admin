@@ -1,4 +1,5 @@
 import { ProForm } from '@/form/BaseForm';
+import { useConfigStore } from '@/provider';
 import type { FormSchema } from '@/types';
 import { Button, Modal, Space } from '@douyinfe/semi-ui';
 import { useState } from 'react';
@@ -10,9 +11,9 @@ function ModalForm<T extends Record<string, any>>({
   columns,
   initialValues,
   loading = false,
-  okText = '保存',
-  cancelText = '取消',
-  resetText = '重置',
+  okText,
+  cancelText,
+  resetText,
   showReset = true,
   readonly = false,
   onSubmit,
@@ -27,6 +28,11 @@ function ModalForm<T extends Record<string, any>>({
   className,
   ...modalProps
 }: ModalFormProps<T>) {
+  const t = useConfigStore(state => state.t);
+  const finalOkText = okText ?? t('save');
+  const finalCancelText = cancelText ?? t('cancel');
+  const finalResetText = resetText ?? t('reset');
+  const finalCloseText = t('close');
   const [internalLoading, setInternalLoading] = useState(false);
 
   const handleSubmit = async (values: T) => {
@@ -62,7 +68,7 @@ function ModalForm<T extends Record<string, any>>({
       footer={
         readonly ? (
           <div className="flex w-full justify-end pt-6 px-6 pb-6">
-            <Button onClick={onCancel}>关闭</Button>
+            <Button onClick={onCancel}>{finalCloseText}</Button>
           </div>
         ) : (
           <div className="flex w-full justify-end pt-6 px-6 pb-6">
@@ -73,11 +79,11 @@ function ModalForm<T extends Record<string, any>>({
                   onClick={handleReset}
                   disabled={isDisabled}
                 >
-                  {resetText}
+                  {finalResetText}
                 </Button>
               )}
               <Button onClick={onCancel} disabled={isDisabled}>
-                {cancelText}
+                {finalCancelText}
               </Button>
               <Button
                 type="primary"
@@ -85,7 +91,7 @@ function ModalForm<T extends Record<string, any>>({
                 form={formName}
                 loading={submitLoading}
               >
-                {okText}
+                {finalOkText}
               </Button>
             </Space>
           </div>

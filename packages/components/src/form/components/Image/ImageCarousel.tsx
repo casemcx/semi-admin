@@ -1,3 +1,4 @@
+import { useConfigStore } from '@/provider';
 import { Carousel, ImagePreview } from '@douyinfe/semi-ui';
 import type { UploadFile } from '@packages/share';
 import { type FC, type ReactNode, useMemo, useState } from 'react';
@@ -49,6 +50,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
   style,
   renderItem,
 }) => {
+  const t = useConfigStore(state => state.t);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -67,7 +69,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
           ...style,
         }}
       >
-        暂无图片
+        {t('noImage')}
       </div>
     );
   }
@@ -76,11 +78,11 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
   const normalizedImages: UploadFile[] = useMemo(() => {
     return images.map(item => {
       if (typeof item === 'string') {
-        return { fileUrl: item, fileName: '预览' };
+        return { fileUrl: item, fileName: t('preview') };
       }
       return item;
     });
-  }, [images]);
+  }, [images, t]);
 
   // 获取所有图片URL用于预览
   const previewUrls = useMemo(() => {
@@ -126,7 +128,7 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
         >
           {normalizedImages.map((item, index) => {
             const imageUrl = item.fileUrl;
-            const imageAlt = item.fileName || `预览 ${index + 1}`;
+            const imageAlt = item.fileName || `${t('preview')} ${index + 1}`;
 
             if (!imageUrl) return null;
 
@@ -145,7 +147,9 @@ const ImageCarousel: FC<ImageCarouselProps> = ({
                 onKeyDown={event => handleKeyDown(event, index)}
                 role={preview ? 'button' : undefined}
                 tabIndex={preview ? 0 : undefined}
-                aria-label={preview ? `查看第 ${index + 1} 张图片` : undefined}
+                aria-label={
+                  preview ? t('viewImage', { index: index + 1 }) : undefined
+                }
               >
                 {renderItem ? (
                   renderItem(item, index)

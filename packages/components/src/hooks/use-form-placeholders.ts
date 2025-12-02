@@ -1,25 +1,20 @@
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+
+import { useConfigStore } from '@/provider';
 
 export const useFormPlaceholders = (title?: string) => {
-  const { t } = useTranslation();
+  const t = useConfigStore(state => state.t);
 
   const selectPlaceholder = useMemo(() => {
-    return t('common.pleaseSelectField', {
-      field: title,
-    });
+    return t('pleaseSelect', { field: title || '' });
   }, [t, title]);
 
   const inputPlaceholder = useMemo(() => {
-    return t('common.pleaseEnterField', {
-      field: title,
-    });
+    return t('pleaseEnter', { field: title || '' });
   }, [t, title]);
 
   const uploadPlaceholder = useMemo(() => {
-    return t('common.pleaseUploadField', {
-      field: title,
-    });
+    return t('pleaseUpload', { field: title || '' });
   }, [t, title]);
 
   return {

@@ -8,6 +8,7 @@ import {
 
 import { ProForm, ReadonlyField } from '@/form';
 import { useTableColumns } from '@/hooks';
+import { useConfigStore } from '@/provider';
 import type { ProTableSchema } from '@/types';
 import { isIntelligentRenderType } from './utils';
 
@@ -130,8 +131,8 @@ const ProTable = <T extends Record<string, any> = any>({
   },
   searchGutter = 16,
   searchActionsAlign = 'end',
-  searchText = '搜索',
-  resetText = '重置',
+  searchText,
+  resetText,
   searchInitialValues,
   toolBar,
   onSearch,
@@ -141,6 +142,10 @@ const ProTable = <T extends Record<string, any> = any>({
   pagination,
   ...tableProps
 }: ProTableProps<T>) => {
+  const t = useConfigStore(state => state.t);
+  const finalSearchText = searchText ?? t('search');
+  const finalResetText = resetText ?? t('reset');
+
   const { searchColumns, tableColumns: baseTableColumns } =
     useTableColumns(columns);
 
@@ -194,8 +199,8 @@ const ProTable = <T extends Record<string, any> = any>({
             disabled: loading,
           }}
           initValues={searchInitialValues}
-          submitText={searchText}
-          resetText={resetText}
+          submitText={finalSearchText}
+          resetText={finalResetText}
           gutter={searchGutter}
           colProps={searchColProps}
           actionsAlign={searchActionsAlign}

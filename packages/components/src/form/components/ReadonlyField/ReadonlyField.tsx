@@ -1,5 +1,6 @@
 import { ImageCarousel } from '@/form/components/Image';
 import { MarkdownPreview } from '@/form/components/Markdown';
+import { useConfigStore } from '@/provider';
 import type { FormSchema } from '@/types';
 import { useFormState } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
@@ -20,6 +21,7 @@ export const ReadonlyField = <T extends Record<string, any>>({
   record: externalRecord,
 }: ReadonlyFieldProps<T>) => {
   const { values: formRecord } = useFormState<T>();
+  const t = useConfigStore(state => state.t);
 
   const { type = 'input', name, title, fieldProps = {} as any } = column;
 
@@ -47,7 +49,7 @@ export const ReadonlyField = <T extends Record<string, any>>({
         }
         return value || '-';
       case 'switch':
-        return value ? '是' : '否';
+        return value ? t('yes') : t('no');
       case 'checkbox':
       case 'radio':
         if (Array.isArray(value)) {
@@ -107,13 +109,13 @@ export const ReadonlyField = <T extends Record<string, any>>({
               if (typeof item === 'object' && item.fileUrl) {
                 uploadFiles.push(item);
               } else if (typeof item === 'string') {
-                uploadFiles.push({ fileUrl: item, fileName: 'Image' });
+                uploadFiles.push({ fileUrl: item, fileName: t('preview') });
               }
             }
           } else if (typeof value === 'object' && value.fileUrl) {
             uploadFiles.push(value);
           } else if (typeof value === 'string') {
-            uploadFiles.push({ fileUrl: value, fileName: 'Image' });
+            uploadFiles.push({ fileUrl: value, fileName: t('preview') });
           }
 
           if (uploadFiles.length > 0) {

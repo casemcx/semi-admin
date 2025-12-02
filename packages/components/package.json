@@ -43,5 +43,8 @@
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "zustand": "^5.0.9"
+  }
 }
