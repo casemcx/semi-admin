@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "biome check --write",
+    "clean": "rimraf **/node_modules && rimraf node_modules",
     "prepare": "lefthook install",
     "commit": "git status && git add -A && git-cz && git push",
     "reset": "npx rimraf node_modules ./**/node_modules",
