@@ -95,4 +95,9 @@
     "README.md": "README.md,CLAUDE.md,.claude-project-config.md",
     ".env.local": ".env,.env.*",
   },
+  "i18n-ally.localesPaths": [
+    "apps/admin-web/src/locales",
+    "packages/share/src/locale",
+    "apps/admin-web/src/components/locale"
+  ]
 }

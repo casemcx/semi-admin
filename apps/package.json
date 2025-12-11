@@ -10,7 +10,5 @@
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.12.4",
-  "devDependencies": {
-    "react-scan": "^0.4.3"
-  }
+  "devDependencies": {}
 }

@@ -14,7 +14,7 @@ import '@/locales';
 export default function Layout() {
   return (
     <ConfigProvider locale={zh_CN}>
-      <div className="w-full h-full m-0 p-0">
+      <div className="app-layout w-full h-full m-0 p-0">
         <Outlet />
       </div>
     </ConfigProvider>
