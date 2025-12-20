@@ -99,5 +99,8 @@
     "apps/admin-web/src/locales",
     "packages/share/src/locale",
     "apps/admin-web/src/components/locale"
+  ],
+  "cSpell.words": [
+    "douyinfe"
   ]
 }

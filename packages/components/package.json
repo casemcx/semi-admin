@@ -14,11 +14,12 @@
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "build": "run-p build:*",
+    "build": "gulp build",
     "build:lib": "rslib build",
     "build:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify",
+    "build:clean": "gulp clean",
     "check": "biome check --write",
-    "dev": "npm run build:css && npm run build:lib --watch",
+    "dev": "gulp develop",
     "dev:css": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch",
     "format": "biome format --write",
     "dev:build": "npm run build",
@@ -33,6 +34,7 @@
     "@testing-library/react": "^16.3.0",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
+    "gulp": "^5.0.1",
     "jsdom": "^26.1.0",
     "tailwindcss": "catalog:tailwindcss",
     "typescript": "catalog:node"
