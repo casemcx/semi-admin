@@ -5,10 +5,9 @@ const reactScanPlugin: RuntimePluginFuture = {
   name: 'react-scan',
   setup(app) {
     app.onBeforeRender(() => {
-      console.log('react-scan');
-      scan({
-        enabled: true,
-      });
+      // scan({
+      //   enabled: true,
+      // });
     });
   },
 };
