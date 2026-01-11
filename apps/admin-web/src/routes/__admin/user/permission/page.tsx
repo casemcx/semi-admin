@@ -19,7 +19,6 @@ import {
   Popconfirm,
   Row,
   Space,
-  Toast,
   Typography,
 } from '@douyinfe/semi-ui';
 import { ModalForm, ProTable, useTableColumns } from '@packages/components';
@@ -28,6 +27,7 @@ import {
   useRowSelection,
   useTableFormState,
   useTableQuery,
+  useToast,
 } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
 import { useCallback, useEffect, useState } from 'react';
@@ -36,6 +36,7 @@ const { Title } = Typography;
 
 export default function UserPermissionPage() {
   const intl = useLocal();
+  const toast = useToast();
 
   // 批量选择状态
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
@@ -71,20 +72,20 @@ export default function UserPermissionPage() {
           const result = await updatePermissionById(values);
           console.log(result, 'result');
           if (result.code !== ResultCode.SUCCESS) {
-            Toast.error(result.msg);
+            toast.error(result.msg);
             return Promise.reject(result.msg);
           }
-          Toast.success(intl.get('common.updateSuccess'));
+          toast.success(intl.get('common.updateSuccess'));
           fetchData();
           return Promise.resolve();
         }
 
         const result = await createPermission(values);
         if (result.code !== ResultCode.SUCCESS) {
-          Toast.error(result.msg);
+          toast.error(result.msg);
           return Promise.reject(result.msg);
         }
-        Toast.success(intl.get('common.createSuccess'));
+        toast.success(intl.get('common.createSuccess'));
         fetchData();
         return Promise.resolve();
       },
@@ -96,21 +97,21 @@ export default function UserPermissionPage() {
       startTableTransition(async () => {
         const result = await deletePermissionById(id);
         if (result.code !== ResultCode.SUCCESS) {
-          Toast.error(result.msg);
+          toast.error(result.msg);
         } else {
-          Toast.success(intl.get('common.deleteSuccess'));
+          toast.success(intl.get('common.deleteSuccess'));
           fetchData();
           setSelectedRowKeys([]);
         }
       });
     },
-    [startTableTransition, fetchData, intl],
+    [startTableTransition, fetchData, intl, toast],
   );
 
   // 批量删除处理函数
   const handleBatchDelete = useCallback(() => {
     if (selectedRowKeys.length === 0) {
-      Toast.warning(intl.get('common.selectAtLeastOne'));
+      toast.warning(intl.get('common.selectAtLeastOne'));
       return;
     }
 
@@ -121,7 +122,7 @@ export default function UserPermissionPage() {
     );
 
     if (systemPermissions.length > 0) {
-      Toast.error(intl.get('user.permission.cannotDeleteSystem'));
+      toast.error(intl.get('user.permission.cannotDeleteSystem'));
       return;
     }
 
@@ -136,16 +137,23 @@ export default function UserPermissionPage() {
         startTableTransition(async () => {
           const result = await deletePermissionBatch(selectedRowKeys);
           if (result.code !== ResultCode.SUCCESS) {
-            Toast.error(result.msg);
+            toast.error(result.msg);
           } else {
-            Toast.success(intl.get('common.batchDeleteSuccess'));
+            toast.success(intl.get('common.batchDeleteSuccess'));
             fetchData();
             setSelectedRowKeys([]);
           }
         });
       },
     });
-  }, [selectedRowKeys, dataSource, startTableTransition, fetchData, intl]);
+  }, [
+    selectedRowKeys,
+    dataSource,
+    startTableTransition,
+    fetchData,
+    intl,
+    toast,
+  ]);
 
   const { rowSelection } = useRowSelection<Permission, string>({
     defaultKeys: selectedRowKeys,

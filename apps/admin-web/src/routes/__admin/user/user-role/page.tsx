@@ -12,18 +12,18 @@ import {
   Row,
   Select,
   Space,
-  Toast,
   Typography,
 } from '@douyinfe/semi-ui';
 import { ProTable } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
-import { useTableQuery } from '@packages/hooks';
+import { useTableQuery, useToast } from '@packages/hooks';
 import { ResultCode } from '@packages/share';
 
 const { Title } = Typography;
 
 export default function UserRolePage() {
   const intl = useLocal();
+  const toast = useToast();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string>('');
@@ -59,7 +59,7 @@ export default function UserRolePage() {
 
   const handleModalOk = async () => {
     if (!selectedUserId || selectedRoleIds.length === 0) {
-      Toast.warning(intl.get('user.userRole.selectUserAndRoles'));
+      toast.warning(intl.get('user.userRole.selectUserAndRoles'));
       return;
     }
 
@@ -70,9 +70,9 @@ export default function UserRolePage() {
       });
 
       if (result.code !== ResultCode.SUCCESS) {
-        Toast.error(result.msg);
+        toast.error(result.msg);
       } else {
-        Toast.success(intl.get('common.assignSuccess'));
+        toast.success(intl.get('common.assignSuccess'));
         fetchData();
         setModalVisible(false);
         setSelectedUserId('');

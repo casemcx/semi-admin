@@ -20,7 +20,6 @@ import {
   Row,
   Space,
   Switch,
-  Toast,
   Typography,
 } from '@douyinfe/semi-ui';
 import { ModalForm, ProTable, useTableColumns } from '@packages/components';
@@ -29,6 +28,7 @@ import {
   useRowSelection,
   useTableFormState,
   useTableQuery,
+  useToast,
 } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
 
@@ -36,6 +36,7 @@ const { Title } = Typography;
 
 export default function UserListPage() {
   const intl = useLocal();
+  const toast = useToast();
 
   // 批量选择状态
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
@@ -70,20 +71,20 @@ export default function UserListPage() {
         if (isEdit) {
           const result = await updateUserById(values);
           if (result.code !== ResultCode.SUCCESS) {
-            Toast.error(result.msg);
+            toast.error(result.msg);
             return Promise.reject(result.msg);
           }
-          Toast.success(intl.get('common.updateSuccess'));
+          toast.success(intl.get('common.updateSuccess'));
           fetchData();
           return Promise.resolve();
         }
 
         const result = await createUser(values);
         if (result.code !== ResultCode.SUCCESS) {
-          Toast.error(result.msg);
+          toast.error(result.msg);
           return Promise.reject(result.msg);
         }
-        Toast.success(intl.get('common.createSuccess'));
+        toast.success(intl.get('common.createSuccess'));
         fetchData();
         return Promise.resolve();
       },
@@ -95,21 +96,21 @@ export default function UserListPage() {
       startTableTransition(async () => {
         const result = await deleteUserById(id);
         if (result.code !== ResultCode.SUCCESS) {
-          Toast.error(result.msg);
+          toast.error(result.msg);
         } else {
-          Toast.success(intl.get('common.deleteSuccess'));
+          toast.success(intl.get('common.deleteSuccess'));
           fetchData();
           setSelectedRowKeys([]);
         }
       });
     },
-    [startTableTransition, fetchData, intl],
+    [startTableTransition, fetchData, intl, toast],
   );
 
   // 批量删除处理函数
   const handleBatchDelete = useCallback(() => {
     if (selectedRowKeys.length === 0) {
-      Toast.warning(intl.get('common.selectAtLeastOne'));
+      toast.warning(intl.get('common.selectAtLeastOne'));
       return;
     }
 
@@ -124,9 +125,9 @@ export default function UserListPage() {
         startTableTransition(async () => {
           const result = await deleteUserBatch(selectedRowKeys);
           if (result.code !== ResultCode.SUCCESS) {
-            Toast.error(result.msg);
+            toast.error(result.msg);
           } else {
-            Toast.success(intl.get('common.batchDeleteSuccess'));
+            toast.success(intl.get('common.batchDeleteSuccess'));
             fetchData();
             setSelectedRowKeys([]);
           }
@@ -141,14 +142,14 @@ export default function UserListPage() {
       startTableTransition(async () => {
         const result = await updateUserStatus(id, status);
         if (result.code !== ResultCode.SUCCESS) {
-          Toast.error(result.msg);
+          toast.error(result.msg);
         } else {
-          Toast.success(intl.get('common.updateSuccess'));
+          toast.success(intl.get('common.updateSuccess'));
           fetchData();
         }
       });
     },
-    [startTableTransition, fetchData, intl],
+    [startTableTransition, fetchData, intl, toast],
   );
 
   const { rowSelection } = useRowSelection<User, string>({
