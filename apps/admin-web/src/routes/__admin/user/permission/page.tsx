@@ -23,23 +23,15 @@ import {
 } from '@douyinfe/semi-ui';
 import { ModalForm, ProTable, useTableColumns } from '@packages/components';
 import type { ProTableProps } from '@packages/components';
-import {
-  useRowSelection,
-  useTableFormState,
-  useTableQuery,
-  useToast,
-} from '@packages/hooks';
+import { useModalFormState, useTableState, useToast } from '@packages/hooks';
 import { ResultCode, Status } from '@packages/share';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 const { Title } = Typography;
 
 export default function UserPermissionPage() {
   const intl = useLocal();
   const toast = useToast();
-
-  // 批量选择状态
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const {
     loading,
@@ -50,7 +42,12 @@ export default function UserPermissionPage() {
     handleReset,
     handlePageChange,
     startTableTransition,
-  } = useTableQuery<Permission>(getPermissionPage);
+    selectedRowKeys,
+    setSelectedRowKeys,
+    rowSelection,
+  } = useTableState<Permission>(getPermissionPage, {
+    rowSelection: true,
+  });
 
   useMount(() => {
     fetchData();
@@ -60,15 +57,15 @@ export default function UserPermissionPage() {
     isEdit,
     modalVisible,
     formValues,
-    handleAdd,
-    handleEdit,
-    handleModalOk,
-    handleModalCancel,
-  } = useTableFormState<Permission>(
+    openCreate,
+    openEdit,
+    submit,
+    close,
+  } = useModalFormState<Permission>(
     {},
     {
-      onSubmit: async (values: Permission, isEdit: boolean) => {
-        if (isEdit) {
+      onSubmit: async (values: Permission, mode: 'create' | 'edit') => {
+        if (mode === 'edit') {
           const result = await updatePermissionById(values);
           console.log(result, 'result');
           if (result.code !== ResultCode.SUCCESS) {
@@ -105,7 +102,7 @@ export default function UserPermissionPage() {
         }
       });
     },
-    [startTableTransition, fetchData, intl, toast],
+    [startTableTransition, fetchData, intl, toast, setSelectedRowKeys],
   );
 
   // 批量删除处理函数
@@ -153,19 +150,8 @@ export default function UserPermissionPage() {
     fetchData,
     intl,
     toast,
+    setSelectedRowKeys,
   ]);
-
-  const { rowSelection } = useRowSelection<Permission, string>({
-    defaultKeys: selectedRowKeys,
-    onSelectAll: (selected, selectedRows) => {
-      if (selected && selectedRows) {
-        const allIds = selectedRows.map(item => item.id.toString());
-        setSelectedRowKeys(allIds);
-      } else {
-        setSelectedRowKeys([]);
-      }
-    },
-  });
 
   ///  表单
   // 表格列定义
@@ -302,7 +288,7 @@ export default function UserPermissionPage() {
           <Button
             size="small"
             icon={<IconEdit />}
-            onClick={() => handleEdit(record)}
+            onClick={() => openEdit(record)}
           >
             {intl.get('user.pemission.action.edit')}
           </Button>
@@ -366,7 +352,7 @@ export default function UserPermissionPage() {
             >
               {intl.get('common.batchDelete')} ({selectedRowKeys.length})
             </Button>
-            <Button type="primary" onClick={handleAdd}>
+            <Button type="primary" onClick={openCreate}>
               {intl.get('user.pemission.action.add')}
             </Button>
           </Space>
@@ -383,9 +369,9 @@ export default function UserPermissionPage() {
         }
         initialValues={formValues}
         visible={modalVisible}
-        onCancel={handleModalCancel}
+        onCancel={close}
         width={600}
-        onSubmit={handleModalOk}
+        onSubmit={submit}
         columns={isEdit ? editColumns : createColumns}
         formProps={{
           labelPosition: 'top',

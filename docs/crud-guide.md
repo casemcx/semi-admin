@@ -21,7 +21,7 @@ import { createPermission, deletePermissionById, getPermissionPage, updatePermis
 import { useLocal } from '@/locales';
 import { Button, Card, Toast } from '@douyinfe/semi-ui';
 import { ModalForm, ProTable, useTableColumns } from '@packages/components';
-import { useTableFormState, useTableQuery } from '@packages/hooks';
+import { useModalFormState, useTableQuery } from '@packages/hooks';
 
 // 2. 定义页面组件
 export default function UserPermissionPage() {
@@ -59,7 +59,7 @@ useEffect(() => {
 - 提供搜索、重置功能
 - 缓存数据源
 
-### 2. useTableFormState - 表单状态管理
+### 2. useModalFormState - 表单模态框状态管理
 
 ```typescript
 const {
@@ -69,7 +69,7 @@ const {
   handleEdit,         // 编辑处理
   handleModalOk,      // 弹窗确认
   handleModalCancel,  // 弹窗取消
-} = useTableFormState<Permission>(
+} = useModalFormState<Permission>(
   {},  // 初始值
   {
     onSubmit: async (values: Permission, isEdit: boolean) => {

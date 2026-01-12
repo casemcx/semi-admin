@@ -1,77 +1,84 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-export interface UseTableFormStateOptions<T> {
-  onSubmit?: (values: T, isEdit: boolean) => Promise<any>;
+export type FormMode = 'create' | 'edit';
+
+export interface UseModalFormStateOptions<T> {
+  onSubmit?: (values: T, mode: FormMode) => Promise<any>;
   onCancel?: () => void;
-  onReset?: () => void;
+  onBeforeOpen?: (mode: FormMode, record?: T) => void;
+  onAfterClose?: () => void;
 }
 
-export const useTableFormState = <
+export const useModalFormState = <
   T extends Record<string, any> = Record<string, any>,
 >(
   initialValues?: Partial<T>,
-  options?: UseTableFormStateOptions<T>,
+  options?: UseModalFormStateOptions<T>,
 ) => {
   const [formValues, setFormValues] = useState<Partial<T>>(initialValues ?? {});
   const [modalVisible, setModalVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [mode, setMode] = useState<FormMode>('create');
   const [loading, setLoading] = useState(false);
 
-  const handleAdd = () => {
-    setModalVisible(true);
-    setFormValues({});
-    setIsEdit(false);
-  };
+  const isEdit = useMemo(() => mode === 'edit', [mode]);
 
-  const handleEdit = (record: T) => {
+  const openCreate = useCallback(() => {
+    setMode('create');
     setModalVisible(true);
-    setFormValues(record);
-    setIsEdit(true);
-  };
+    setFormValues(initialValues ?? {});
+    options?.onBeforeOpen?.('create');
+  }, [initialValues, options]);
 
-  const handleModalOk = async (values: T) => {
-    if (options?.onSubmit) {
-      setLoading(true);
-      try {
-        await options.onSubmit(values, isEdit);
-        handleModalCancel();
-      } catch (error) {
-        console.error('Form submission error:', error);
-        throw error;
-      } finally {
-        setLoading(false);
+  const openEdit = useCallback(
+    (record: T) => {
+      setMode('edit');
+      setModalVisible(true);
+      setFormValues(record);
+      options?.onBeforeOpen?.('edit', record);
+    },
+    [options],
+  );
+
+  const submit = useCallback(
+    async (values: T) => {
+      if (options?.onSubmit) {
+        setLoading(true);
+        try {
+          await options.onSubmit(values, mode);
+          close();
+        } catch (error) {
+          console.error('Form submission error:', error);
+          throw error;
+        } finally {
+          setLoading(false);
+        }
       }
-    }
-  };
+    },
+    [mode, options],
+  );
 
-  const handleModalCancel = () => {
+  const close = useCallback(() => {
     setModalVisible(false);
-    setFormValues({});
-    setIsEdit(false);
+    setFormValues(initialValues ?? {});
+    setMode('create');
     options?.onCancel?.();
-  };
-
-  const handleReset = () => {
-    setFormValues({});
-    options?.onReset?.();
-  };
+    options?.onAfterClose?.();
+  }, [initialValues, options]);
 
   return {
     // Form state
     formValues,
-    setFormValues,
+    mode,
+    isEdit,
 
     // Modal state
     modalVisible,
-    setModalVisible,
-    isEdit,
     loading,
 
     // Actions
-    handleAdd,
-    handleEdit,
-    handleModalOk,
-    handleModalCancel,
-    handleReset,
+    openCreate,
+    openEdit,
+    submit,
+    close,
   };
 };
