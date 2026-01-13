@@ -30,3 +30,4 @@ log/
 modern.config.local.*
 
 .claude
+.turbo

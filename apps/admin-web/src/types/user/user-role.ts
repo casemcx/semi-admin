@@ -1,4 +1,3 @@
-import type { Status } from '@packages/share';
 import type { Role } from './role';
 
 export interface UserRole {

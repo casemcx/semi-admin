@@ -1,3 +1,4 @@
+import { useRuntimeContext } from '@modern-js/runtime';
 import { Outlet } from '@modern-js/runtime/router';
 
 import { ConfigProvider } from '@douyinfe/semi-ui';
@@ -12,6 +13,10 @@ import '@packages/components/styles.css';
 import '@/locales';
 
 export default function Layout() {
+  const { routes } = useRuntimeContext();
+
+  console.log(routes);
+
   return (
     <ConfigProvider locale={zh_CN}>
       <div className="app-layout w-full h-full m-0 p-0">

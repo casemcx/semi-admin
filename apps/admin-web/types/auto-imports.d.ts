@@ -117,7 +117,4 @@ declare global {
   // @ts-ignore
   export type { AppRouter } from '../src/configs/router'
   import('../src/configs/router')
-  // @ts-ignore
-  export type { IUseImageToolState, IUseImageToolReturn } from '../src/hooks/useImageTool'
-  import('../src/hooks/useImageTool')
 }
